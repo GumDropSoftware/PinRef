@@ -1,36 +1,47 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# PINREF
+### broadcast cable builder
 
-## Getting Started
+> Stop googling pin 2 vs pin 3. Again.
 
-First, run the development server:
+PinRef is an open-source broadcast cable reference tool built for people who actually make cables. Look up pinouts, build wiring diagrams with correct wire colors, cross-reference connector compatibility, and submit builds from the field.
+
+Built by people who have been burned by a wrong XLR wiring diagram at 2am during a show.
+
+---
+
+## What's in it
+
+**PINOUTS** — Every connector you'll touch in broadcast: XLR3, XLR5, XLR4, TRS, TS, NL4, 3.5mm, TRRS, RCA, RJ45, RJ12, DB9, DB25, BNC, Triax, DT12, PowerCON. Tap one, see the pinout.
+
+**BUILDS** — Pre-built wiring diagrams for real-world cable runs. Wire colors match the actual cable you're holding. Solder side and face view. Continuity test checklist included.
+
+**MATRIX** — Compatibility grid. Instantly see what can connect to what, what's partial, and what's a field hack.
+
+**COMMUNITY** — Built something that works? Submit it. Pre-formats the build as an email with importable JSON so we can verify and add it to the main list.
+
+---
+
+## Running it locally
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Contributing
 
-## Learn More
+Found a wrong pinout? Have a build that works in the field? Open a PR or submit through the Community tab in the app.
 
-To learn more about Next.js, take a look at the following resources:
+Wire color corrections, new connector types, and new builds are all welcome.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## License
 
-## Deploy on Vercel
+GPL v3 — © 2026 GumDrop LLC
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Use it, fork it, improve it. Just keep it open.
