@@ -28,12 +28,6 @@ export default function BuildsTab({ initialBuild, initialConnector, onClearIniti
     return Array.from(opts.entries());
   }, [first, matchingBuilds]);
 
-  const preBuilts = useMemo(() => {
-    const tagged = BUILDS.filter(b => b.tag);
-    tagged.sort((a, b) => a.title.localeCompare(b.title));
-    return tagged;
-  }, []);
-
   if (selectedBuild) {
     return (
       <div>
@@ -87,19 +81,10 @@ export default function BuildsTab({ initialBuild, initialConnector, onClearIniti
 
   // Search filtering
   const q = search.toLowerCase().trim();
-  const filteredPreBuilts = q ? preBuilts.filter(b => {
-    const fromC = CONNECTORS[b.from];
-    const toC = CONNECTORS[b.to];
-    const haystack = `${b.title} ${b.use || ""} ${b.tag || ""} ${fromC?.name} ${fromC?.short} ${toC?.name} ${toC?.short}`.toLowerCase();
-    return haystack.includes(q);
-  }) : preBuilts;
-
-  const preBuiltSet = new Set(preBuilts);
   const filteredAllBuilds = q ? BUILDS.filter(b => {
-    if (preBuiltSet.has(b)) return false;
     const fromC = CONNECTORS[b.from];
     const toC = CONNECTORS[b.to];
-    const haystack = `${b.title} ${b.use || ""} ${b.notes || ""} ${fromC?.name} ${fromC?.short} ${toC?.name} ${toC?.short}`.toLowerCase();
+    const haystack = `${b.title} ${b.use || ""} ${b.notes || ""} ${b.tag || ""} ${fromC?.name} ${fromC?.short} ${toC?.name} ${toC?.short}`.toLowerCase();
     return haystack.includes(q);
   }) : [];
 
@@ -130,36 +115,6 @@ export default function BuildsTab({ initialBuild, initialConnector, onClearIniti
           }}
         />
       </div>
-
-      {/* Pre-built cables */}
-      {filteredPreBuilts.length > 0 && (
-        <div style={{ marginBottom: 20 }}>
-          <div style={{ fontSize: 12, color: "#c084fc", fontWeight: 700, fontFamily: "monospace", letterSpacing: 1, marginBottom: 8 }}>
-            SHOP ADAPTERS
-          </div>
-          {filteredPreBuilts.map((build, i) => {
-            const sm = STATUS_META[build.status];
-            const fromC = CONNECTORS[build.from];
-            const toC = CONNECTORS[build.to];
-            return (
-              <button key={i} onClick={() => setSelectedBuild(build)} style={{
-                ...styles.buildCard,
-                borderLeftColor: "#c084fc",
-                display: "flex",
-                alignItems: "center",
-                gap: 10,
-                marginBottom: 4,
-              }}>
-                <div style={{ flex: 1, minWidth: 0 }}>
-                  <div style={{ color: T.text, fontSize: 13, fontWeight: 700, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{build.title}</div>
-                  <div style={{ fontSize: 10, color: T.textDim, marginTop: 1 }}>{fromC.short} &rarr; {toC.short}</div>
-                </div>
-                <span style={{ color: sm.color, fontSize: 12, flexShrink: 0 }}>{sm.icon}</span>
-              </button>
-            );
-          })}
-        </div>
-      )}
 
       {/* Matching builds from search */}
       {filteredAllBuilds.length > 0 && (
