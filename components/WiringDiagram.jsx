@@ -125,6 +125,7 @@ export default function WiringDiagram({ build }) {
 
   const mc = build.multiChannel;
   const maxCh = mc ? mc.max : 1;
+  const multiSide = mc?.multiSide || "from"; // which connector multiplies
 
   const allWiring = useMemo(() => {
     if (!mc || channelCount <= 1) {
@@ -170,6 +171,15 @@ export default function WiringDiagram({ build }) {
         : (resolved.wireInfo ? { color: resolved.wireInfo.color, stripe: resolved.wireInfo.stripe || null } : resolved.lineColor);
     }
   });
+
+  // When TO side multiplies (e.g. XLR5 → 2× XLR3), the TO connector diagram is a
+  // template — all 3 pins appear identically on every cable. Recolor them neutral so
+  // the diagram reads as "use all these pins" rather than showing one channel's color.
+  if (multiSide === "to" && mc && channelCount > 1) {
+    Object.keys(toPinColors).forEach(pin => {
+      toPinColors[pin] = T.accent2;
+    });
+  }
 
   const sm = STATUS_META[build.status];
 
@@ -248,7 +258,9 @@ export default function WiringDiagram({ build }) {
           {Array.from({ length: channelCount }, (_, i) => (
             <div key={i} style={{ display: "flex", alignItems: "center", gap: 4 }}>
               <div style={{ width: 10, height: 10, borderRadius: 2, background: CH_COLORS[i] }} />
-              <span style={{ fontSize: 10, color: T.textDim, fontFamily: "monospace" }}>Cable {i + 1} (Ch {i + 1})</span>
+              <span style={{ fontSize: 10, color: T.textDim, fontFamily: "monospace" }}>
+                {mc.channelLabels?.[i] || `Cable ${i + 1} (Ch ${i + 1})`}
+              </span>
             </div>
           ))}
         </div>
@@ -280,7 +292,7 @@ export default function WiringDiagram({ build }) {
           {/* Visual diagrams side by side */}
           <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "center", gap: 12, padding: "8px 0", flexWrap: "wrap" }}>
             <div>
-              {channelCount > 1 ? (
+              {channelCount > 1 && multiSide === "from" ? (
                 <div style={{ textAlign: "center" }}>
                   <div style={{ fontSize: 11, color: T.textDim, marginBottom: 4, fontFamily: "monospace" }}>{channelCount}&times; {fromConn.short}</div>
                   <ConnectorDiagram connKey={build.from} side={fromSide} highlightPins={fromHighlight} pinColors={fromPinColors} viewLabel={side === "solder" ? "SOLDER SIDE" : "FACE VIEW"} />
@@ -332,7 +344,14 @@ export default function WiringDiagram({ build }) {
                 );
               })}
             </div>
-            <ConnectorDiagram connKey={build.to} side={toSide} highlightPins={toHighlight} pinColors={toPinColors} label={toLabel} viewLabel={side === "solder" ? "SOLDER SIDE" : "FACE VIEW"} />
+            {channelCount > 1 && multiSide === "to" ? (
+              <div style={{ textAlign: "center" }}>
+                <div style={{ fontSize: 11, color: T.textDim, marginBottom: 4, fontFamily: "monospace" }}>{channelCount}&times; {toConn.short}</div>
+                <ConnectorDiagram connKey={build.to} side={toSide} highlightPins={toHighlight} pinColors={toPinColors} viewLabel={side === "solder" ? "SOLDER SIDE" : "FACE VIEW"} />
+              </div>
+            ) : (
+              <ConnectorDiagram connKey={build.to} side={toSide} highlightPins={toHighlight} pinColors={toPinColors} label={toLabel} viewLabel={side === "solder" ? "SOLDER SIDE" : "FACE VIEW"} />
+            )}
           </div>
 
           {/* Wire-by-wire list */}

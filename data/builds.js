@@ -13,13 +13,35 @@ const STANDARD_BUILDS = [
   },
   {
     from: "xlr3", to: "xlr5", status: "standard", title: "XLR3 to XLR5 \u2014 Intercom / Audio",
-    use: "Clear-Com intercom or stereo send. Pins 4 & 5 are dead ends.",
+    use: "Send one or both balanced channels into an XLR5 intercom connector. One cable = mic send only; two cables = full send + earpiece return.",
+    multiChannel: {
+      max: 2,
+      multiSide: "from",
+      channelLabels: ["Send \u2014 Mic (XLR5 Pins 2/3)", "Return \u2014 Earpiece (XLR5 Pins 4/5)"],
+      perChannel: [
+        {
+          wiring: [
+            { fromPin: 2, toPin: 2, desc: "XLR3 pin 2 (Hot +) to XLR5 pin 2 (Mic +)" },
+            { fromPin: 3, toPin: 3, desc: "XLR3 pin 3 (Cold \u2212) to XLR5 pin 3 (Mic \u2212)" },
+            { fromPin: 1, toPin: 1, desc: "XLR3 pin 1 (Ground) to XLR5 pin 1 (Ground)" },
+          ],
+        },
+        {
+          wiring: [
+            { fromPin: 2, toPin: 4, desc: "XLR3 pin 2 (Hot +) to XLR5 pin 4 (Earpiece +)" },
+            { fromPin: 3, toPin: 5, desc: "XLR3 pin 3 (Cold \u2212) to XLR5 pin 5 (Earpiece \u2212)" },
+            { fromPin: 1, toPin: 1, desc: "XLR3 pin 1 (Ground) to XLR5 pin 1 (Ground)" },
+          ],
+        },
+      ],
+    },
     wiring: [
       { fromPin: 1, toPin: 1, desc: "Ground to Ground" },
       { fromPin: 2, toPin: 2, desc: "Hot (+) to Hot (+)" },
       { fromPin: 3, toPin: 3, desc: "Cold (\u2212) to Cold (\u2212)" },
     ],
-    deadEnds: [{ connector: "to", pin: 4, desc: "Pin 4 \u2014 unused, leave empty" }, { connector: "to", pin: 5, desc: "Pin 5 \u2014 unused, leave empty" }],
+    deadEnds: [{ connector: "to", pin: 4, desc: "Pin 4 \u2014 unused (add 2nd XLR3 for earpiece return)" }, { connector: "to", pin: 5, desc: "Pin 5 \u2014 unused (add 2nd XLR3 for earpiece return)" }],
+    notes: "Use 1 cable for send-only. Add a 2nd XLR3 for the earpiece return to fully wire the XLR5 intercom connector.",
   },
   {
     from: "xlr3", to: "trs", status: "standard", title: "XLR3 to 1/4\" TRS \u2014 Balanced Audio",
@@ -236,17 +258,39 @@ const STANDARD_BUILDS = [
   },
 
   {
-    from: "xlr5", to: "xlr3", status: "partial", title: "XLR5 to XLR3 \u2014 Intercom to Mono Audio",
-    use: "Tapping a mono balanced audio feed from an XLR5 intercom line. Pins 4 & 5 are dead.",
+    from: "xlr5", to: "xlr3", status: "partial", title: "XLR5 to XLR3 \u2014 Intercom Breakout",
+    use: "Tap one or both balanced channels from an XLR5 intercom line. One cable = send only; two cables = full send + return.",
+    multiChannel: {
+      max: 2,
+      multiSide: "to",
+      channelLabels: ["Send \u2014 Mic (Pins 2/3)", "Return \u2014 Earpiece (Pins 4/5)"],
+      perChannel: [
+        {
+          wiring: [
+            { fromPin: 2, toPin: 2, desc: "XLR5 pin 2 (Mic +) to XLR3 pin 2 (Hot +)" },
+            { fromPin: 3, toPin: 3, desc: "XLR5 pin 3 (Mic \u2212) to XLR3 pin 3 (Cold \u2212)" },
+            { fromPin: 1, toPin: 1, desc: "XLR5 pin 1 (Ground) to XLR3 pin 1 (Ground)" },
+          ],
+        },
+        {
+          wiring: [
+            { fromPin: 4, toPin: 2, desc: "XLR5 pin 4 (Earpiece +) to XLR3 pin 2 (Hot +)" },
+            { fromPin: 5, toPin: 3, desc: "XLR5 pin 5 (Earpiece \u2212) to XLR3 pin 3 (Cold \u2212)" },
+            { fromPin: 1, toPin: 1, desc: "XLR5 pin 1 (Ground) to XLR3 pin 1 (Ground)" },
+          ],
+        },
+      ],
+    },
     wiring: [
       { fromPin: 1, toPin: 1, desc: "Ground to Ground" },
-      { fromPin: 2, toPin: 2, desc: "Pin 2 to Hot (+)" },
-      { fromPin: 3, toPin: 3, desc: "Pin 3 to Cold (\u2212)" },
+      { fromPin: 2, toPin: 2, desc: "Pin 2 (Mic +) to Hot (+)" },
+      { fromPin: 3, toPin: 3, desc: "Pin 3 (Mic \u2212) to Cold (\u2212)" },
     ],
     deadEnds: [
-      { connector: "from", pin: 4, desc: "XLR5 pin 4 \u2014 unused" },
-      { connector: "from", pin: 5, desc: "XLR5 pin 5 \u2014 unused" },
+      { connector: "from", pin: 4, desc: "XLR5 pin 4 \u2014 unused (add 2nd XLR3 for earpiece)" },
+      { connector: "from", pin: 5, desc: "XLR5 pin 5 \u2014 unused (add 2nd XLR3 for earpiece)" },
     ],
+    notes: "Use 1 cable for send-only. Add a 2nd XLR3 to break out the earpiece return \u2014 all 5 pins used, nothing wasted.",
   },
   {
     from: "xlr5", to: "mini_trs", status: "standard", title: "XLR5 to 3.5mm TRS \u2014 Intercom Earpiece Feed",
@@ -339,15 +383,37 @@ const STANDARD_BUILDS = [
   },
   {
     from: "trs", to: "rj45", status: "standard", title: "TRS to RJ45 \u2014 Balanced Audio over Cat5",
-    use: "Single balanced audio channel over Cat5",
+    use: "One or two balanced audio channels over a single Cat5 run. Cat5 has 4 pairs \u2014 2 channels use 3 pairs, leaving 1 spare.",
+    multiChannel: {
+      max: 2,
+      multiSide: "from",
+      channelLabels: ["Ch1 \u2014 Org pair (Pins 1/2)", "Ch2 \u2014 Grn pair (Pins 3/6)"],
+      perChannel: [
+        {
+          wiring: [
+            { fromPin: 1, toPin: 1, desc: "Tip (Signal +) to RJ45 pin 1 (Wht/Org)" },
+            { fromPin: 2, toPin: 2, desc: "Ring (Signal \u2212) to RJ45 pin 2 (Orange)" },
+            { fromPin: 3, toPin: 4, desc: "Sleeve (Ground) to RJ45 pin 4 (Blue)" },
+          ],
+        },
+        {
+          wiring: [
+            { fromPin: 1, toPin: 3, desc: "Tip (Signal +) to RJ45 pin 3 (Wht/Grn)" },
+            { fromPin: 2, toPin: 6, desc: "Ring (Signal \u2212) to RJ45 pin 6 (Green)" },
+            { fromPin: 3, toPin: 5, desc: "Sleeve (Ground) to RJ45 pin 5 (Wht/Blue)" },
+          ],
+        },
+      ],
+    },
     wiring: [
       { fromPin: 1, toPin: 1, desc: "Tip (Signal +) to RJ45 pin 1 (Wht/Org)" },
       { fromPin: 2, toPin: 2, desc: "Ring (Signal \u2212) to RJ45 pin 2 (Orange)" },
       { fromPin: 3, toPin: 4, desc: "Sleeve (Ground) to RJ45 pin 4 (Blue)" },
     ],
     deadEnds: [
-      { connector: "to", pin: 3, desc: "RJ45 pins 3,5,6,7,8 \u2014 unused" },
+      { connector: "to", pin: 3, desc: "RJ45 pins 3,5,6 \u2014 unused (add 2nd TRS for Ch2)" },
     ],
+    notes: "Cat5 has 4 pairs. 2 balanced TRS channels use 3 pairs (pins 1,2,4 and 3,6,5). Pins 7\u20138 remain spare.",
   },
 
   {
@@ -442,14 +508,35 @@ const STANDARD_BUILDS = [
   },
   {
     from: "rj45", to: "trs", status: "standard", title: "RJ45 to TRS \u2014 Balanced Audio over Cat5",
-    use: "Receiving end of a balanced audio-over-Cat5 run.",
+    use: "Receiving end of a balanced audio-over-Cat5 run. One or two TRS outputs from a single Cat5.",
+    multiChannel: {
+      max: 2,
+      multiSide: "to",
+      channelLabels: ["Ch1 \u2014 Org pair (Pins 1/2)", "Ch2 \u2014 Grn pair (Pins 3/6)"],
+      perChannel: [
+        {
+          wiring: [
+            { fromPin: 1, toPin: 1, desc: "RJ45 pin 1 (Wht/Org) to Tip (Signal +)" },
+            { fromPin: 2, toPin: 2, desc: "RJ45 pin 2 (Orange) to Ring (Signal \u2212)" },
+            { fromPin: 4, toPin: 3, desc: "RJ45 pin 4 (Blue) to Sleeve (Ground)" },
+          ],
+        },
+        {
+          wiring: [
+            { fromPin: 3, toPin: 1, desc: "RJ45 pin 3 (Wht/Grn) to Tip (Signal +)" },
+            { fromPin: 6, toPin: 2, desc: "RJ45 pin 6 (Green) to Ring (Signal \u2212)" },
+            { fromPin: 5, toPin: 3, desc: "RJ45 pin 5 (Wht/Blue) to Sleeve (Ground)" },
+          ],
+        },
+      ],
+    },
     wiring: [
       { fromPin: 1, toPin: 1, desc: "RJ45 pin 1 (Wht/Org) to Tip (Signal +)" },
       { fromPin: 2, toPin: 2, desc: "RJ45 pin 2 (Orange) to Ring (Signal \u2212)" },
       { fromPin: 4, toPin: 3, desc: "RJ45 pin 4 (Blue) to Sleeve (Ground)" },
     ],
-    deadEnds: [{ connector: "from", pin: 3, desc: "RJ45 pins 3,5,6,7,8 \u2014 unused" }],
-    notes: "Pair with TRS\u2192RJ45 at the source.",
+    deadEnds: [{ connector: "from", pin: 3, desc: "RJ45 pins 3,5,6 \u2014 unused (add 2nd TRS for Ch2)" }],
+    notes: "Pair with TRS\u2192RJ45 at the source. Pins 7\u20138 remain spare on both ends.",
   },
   {
     from: "rj45", to: "xlr4", status: "partial", title: "RJ45 to XLR4 \u2014 Headset over Cat5",
@@ -657,29 +744,67 @@ const STANDARD_BUILDS = [
   },
   {
     from: "speakon", to: "xlr3", status: "field_hack", title: "Speakon NL4 to XLR3 \u2014 Speaker Adapter",
-    use: "Field hack: driving a speaker from an XLR output. Only use for powered monitors that accept line level!",
+    use: "Field hack: driving a powered monitor from a Speakon output. NL4 Ch1 only, or break out both Ch1 and Ch2 to separate XLR3 connectors.",
+    multiChannel: {
+      max: 2,
+      multiSide: "to",
+      channelLabels: ["Ch1 (NL4 Pins 1+/1\u2212)", "Ch2 (NL4 Pins 2+/2\u2212)"],
+      perChannel: [
+        {
+          wiring: [
+            { fromPin: 1, toPin: 2, desc: "NL4 1+ to XLR3 pin 2 (Hot +)" },
+            { fromPin: 2, toPin: 3, desc: "NL4 1\u2212 to XLR3 pin 3 (Cold \u2212)" },
+          ],
+        },
+        {
+          wiring: [
+            { fromPin: 3, toPin: 2, desc: "NL4 2+ to XLR3 pin 2 (Hot +)" },
+            { fromPin: 4, toPin: 3, desc: "NL4 2\u2212 to XLR3 pin 3 (Cold \u2212)" },
+          ],
+        },
+      ],
+    },
     wiring: [
       { fromPin: 1, toPin: 2, desc: "1+ to Hot (+) \u2014 Signal" },
       { fromPin: 2, toPin: 3, desc: "1\u2212 to Cold (\u2212) \u2014 Return" },
     ],
     deadEnds: [
-      { connector: "from", pin: 3, desc: "NL4 2+ \u2014 unused" },
-      { connector: "from", pin: 4, desc: "NL4 2\u2212 \u2014 unused" },
-      { connector: "to", pin: 1, desc: "XLR pin 1 (Ground) \u2014 unused" },
+      { connector: "from", pin: 3, desc: "NL4 2+ \u2014 unused (add 2nd XLR3 for Ch2)" },
+      { connector: "from", pin: 4, desc: "NL4 2\u2212 \u2014 unused (add 2nd XLR3 for Ch2)" },
+      { connector: "to", pin: 1, desc: "XLR pin 1 (Ground) \u2014 unused, leave open" },
     ],
     notes: "Only for powered monitors! Do NOT send amplified speaker signal into an XLR mic input \u2014 you will destroy it.",
   },
   {
     from: "speakon", to: "trs", status: "field_hack", title: "Speakon NL4 to TRS \u2014 Powered Monitor",
-    use: "Connecting a Speakon output to a powered monitor with 1/4\" input",
+    use: "Connecting a Speakon output to a powered monitor with 1/4\" TRS input. One or two monitors from a single NL4 run.",
+    multiChannel: {
+      max: 2,
+      multiSide: "to",
+      channelLabels: ["Ch1 (NL4 Pins 1+/1\u2212)", "Ch2 (NL4 Pins 2+/2\u2212)"],
+      perChannel: [
+        {
+          wiring: [
+            { fromPin: 1, toPin: 1, desc: "NL4 1+ to Tip \u2014 Signal +" },
+            { fromPin: 2, toPin: 3, desc: "NL4 1\u2212 to Sleeve \u2014 Return" },
+          ],
+        },
+        {
+          wiring: [
+            { fromPin: 3, toPin: 1, desc: "NL4 2+ to Tip \u2014 Signal +" },
+            { fromPin: 4, toPin: 3, desc: "NL4 2\u2212 to Sleeve \u2014 Return" },
+          ],
+        },
+      ],
+    },
     wiring: [
       { fromPin: 1, toPin: 1, desc: "1+ to Tip \u2014 Signal +" },
       { fromPin: 2, toPin: 3, desc: "1\u2212 to Sleeve \u2014 Return" },
     ],
     deadEnds: [
-      { connector: "from", pin: 3, desc: "NL4 2+ \u2014 unused" },
-      { connector: "from", pin: 4, desc: "NL4 2\u2212 \u2014 unused" },
-      { connector: "to", pin: 2, desc: "TRS Ring \u2014 unused" },
+      { connector: "from", pin: 3, desc: "NL4 2+ \u2014 unused (add 2nd TRS for Ch2 monitor)" },
+      { connector: "from", pin: 4, desc: "NL4 2\u2212 \u2014 unused (add 2nd TRS for Ch2 monitor)" },
+      { connector: "to", pin: 2, desc: "TRS Ring \u2014 unused, leave open" },
     ],
     notes: "Line-level only. Do not send amplified speaker signal to a TRS input.",
   },
@@ -772,14 +897,35 @@ const STANDARD_BUILDS = [
   },
   {
     from: "mini_trs", to: "rj45", status: "field_hack", title: "3.5mm TRS to RJ45 \u2014 Stereo Audio over Cat5",
-    use: "Field hack: run a 3.5mm stereo feed (IFB, aux, talkback return) over Cat5.",
+    use: "Field hack: run one or two 3.5mm stereo feeds (IFB, aux, talkback return) over a single Cat5 run.",
+    multiChannel: {
+      max: 2,
+      multiSide: "from",
+      channelLabels: ["Feed A \u2014 Tip/Ring to Pins 1/3", "Feed B \u2014 Tip/Ring to Pins 2/6"],
+      perChannel: [
+        {
+          wiring: [
+            { fromPin: 1, toPin: 1, desc: "Tip (Left) to RJ45 pin 1 (Wht/Org)" },
+            { fromPin: 2, toPin: 3, desc: "Ring (Right) to RJ45 pin 3 (Wht/Grn)" },
+            { fromPin: 3, toPin: 4, desc: "Sleeve (Ground) to RJ45 pin 4 (Blue)" },
+          ],
+        },
+        {
+          wiring: [
+            { fromPin: 1, toPin: 2, desc: "Tip (Left) to RJ45 pin 2 (Orange)" },
+            { fromPin: 2, toPin: 6, desc: "Ring (Right) to RJ45 pin 6 (Green)" },
+            { fromPin: 3, toPin: 5, desc: "Sleeve (Ground) to RJ45 pin 5 (Wht/Blue)" },
+          ],
+        },
+      ],
+    },
     wiring: [
       { fromPin: 1, toPin: 1, desc: "Tip (Left) to RJ45 pin 1 (Wht/Org)" },
       { fromPin: 2, toPin: 3, desc: "Ring (Right) to RJ45 pin 3 (Wht/Grn)" },
       { fromPin: 3, toPin: 4, desc: "Sleeve (Ground) to RJ45 pin 4 (Blue)" },
     ],
-    deadEnds: [{ connector: "to", pin: 2, desc: "RJ45 pins 2,5,6,7,8 \u2014 unused" }],
-    notes: "Unbalanced on Cat5. Each channel is a single conductor with no paired return \u2014 keep runs under 50ft.",
+    deadEnds: [{ connector: "to", pin: 2, desc: "RJ45 pins 2,5,6 \u2014 unused (add 2nd 3.5mm for Feed B)" }],
+    notes: "Unbalanced on Cat5 \u2014 keep runs under 50ft. Two feeds share one ground path each; pins 7\u20138 remain spare.",
   },
   {
     from: "mini_trs", to: "ts", status: "standard", title: "3.5mm to TS \u2014 Headphone to 1/4\" Mono",
