@@ -11,6 +11,11 @@ export const metadata = {
   description: "Interactive pin reference guide for broadcast connectors and cable builds. Open source by GumDrop LLC.",
   manifest: "/manifest.json",
   themeColor: "#ff6b35",
+  icons: {
+    icon: "/icon.svg",
+    shortcut: "/icon.svg",
+    apple: "/icon.svg",
+  },
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
