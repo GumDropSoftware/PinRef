@@ -61,7 +61,7 @@ export default function Home() {
       {/* Footer */}
       <div className="no-print" style={{ padding: "16px", borderTop: `1px solid ${T.border}`, textAlign: "center" }}>
         <span style={{ fontSize: 10, color: T.textDim, fontFamily: "monospace" }}>
-          © 2026 GumDrop LLC — MIT License — <a href="https://github.com/GumDropSoftware/PinRef" style={{ color: T.textDim, textDecoration: "none" }}>open source</a>
+          © 2026 GumDrop LLC — GPL v3 License — <a href="https://github.com/GumDropSoftware/PinRef" style={{ color: T.textDim, textDecoration: "none" }}>open source</a>
         </span>
       </div>
     </div>
