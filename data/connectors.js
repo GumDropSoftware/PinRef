@@ -28,10 +28,10 @@ export const CONNECTORS = {
     group: "audio",
     pins: [
       { id: 1, label: "1", name: "Ground / Shield" },
-      { id: 2, label: "2", name: "Signal + (Hot) / Data +" },
-      { id: 3, label: "3", name: "Signal \u2212 (Cold) / Data \u2212" },
-      { id: 4, label: "4", name: "Return + / Power +" },
-      { id: 5, label: "5", name: "Return \u2212 / Power \u2212" },
+      { id: 2, label: "2", name: "Mic Signal (Hot)" },
+      { id: 3, label: "3", name: "Earphone Return (Ground)" },
+      { id: 4, label: "4", name: "Left Earphone (Hot)" },
+      { id: 5, label: "5", name: "Right Earphone (Hot)" },
     ],
     facePositions: [
       { x: 30, y: 28 },  // pin 1 — top left (near notch)
@@ -49,10 +49,10 @@ export const CONNECTORS = {
     type: "circular",
     group: "audio",
     pins: [
-      { id: 1, label: "1", name: "Ground / Shield" },
-      { id: 2, label: "2", name: "Left + (Hot)" },
-      { id: 3, label: "3", name: "Left \u2212 (Cold)" },
-      { id: 4, label: "4", name: "Right + (Hot)" },
+      { id: 1, label: "1", name: "Mic Ground / Shield" },
+      { id: 2, label: "2", name: "Mic Signal (Hot)" },
+      { id: 3, label: "3", name: "Earphone Return (Ground)" },
+      { id: 4, label: "4", name: "Earphone Signal (Hot)" },
     ],
     facePositions: [
       { x: 35, y: 68 },

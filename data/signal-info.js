@@ -14,10 +14,10 @@ export const SIGNAL_INFO = {
     notes: "5-pin is the intercom standard. Also used for dual-channel or stereo audio.",
   },
   xlr4: {
-    signals: ["Headset Audio (Stereo)", "DC Power (some devices)"],
+    signals: ["Intercom Headset (Clear-Com / RTS / Telex)", "DC Power (some devices)"],
     impedance: "Low-Z",
-    maxRun: { audio: "100 ft" },
-    notes: "Primarily headset connectors. Some LED fixtures use XLR4 for DC power.",
+    maxRun: { intercom: "500 ft" },
+    notes: "Broadcast intercom headset standard (Clear-Com, RTS, Telex): pin 2 = mic signal (unbalanced hot), pin 3 = earphone return (ground), pin 4 = earphone signal (mono). Headset mic is unbalanced — no balanced mic negative. Some LED and AV gear uses XLR4 for DC power with a different pin assignment.",
   },
   dt12: {
     signals: ["12-Channel Balanced Audio"],
