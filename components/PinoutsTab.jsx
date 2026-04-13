@@ -7,6 +7,7 @@ import { SIGNAL_INFO } from "@/data/signal-info";
 import ConnectorDiagram from "./connectors/ConnectorDiagram";
 import PinTable from "./PinTable";
 import ConnectorPicker from "./ConnectorPicker";
+import SourcesList from "./SourcesList";
 
 // Build pinColors map for a connector from its cable wire colors
 function getPinColors(connKey) {
@@ -69,10 +70,23 @@ export default function PinoutsTab({ onNavigateToBuild }) {
                 <div><span style={{ color: T.textDim }}>Signals:</span> {info.signals.join(", ")}</div>
                 <div><span style={{ color: T.textDim }}>Impedance:</span> {info.impedance}</div>
                 <div><span style={{ color: T.textDim }}>Max run:</span> {Object.entries(info.maxRun).map(([k, v]) => `${k}: ${v}`).join(" | ")}</div>
-                {info.notes && <div style={{ marginTop: 4, fontSize: 10, color: T.textDim }}>{info.notes}</div>}
+                {info.notes && <div style={{ marginTop: 4, fontSize: 10, color: T.textDim, fontFamily: "'Segoe UI', system-ui, sans-serif" }}>{info.notes}</div>}
               </div>
             </div>
           );
+        })()}
+
+        {/* Sources — combine connector-level and signal-info sources */}
+        {(() => {
+          const connSources = conn.sources || [];
+          const infoSources = SIGNAL_INFO[selected]?.sources || [];
+          const seen = new Set();
+          const all = [...connSources, ...infoSources].filter(s => {
+            if (seen.has(s.label)) return false;
+            seen.add(s.label);
+            return true;
+          });
+          return <SourcesList sources={all} />;
         })()}
 
         {/* Cross-link to builds */}

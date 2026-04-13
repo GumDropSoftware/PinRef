@@ -5,6 +5,7 @@ import { CONNECTORS } from "@/data";
 import { T, STATUS_META, CH_COLORS, SHELL_WIRE_COLORS, RJ45_WIRE_COLORS, CABLE_WIRE_COLORS, styles } from "@/lib/theme";
 import { SIGNAL_INFO } from "@/data/signal-info";
 import ConnectorDiagram from "./connectors/ConnectorDiagram";
+import SourcesList from "./SourcesList";
 
 // Determine which connector is the "cable" — the one whose wire colors drive the diagram.
 // XLR → RJ45 = Cat5 cable with XLR ends, so RJ45 pin colors drive everything.
@@ -454,6 +455,9 @@ export default function WiringDiagram({ build }) {
               <div style={{ fontSize: 12, color: T.textDim, lineHeight: 1.5 }}>{build.notes}</div>
             </div>
           )}
+
+          {/* Sources */}
+          <SourcesList sources={build.sources} />
 
           {/* Signal info for both connectors */}
           {(() => {
