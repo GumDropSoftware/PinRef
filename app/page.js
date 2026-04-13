@@ -60,6 +60,9 @@ export default function Home() {
 
       {/* Footer */}
       <div className="no-print" style={{ padding: "16px", borderTop: `1px solid ${T.border}`, textAlign: "center" }}>
+        <div style={{ maxWidth: 720, margin: "0 auto 12px", fontSize: 11, color: T.textDim, lineHeight: 1.5, fontFamily: "'Segoe UI', system-ui, sans-serif" }}>
+          <strong style={{ color: T.text }}>⚠ Disclaimer:</strong> Pinouts shown reflect published industry standards from the cited sources. Individual manufacturers may deviate from these standards — always verify against your specific equipment's documentation before building a cable. Incorrect wiring can damage expensive broadcast equipment. PinRef and GumDrop LLC accept no responsibility or liability for any loss, damage, cost, or expense incurred as a result of using this information.
+        </div>
         <span style={{ fontSize: 10, color: T.textDim, fontFamily: "monospace" }}>
           © 2026 GumDrop LLC — GPL v3 License — <a href="https://github.com/GumDropSoftware/PinRef" style={{ color: T.textDim, textDecoration: "none" }}>open source</a>
         </span>
