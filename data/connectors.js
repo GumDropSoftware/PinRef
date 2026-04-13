@@ -20,6 +20,10 @@ export const CONNECTORS = {
     ],
     radius: 42,
     notch: "top",
+    sources: [
+      { label: "AES14-1992 (pin 2 hot standard)", url: "https://www.aes.org/publications/standards/search.cfm?docID=36" },
+      { label: "Sescom XLR Pin 2 Hot Reference", url: "https://www.sescom.com/Portals/0/Documents/3-Pin%20XLR%20Pinouts%20and%20Pin%202%20Hot%20Wiring%20Information.pdf" },
+    ],
   },
   xlr5: {
     name: "XLR 5-Pin",
@@ -42,6 +46,11 @@ export const CONNECTORS = {
     ],
     radius: 42,
     notch: "top",
+    sources: [
+      { label: "Clear-Com V-Series Headset Connectors", url: "https://www.clearcom.com/DownloadCenter/manuals/V-Series_Iris_Online_Manual/Content/Common%20Topics/Headset%20connectors.htm" },
+      { label: "RTS BP-325 User Manual", url: "https://products.rtsintercoms.com/binary/F01U382482.pdf" },
+      { label: "Telex/RTS Pinouts (plsystem.com)", url: "https://www.plsystem.com/pinout1.htm" },
+    ],
   },
   xlr4: {
     name: "XLR 4-Pin",
@@ -62,6 +71,12 @@ export const CONNECTORS = {
     ],
     radius: 42,
     notch: "top",
+    sources: [
+      { label: "Clear-Com V-Series Headset Connectors", url: "https://www.clearcom.com/DownloadCenter/manuals/V-Series_Iris_Online_Manual/Content/Common%20Topics/Headset%20connectors.htm" },
+      { label: "RTS BP-325 User Manual", url: "https://products.rtsintercoms.com/binary/F01U382482.pdf" },
+      { label: "Telex BTR-800 Pinouts", url: "https://www.plsystem.com/pinout9.htm" },
+      { label: "PinoutGuide.com XLR4", url: "https://pinoutguide.com/Audio-Video-Hardware/xlr4_pinout.shtml" },
+    ],
   },
   dt12: {
     name: "DT12 (FK37) \u2014 37 Pin",
@@ -184,12 +199,12 @@ export const CONNECTORS = {
     type: "rj12",
     group: "data",
     pins: [
-      { id: 1, label: "1", name: "Pin 1 \u2014 Blue" },
-      { id: 2, label: "2", name: "Pin 2 \u2014 Yellow" },
-      { id: 3, label: "3", name: "Pin 3 \u2014 Green" },
-      { id: 4, label: "4", name: "Pin 4 \u2014 Red" },
-      { id: 5, label: "5", name: "Pin 5 \u2014 Black" },
-      { id: 6, label: "6", name: "Pin 6 \u2014 White" },
+      { id: 1, label: "1", name: "Pin 1 \u2014 White" },
+      { id: 2, label: "2", name: "Pin 2 \u2014 Black" },
+      { id: 3, label: "3", name: "Pin 3 \u2014 Red" },
+      { id: 4, label: "4", name: "Pin 4 \u2014 Green" },
+      { id: 5, label: "5", name: "Pin 5 \u2014 Yellow" },
+      { id: 6, label: "6", name: "Pin 6 \u2014 Blue" },
     ],
   },
   bnc: {
@@ -291,10 +306,15 @@ export const CONNECTORS = {
     type: "mini_trrs",
     group: "audio",
     pins: [
-      { id: 1, label: "T", name: "Tip \u2014 Left Audio / Earpiece +" },
-      { id: 2, label: "R1", name: "Ring 1 \u2014 Right Audio / Earpiece \u2212" },
-      { id: 3, label: "R2", name: "Ring 2 \u2014 Microphone" },
-      { id: 4, label: "S", name: "Sleeve \u2014 Ground" },
+      { id: 1, label: "T", name: "Tip \u2014 Left Audio" },
+      { id: 2, label: "R1", name: "Ring 1 \u2014 Right Audio" },
+      { id: 3, label: "R2", name: "Ring 2 \u2014 Ground (CTIA)" },
+      { id: 4, label: "S", name: "Sleeve \u2014 Microphone (CTIA)" },
+    ],
+    sources: [
+      { label: "Android AOSP 3.5mm Headset Jack Spec (LRGM)", url: "https://source.android.com/docs/core/interaction/accessories/headset/plug-headset-spec" },
+      { label: "Audio-Technica CTIA/OMTP Compatibility Note", url: "https://www.audio-technica.com/en-gb/support/why-audio-technica-headsets-wont-work-correctly-with-some-older-devices" },
+      { label: "Wikipedia — Phone connector (audio)", url: "https://en.wikipedia.org/wiki/Phone_connector_(audio)" },
     ],
   },
   rca: {

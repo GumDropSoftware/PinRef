@@ -4,11 +4,16 @@ const STANDARD_BUILDS = [
   // XLR3 combos
   {
     from: "xlr3", to: "xlr3", status: "standard", title: "XLR3 Mic Cable (Straight-Through)",
-    use: "Standard microphone or balanced audio cable",
+    use: "Standard microphone or balanced audio cable. Also carries SMPTE LTC timecode and AES3 digital audio over the same wiring (AES3 requires true 110\u03A9 cable for spec compliance).",
     wiring: [
-      { fromPin: 1, toPin: 1, desc: "Ground to Ground" },
+      { fromPin: 1, toPin: 1, desc: "Ground / Shield to Ground / Shield" },
       { fromPin: 2, toPin: 2, desc: "Hot (+) to Hot (+)" },
       { fromPin: 3, toPin: 3, desc: "Cold (\u2212) to Cold (\u2212)" },
+    ],
+    notes: "Same wiring covers analog balanced audio, AES3 digital audio, and SMPTE LTC timecode. LTC is ~0.5\u20132 V p-p audio-band, so any good balanced audio run works for hundreds of feet. AES3 needs 110\u03A9 digital audio cable; analog mic cable works at short distances but causes jitter on longer runs.",
+    sources: [
+      { label: "AES14-1992 XLR Standard", url: "https://www.aes.org/publications/standards/search.cfm?docID=36" },
+      { label: "ETC SMPTE LTC Pinout &amp; Wiring", url: "https://support.etcconnect.com/ETC/Networking/Show_Control_and_IO_Control/SMPTE_Pinout_and_Wiring" },
     ],
   },
   {
@@ -89,24 +94,45 @@ const STANDARD_BUILDS = [
     notes: "Cat5 has 4 pairs. 2 balanced audio channels use 3 pairs. Pins 7-8 remain unused.",
   },
   {
-    from: "xlr3", to: "db9", status: "field_hack", title: "XLR3 to DB9 \u2014 Serial Intercom Adapter",
-    use: "Field hack: repurposing XLR cable to carry RS-232 serial (timing/scoring data). Not standard \u2014 document your pinout!",
+    from: "xlr3", to: "db25", status: "standard", title: "XLR3 to DB25 \u2014 Tascam/AES59 Audio Snake",
+    use: "One channel of a Tascam/AES59 analog audio snake breakout. 8 channels fit in a DB25. Channels run right-to-left across the connector \u2014 Ch1 is at the far end (pins 24/12/25), Ch8 is at the near end (pins 1/14/2).",
+    multiChannel: {
+      max: 8,
+      multiSide: "to",
+      channelLabels: [
+        "Ch1 \u2014 pins 24/12/25 (Hot/Cold/Gnd)",
+        "Ch2 \u2014 pins 10/23/11",
+        "Ch3 \u2014 pins 21/9/22",
+        "Ch4 \u2014 pins 7/20/8",
+        "Ch5 \u2014 pins 18/6/19",
+        "Ch6 \u2014 pins 4/17/5",
+        "Ch7 \u2014 pins 15/3/16",
+        "Ch8 \u2014 pins 1/14/2",
+      ],
+      perChannel: [
+        { wiring: [{ fromPin: 2, toPin: 24, desc: "Hot (XLR 2) to DB25 pin 24 (Ch1 Hot)" }, { fromPin: 3, toPin: 12, desc: "Cold (XLR 3) to DB25 pin 12 (Ch1 Cold)" }, { fromPin: 1, toPin: 25, desc: "Ground (XLR 1) to DB25 pin 25 (Ch1 Gnd)" }] },
+        { wiring: [{ fromPin: 2, toPin: 10, desc: "Hot to DB25 pin 10 (Ch2 Hot)" }, { fromPin: 3, toPin: 23, desc: "Cold to DB25 pin 23 (Ch2 Cold)" }, { fromPin: 1, toPin: 11, desc: "Ground to DB25 pin 11 (Ch2 Gnd)" }] },
+        { wiring: [{ fromPin: 2, toPin: 21, desc: "Hot to DB25 pin 21 (Ch3 Hot)" }, { fromPin: 3, toPin: 9, desc: "Cold to DB25 pin 9 (Ch3 Cold)" }, { fromPin: 1, toPin: 22, desc: "Ground to DB25 pin 22 (Ch3 Gnd)" }] },
+        { wiring: [{ fromPin: 2, toPin: 7, desc: "Hot to DB25 pin 7 (Ch4 Hot)" }, { fromPin: 3, toPin: 20, desc: "Cold to DB25 pin 20 (Ch4 Cold)" }, { fromPin: 1, toPin: 8, desc: "Ground to DB25 pin 8 (Ch4 Gnd)" }] },
+        { wiring: [{ fromPin: 2, toPin: 18, desc: "Hot to DB25 pin 18 (Ch5 Hot)" }, { fromPin: 3, toPin: 6, desc: "Cold to DB25 pin 6 (Ch5 Cold)" }, { fromPin: 1, toPin: 19, desc: "Ground to DB25 pin 19 (Ch5 Gnd)" }] },
+        { wiring: [{ fromPin: 2, toPin: 4, desc: "Hot to DB25 pin 4 (Ch6 Hot)" }, { fromPin: 3, toPin: 17, desc: "Cold to DB25 pin 17 (Ch6 Cold)" }, { fromPin: 1, toPin: 5, desc: "Ground to DB25 pin 5 (Ch6 Gnd)" }] },
+        { wiring: [{ fromPin: 2, toPin: 15, desc: "Hot to DB25 pin 15 (Ch7 Hot)" }, { fromPin: 3, toPin: 3, desc: "Cold to DB25 pin 3 (Ch7 Cold)" }, { fromPin: 1, toPin: 16, desc: "Ground to DB25 pin 16 (Ch7 Gnd)" }] },
+        { wiring: [{ fromPin: 2, toPin: 1, desc: "Hot to DB25 pin 1 (Ch8 Hot)" }, { fromPin: 3, toPin: 14, desc: "Cold to DB25 pin 14 (Ch8 Cold)" }, { fromPin: 1, toPin: 2, desc: "Ground to DB25 pin 2 (Ch8 Gnd)" }] },
+      ],
+    },
     wiring: [
-      { fromPin: 1, toPin: 5, desc: "Ground (XLR 1) to DB9 pin 5 (Ground)" },
-      { fromPin: 2, toPin: 2, desc: "Hot (XLR 2) to DB9 pin 2 (RxD)" },
-      { fromPin: 3, toPin: 3, desc: "Cold (XLR 3) to DB9 pin 3 (TxD)" },
+      { fromPin: 2, toPin: 24, desc: "Hot (XLR 2) to DB25 pin 24 (Ch1 Hot)" },
+      { fromPin: 3, toPin: 12, desc: "Cold (XLR 3) to DB25 pin 12 (Ch1 Cold)" },
+      { fromPin: 1, toPin: 25, desc: "Ground (XLR 1) to DB25 pin 25 (Ch1 Gnd)" },
     ],
-    notes: "Non-standard \u2014 label both ends! Works for short RS-232 runs under 50 feet.",
-  },
-  {
-    from: "xlr3", to: "db25", status: "field_hack", title: "XLR3 to DB25 \u2014 Audio Snake Channel",
-    use: "Field hack: wiring one channel of a DB25 audio snake breakout. Pin mapping depends on your snake's channel assignment.",
-    wiring: [
-      { fromPin: 1, toPin: 1, desc: "Ground (XLR 1) to DB25 pin 1 (Ch 1 Ground)" },
-      { fromPin: 2, toPin: 2, desc: "Hot (XLR 2) to DB25 pin 2 (Ch 1 Hot)" },
-      { fromPin: 3, toPin: 3, desc: "Cold (XLR 3) to DB25 pin 3 (Ch 1 Cold)" },
+    deadEnds: [{ connector: "to", pin: 13, desc: "DB25 pin 13 \u2014 No Connect (only unused pin)" }],
+    notes: "AES59-2012 / Tascam DA-88 standard. Yamaha uses a different (AES3 digital) DB25 pinout that is NOT compatible \u2014 always confirm which standard the gear at the other end follows. Counterintuitively, channels run right-to-left across the connector.",
+    sources: [
+      { label: "TASCAM DB-25 Pinout Standard (official)", url: "https://www.tascam.eu/en/docs/DB-25_Pinout.pdf" },
+      { label: "Aviom DB25 Pinout Information", url: "https://www.aviom.com/library/Technical-Resources/75_DB25-Pinout-Information.pdf" },
+      { label: "AES59-2012 Standard", url: "https://www.aes.org/publications/standards/search.cfm?docID=92" },
+      { label: "Sweetwater AES/EBU DB25 Pinout Guide", url: "https://www.sweetwater.com/sweetcare/articles/aesebu-db25-pinout-guide/" },
     ],
-    notes: "This is Channel 1 on a Tascam-standard DB25 pinout. For other channels, shift by 3 pins per channel.",
   },
   {
     from: "xlr3", to: "xlr4", status: "partial", title: "XLR3 to XLR4 \u2014 Balanced Feed to Headset Earphone",
@@ -177,18 +203,26 @@ const STANDARD_BUILDS = [
       { fromPin: 2, toPin: 1, desc: "Hot (+) to Tip \u2014 Signal" },
       { fromPin: 1, toPin: 2, desc: "Ground to Sleeve" },
     ],
-    deadEnds: [{ connector: "from", pin: 3, desc: "XLR pin 3 (Cold \u2212) \u2014 tie to Ground for best noise rejection" }],
-    notes: "Balanced to unbalanced conversion. Tie XLR pin 3 to pin 1 at the XLR end for cleanest signal.",
+    deadEnds: [{ connector: "from", pin: 3, desc: "XLR pin 3 (Cold \u2212) \u2014 leave floating (safest for active outputs)" }],
+    notes: "Balanced to unbalanced conversion. Pin 3 handling depends on the source output topology: FLOAT pin 3 for transformerless active/servo-balanced outputs (grounding can short an inverting op-amp). TIE pin 3 to pin 1 only for transformer-balanced outputs (provides DC reference). When in doubt, leave floating \u2014 it's the safer default.",
+    sources: [
+      { label: "Rane Note 151 \u2014 Grounding &amp; Shielding", url: "https://www.ranecommercial.com/legacy/note151.html" },
+      { label: "Benchmark XLR-to-RCA Adapter Cable Application Note", url: "https://benchmarkmedia.com/products/benchmark-xlrfm-to-rca-adapter-cable-pin-3-floating" },
+    ],
   },
   {
-    from: "xlr3", to: "rca", status: "standard", title: "XLR3 to RCA \u2014 Pro to Consumer",
-    use: "Pro XLR output to consumer RCA input (amp, receiver, recording interface).",
+    from: "xlr3", to: "rca", status: "partial", title: "XLR3 to RCA \u2014 Pro to Consumer",
+    use: "Pro XLR output to consumer RCA input (amp, receiver, recording interface). Requires level matching \u2014 a bare adapter will overdrive consumer gear.",
     wiring: [
       { fromPin: 2, toPin: 1, desc: "Hot (+) to Center \u2014 Signal" },
       { fromPin: 1, toPin: 2, desc: "Ground to Shell" },
     ],
-    deadEnds: [{ connector: "from", pin: 3, desc: "XLR pin 3 (Cold \u2212) \u2014 tie to Ground or float" }],
-    notes: "~10dB level difference expected \u2014 adjust gain at the receiving end.",
+    deadEnds: [{ connector: "from", pin: 3, desc: "XLR pin 3 (Cold \u2212) \u2014 leave floating (safer for active outputs)" }],
+    notes: "\u26a0\ufe0f Level mismatch ~12 dB (pro +4 dBu = 1.23 V vs consumer \u221210 dBV = 0.316 V). Pro peaks can exceed consumer input clip by 15+ dB. Consumer RCA inputs usually have NO gain control \u2014 use an inline pad (\u221212 dB / \u221220 dB), a passive DI (Radial ProAV), or a dedicated level converter. Pin 3 should float for transformerless active outputs \u2014 grounding it can short an inverting op-amp stage.",
+    sources: [
+      { label: "Rane Note 110 \u2014 Sound System Interconnection", url: "https://www.ranecommercial.com/legacy/note110.html" },
+      { label: "Benchmark \u2014 Balanced vs. Unbalanced", url: "https://benchmarkmedia.com/blogs/application_notes/balanced-vs-unbalanced-analog-interfaces" },
+    ],
   },
 
   // XLR5 combos
@@ -213,6 +247,10 @@ const STANDARD_BUILDS = [
       { fromPin: 4, toPin: 4, desc: "Left Earphone (+) to Earphone Signal (pin 4)" },
     ],
     deadEnds: [{ connector: "from", pin: 5, desc: "XLR5 pin 5 (Right Earphone) \u2014 XLR4 is mono, right channel not present" }],
+    sources: [
+      { label: "Clear-Com V-Series Headset Connectors", url: "https://www.clearcom.com/DownloadCenter/manuals/V-Series_Iris_Online_Manual/Content/Common%20Topics/Headset%20connectors.htm" },
+      { label: "RTS BP-325 User Manual", url: "https://products.rtsintercoms.com/binary/F01U382482.pdf" },
+    ],
   },
   {
     from: "xlr5", to: "rj45", status: "standard", title: "XLR5 to RJ45 \u2014 Intercom over Cat5",
@@ -308,15 +346,19 @@ const STANDARD_BUILDS = [
   },
   {
     from: "xlr5", to: "mini_trrs", status: "standard", title: "XLR5 to 3.5mm TRRS \u2014 Intercom to Consumer Headset",
-    use: "Drive a consumer TRRS headset (Apple/Android CTIA standard) from a Clear-Com beltpack.",
+    use: "Drive a CTIA TRRS headset (iPhone, modern Android) from a Clear-Com or RTS beltpack.",
     wiring: [
-      { fromPin: 4, toPin: 1, desc: "XLR5 pin 4 (Left Earphone +) to Tip (earpiece +)" },
-      { fromPin: 5, toPin: 2, desc: "XLR5 pin 5 (Right Earphone +) to Ring 1 (right earphone)" },
-      { fromPin: 2, toPin: 3, desc: "XLR5 pin 2 (Mic Signal) to Ring 2 (mic)" },
-      { fromPin: 1, toPin: 4, desc: "XLR5 pin 1 (Ground) to Sleeve" },
+      { fromPin: 4, toPin: 1, desc: "XLR5 pin 4 (Left Earphone +) to Tip (Left Audio)" },
+      { fromPin: 5, toPin: 2, desc: "XLR5 pin 5 (Right Earphone +) to Ring 1 (Right Audio)" },
+      { fromPin: 2, toPin: 4, desc: "XLR5 pin 2 (Mic Signal) to Sleeve (Mic CTIA)" },
+      { fromPin: 1, toPin: 3, desc: "XLR5 pin 1 (Ground) to Ring 2 (Ground CTIA)" },
+      { fromPin: 3, toPin: 3, desc: "XLR5 pin 3 (Earphone Return) to Ring 2 (Ground CTIA)" },
     ],
-    deadEnds: [{ connector: "from", pin: 3, desc: "Pin 3 (Earphone Return) \u2014 ground, already carried on pin 1" }],
-    notes: "CTIA standard headset (Apple/Android). If earphone and mic are swapped on the headset, it uses OMTP wiring instead.",
+    notes: "CTIA (Apple/Android) wiring: mic is on Sleeve, ground is on Ring 2. Tie both XLR5 pin 1 and pin 3 to TRRS Ring 2 at the TRRS end. If mic and earphone are swapped when tested, the headset uses OMTP \u2014 reverse Ring 2 and Sleeve.",
+    sources: [
+      { label: "Android AOSP 3.5mm Headset Jack Spec (LRGM)", url: "https://source.android.com/docs/core/interaction/accessories/headset/plug-headset-spec" },
+      { label: "Clear-Com V-Series Headset Connectors", url: "https://www.clearcom.com/DownloadCenter/manuals/V-Series_Iris_Online_Manual/Content/Common%20Topics/Headset%20connectors.htm" },
+    ],
   },
 
   // DT12 combos
@@ -328,49 +370,45 @@ const STANDARD_BUILDS = [
     })),
   },
   {
-    from: "dt12", to: "db25", status: "standard", title: "DT12 to DB25 \u2014 Audio Snake (6 Ch, Tascam)",
-    use: "First 6 channels of DT12 to DB25 Tascam standard. Common in broadcast trucks.",
+    from: "dt12", to: "db25", status: "standard", title: "DT12 to DB25 \u2014 Audio Snake (8 Ch, AES59/Tascam)",
+    use: "First 8 channels of DT12 to DB25 AES59/Tascam standard. Common in broadcast trucks. A DB25 only carries 8 channels \u2014 DT12 channels 9\u201312 do not fit and must break out separately.",
     wiring: [
-      { fromPin: 1, toPin: 2, desc: "DT12 pin 1 (Ch1 Hi) \u2192 DB25 pin 2 (Ch1 Hot)" },
-      { fromPin: 5, toPin: 15, desc: "DT12 pin 5 (Ch1 Lo) \u2192 DB25 pin 15 (Ch1 Cold)" },
-      { fromPin: 2, toPin: 1, desc: "DT12 pin 2 (Ch1 Gnd) \u2192 DB25 pin 1 (Ch1 Gnd)" },
-      { fromPin: 3, toPin: 5, desc: "DT12 pin 3 (Ch2 Hi) \u2192 DB25 pin 5 (Ch2 Hot)" },
-      { fromPin: 6, toPin: 18, desc: "DT12 pin 6 (Ch2 Lo) \u2192 DB25 pin 18 (Ch2 Cold)" },
-      { fromPin: 4, toPin: 14, desc: "DT12 pin 4 (Ch2 Gnd) \u2192 DB25 pin 14 (Ch2 Gnd)" },
-      { fromPin: 8, toPin: 8, desc: "DT12 pin 8 (Ch3 Hi) \u2192 DB25 pin 8 (Ch3 Hot)" },
-      { fromPin: 9, toPin: 21, desc: "DT12 pin 9 (Ch3 Lo) \u2192 DB25 pin 21 (Ch3 Cold)" },
-      { fromPin: 7, toPin: 7, desc: "DT12 pin 7 (Ch3 Gnd) \u2192 DB25 pin 7 (Ch3 Gnd)" },
-      { fromPin: 10, toPin: 11, desc: "DT12 pin 10 (Ch4 Hi) \u2192 DB25 pin 11 (Ch4 Hot)" },
-      { fromPin: 12, toPin: 24, desc: "DT12 pin 12 (Ch4 Lo) \u2192 DB25 pin 24 (Ch4 Cold)" },
-      { fromPin: 11, toPin: 20, desc: "DT12 pin 11 (Ch4 Gnd) \u2192 DB25 pin 20 (Ch4 Gnd)" },
-      { fromPin: 14, toPin: 14, desc: "DT12 pin 14 (Ch5 Hi) \u2192 DB25 pin 14 (Ch5 Hot)" },
-      { fromPin: 15, toPin: 1, desc: "DT12 pin 15 (Ch5 Lo) \u2192 DB25 pin 1 (Ch5 Cold)" },
-      { fromPin: 13, toPin: 7, desc: "DT12 pin 13 (Ch5 Gnd) \u2192 DB25 pin 7 (Ch5 Gnd)" },
-      { fromPin: 16, toPin: 17, desc: "DT12 pin 16 (Ch6 Hi) \u2192 DB25 pin 17 (Ch6 Hot)" },
-      { fromPin: 18, toPin: 4, desc: "DT12 pin 18 (Ch6 Lo) \u2192 DB25 pin 4 (Ch6 Cold)" },
-      { fromPin: 17, toPin: 16, desc: "DT12 pin 17 (Ch6 Gnd) \u2192 DB25 pin 16 (Ch6 Gnd)" },
-    ],
-    notes: "Tascam DB25 standard. Only 6 of 12 DT12 channels fit on a DB25. Yamaha uses different pin mapping \u2014 always verify your gear!",
-  },
-  {
-    from: "dt12", to: "rj45", status: "field_hack", title: "DT12 to RJ45 \u2014 4 Channels over Cat5",
-    use: "Field hack: sends 4 balanced audio channels over Cat5. Uses all 4 pairs.",
-    wiring: [
-      { fromPin: 1, toPin: 1, desc: "Ch1 Hi (DT12 pin 1) \u2192 RJ45 pin 1 (Wht/Org)" },
-      { fromPin: 5, toPin: 2, desc: "Ch1 Lo (DT12 pin 5) \u2192 RJ45 pin 2 (Orange)" },
-      { fromPin: 3, toPin: 3, desc: "Ch2 Hi (DT12 pin 3) \u2192 RJ45 pin 3 (Wht/Grn)" },
-      { fromPin: 6, toPin: 6, desc: "Ch2 Lo (DT12 pin 6) \u2192 RJ45 pin 6 (Green)" },
-      { fromPin: 8, toPin: 4, desc: "Ch3 Hi (DT12 pin 8) \u2192 RJ45 pin 4 (Blue)" },
-      { fromPin: 9, toPin: 5, desc: "Ch3 Lo (DT12 pin 9) \u2192 RJ45 pin 5 (Wht/Blue)" },
-      { fromPin: 10, toPin: 7, desc: "Ch4 Hi (DT12 pin 10) \u2192 RJ45 pin 7 (Wht/Brn)" },
-      { fromPin: 12, toPin: 8, desc: "Ch4 Lo (DT12 pin 12) \u2192 RJ45 pin 8 (Brown)" },
+      { fromPin: 1, toPin: 24, desc: "DT12 pin 1 (Ch1 Hi) \u2192 DB25 pin 24 (Ch1 Hot)" },
+      { fromPin: 5, toPin: 12, desc: "DT12 pin 5 (Ch1 Lo) \u2192 DB25 pin 12 (Ch1 Cold)" },
+      { fromPin: 2, toPin: 25, desc: "DT12 pin 2 (Ch1 Gnd) \u2192 DB25 pin 25 (Ch1 Gnd)" },
+      { fromPin: 3, toPin: 10, desc: "DT12 pin 3 (Ch2 Hi) \u2192 DB25 pin 10 (Ch2 Hot)" },
+      { fromPin: 6, toPin: 23, desc: "DT12 pin 6 (Ch2 Lo) \u2192 DB25 pin 23 (Ch2 Cold)" },
+      { fromPin: 4, toPin: 11, desc: "DT12 pin 4 (Ch2 Gnd) \u2192 DB25 pin 11 (Ch2 Gnd)" },
+      { fromPin: 8, toPin: 21, desc: "DT12 pin 8 (Ch3 Hi) \u2192 DB25 pin 21 (Ch3 Hot)" },
+      { fromPin: 9, toPin: 9, desc: "DT12 pin 9 (Ch3 Lo) \u2192 DB25 pin 9 (Ch3 Cold)" },
+      { fromPin: 7, toPin: 22, desc: "DT12 pin 7 (Ch3 Gnd) \u2192 DB25 pin 22 (Ch3 Gnd)" },
+      { fromPin: 10, toPin: 7, desc: "DT12 pin 10 (Ch4 Hi) \u2192 DB25 pin 7 (Ch4 Hot)" },
+      { fromPin: 12, toPin: 20, desc: "DT12 pin 12 (Ch4 Lo) \u2192 DB25 pin 20 (Ch4 Cold)" },
+      { fromPin: 11, toPin: 8, desc: "DT12 pin 11 (Ch4 Gnd) \u2192 DB25 pin 8 (Ch4 Gnd)" },
+      { fromPin: 14, toPin: 18, desc: "DT12 pin 14 (Ch5 Hi) \u2192 DB25 pin 18 (Ch5 Hot)" },
+      { fromPin: 15, toPin: 6, desc: "DT12 pin 15 (Ch5 Lo) \u2192 DB25 pin 6 (Ch5 Cold)" },
+      { fromPin: 13, toPin: 19, desc: "DT12 pin 13 (Ch5 Gnd) \u2192 DB25 pin 19 (Ch5 Gnd)" },
+      { fromPin: 16, toPin: 4, desc: "DT12 pin 16 (Ch6 Hi) \u2192 DB25 pin 4 (Ch6 Hot)" },
+      { fromPin: 18, toPin: 17, desc: "DT12 pin 18 (Ch6 Lo) \u2192 DB25 pin 17 (Ch6 Cold)" },
+      { fromPin: 17, toPin: 5, desc: "DT12 pin 17 (Ch6 Gnd) \u2192 DB25 pin 5 (Ch6 Gnd)" },
+      { fromPin: 19, toPin: 15, desc: "DT12 pin 19 (Ch7 Hi) \u2192 DB25 pin 15 (Ch7 Hot)" },
+      { fromPin: 21, toPin: 3, desc: "DT12 pin 21 (Ch7 Lo) \u2192 DB25 pin 3 (Ch7 Cold)" },
+      { fromPin: 20, toPin: 16, desc: "DT12 pin 20 (Ch7 Gnd) \u2192 DB25 pin 16 (Ch7 Gnd)" },
+      { fromPin: 23, toPin: 1, desc: "DT12 pin 23 (Ch8 Hi) \u2192 DB25 pin 1 (Ch8 Hot)" },
+      { fromPin: 25, toPin: 14, desc: "DT12 pin 25 (Ch8 Lo) \u2192 DB25 pin 14 (Ch8 Cold)" },
+      { fromPin: 24, toPin: 2, desc: "DT12 pin 24 (Ch8 Gnd) \u2192 DB25 pin 2 (Ch8 Gnd)" },
     ],
     deadEnds: [
-      { connector: "from", pin: 13, desc: "DT12 channels 5\u201312 unused (only 4 pairs in Cat5)" },
+      { connector: "to", pin: 13, desc: "DB25 pin 13 \u2014 No Connect (only unused pin on DB25)" },
+      { connector: "from", pin: 26, desc: "DT12 pins 26\u201337 (Channels 9\u201312) \u2014 do not fit on a single DB25; break out to a second DB25 or other connectors" },
     ],
-    notes: "Cat5 only has 4 pairs \u2014 you get 4 channels but lose grounds (shield via cable jacket). Keep runs under 300 ft for audio.",
+    notes: "AES59-2012 / Tascam DA-88 standard. DB25 carries 8 channels; DT12 carries 12 \u2014 channels 9\u201312 need a separate breakout. Yamaha DB25 is different (AES3 digital); never cross without a crossover cable.",
+    sources: [
+      { label: "TASCAM DB-25 Pinout Standard (official)", url: "https://www.tascam.eu/en/docs/DB-25_Pinout.pdf" },
+      { label: "Clark Wire DT12 Audio Multipin Pinout", url: "https://www.clarkwire.com/dt12-audio-multipin-pinout" },
+      { label: "AES59-2012 Standard", url: "https://www.aes.org/publications/standards/search.cfm?docID=92" },
+    ],
   },
-
   // TRS combos
   {
     from: "trs", to: "trs", status: "standard", title: "TRS Straight-Through Patch Cable",
@@ -449,33 +487,41 @@ const STANDARD_BUILDS = [
     })),
   },
   {
-    from: "rj45", to: "db9", status: "standard", title: "RJ45 to DB9 \u2014 Serial Console Cable",
-    use: "Cisco / Daktronics / timing console serial adapter. Common in broadcast scoring.",
+    from: "rj45", to: "db9", status: "standard", title: "RJ45 to DB9 \u2014 Cisco / Yost Console Cable",
+    use: "Cisco router/switch console access. This is the Yost RJ45 serial standard (1987), adopted by Cisco for their light-blue console cables.",
     wiring: [
-      { fromPin: 1, toPin: 8, desc: "RJ45 pin 1 to DB9 pin 8 (CTS)" },
-      { fromPin: 2, toPin: 6, desc: "RJ45 pin 2 to DB9 pin 6 (DSR)" },
-      { fromPin: 3, toPin: 2, desc: "RJ45 pin 3 to DB9 pin 2 (RxD \u2014 Receive)" },
-      { fromPin: 4, toPin: 5, desc: "RJ45 pin 4 to DB9 pin 5 (Ground)" },
-      { fromPin: 5, toPin: 5, desc: "RJ45 pin 5 to DB9 pin 5 (Ground)" },
-      { fromPin: 6, toPin: 3, desc: "RJ45 pin 6 to DB9 pin 3 (TxD \u2014 Transmit)" },
-      { fromPin: 7, toPin: 4, desc: "RJ45 pin 7 to DB9 pin 4 (DTR)" },
-      { fromPin: 8, toPin: 7, desc: "RJ45 pin 8 to DB9 pin 7 (RTS)" },
+      { fromPin: 1, toPin: 8, desc: "RJ45 pin 1 (RTS) to DB9 pin 8 (CTS)" },
+      { fromPin: 2, toPin: 6, desc: "RJ45 pin 2 (DTR) to DB9 pin 6 (DSR)" },
+      { fromPin: 3, toPin: 2, desc: "RJ45 pin 3 (TxD) to DB9 pin 2 (RxD)" },
+      { fromPin: 4, toPin: 5, desc: "RJ45 pin 4 (GND) to DB9 pin 5 (GND)" },
+      { fromPin: 5, toPin: 5, desc: "RJ45 pin 5 (GND) to DB9 pin 5 (GND)" },
+      { fromPin: 6, toPin: 3, desc: "RJ45 pin 6 (RxD) to DB9 pin 3 (TxD)" },
+      { fromPin: 7, toPin: 4, desc: "RJ45 pin 7 (DSR) to DB9 pin 4 (DTR)" },
+      { fromPin: 8, toPin: 7, desc: "RJ45 pin 8 (CTS) to DB9 pin 7 (RTS)" },
     ],
-    notes: "This is the Cisco/Yost console cable standard. Daktronics scoring consoles often use this exact pinout.",
+    notes: "Yost standard \u2014 the RJ45 rollover puts RTS/CTS, TxD/RxD, DTR/DSR on opposite-numbered pins (1\u21948, 3\u21946, 2\u21947), so the DB9 end ends up with the crossover automatically built in. For sports scoring (Daktronics All Sport, OmniSport, etc.), this is NOT the cable \u2014 those controllers expose plain PC-style DB9 RS-232 on pins 2/3/5; wire a direct DB9 straight-through or 3-wire null modem instead.",
+    sources: [
+      { label: "Cisco RJ-45 to DB-9 Console Cable Pinout", url: "https://pinoutguide.com/SerialPortsCables/Cisco_RJ-45_to_DB-9_conso_pinout.shtml" },
+      { label: "Yost Serial Device Wiring Standard", url: "https://yost.com/computers/RJ45-serial/" },
+    ],
   },
   {
-    from: "rj45", to: "db25", status: "field_hack", title: "RJ45 to DB25 \u2014 Serial Timing Adapter",
-    use: "Field hack: Cat5 to DB25 serial for older timing/scoring equipment (Tissot, Swiss Timing).",
+    from: "rj45", to: "db25", status: "field_hack", title: "RJ45 to DB25 \u2014 Minimal Serial Adapter",
+    use: "Field-built Cat5 to DB25 serial adapter for legacy RS-232 DB25 equipment. 3-wire minimal (Tx/Rx/GND).",
     wiring: [
-      { fromPin: 3, toPin: 3, desc: "RJ45 pin 3 to DB25 pin 3 (TxD)" },
-      { fromPin: 4, toPin: 7, desc: "RJ45 pin 4 to DB25 pin 7 (Ground)" },
-      { fromPin: 5, toPin: 7, desc: "RJ45 pin 5 to DB25 pin 7 (Ground)" },
-      { fromPin: 6, toPin: 2, desc: "RJ45 pin 6 to DB25 pin 2 (RxD)" },
+      { fromPin: 3, toPin: 3, desc: "RJ45 pin 3 (TxD) to DB25 pin 3 (TxD)" },
+      { fromPin: 4, toPin: 7, desc: "RJ45 pin 4 (GND) to DB25 pin 7 (GND)" },
+      { fromPin: 5, toPin: 7, desc: "RJ45 pin 5 (GND) to DB25 pin 7 (GND)" },
+      { fromPin: 6, toPin: 2, desc: "RJ45 pin 6 (RxD) to DB25 pin 2 (RxD)" },
     ],
     deadEnds: [
-      { connector: "from", pin: 1, desc: "RJ45 pins 1,2,7,8 \u2014 unused" },
+      { connector: "from", pin: 1, desc: "RJ45 pins 1, 2, 7, 8 \u2014 unused" },
     ],
-    notes: "Minimal 3-wire serial (Tx, Rx, Gnd). Add handshaking pins if your device needs them.",
+    notes: "RJ45 side uses the Yost/Cisco standard (pins 3=TxD, 4/5=GND, 6=RxD). Not a manufacturer-specific cable \u2014 Swiss Timing / Omega / Tissot venue gear uses RS-485 on proprietary connectors, NOT DB25 RS-232. Add handshaking pins if the target device requires them.",
+    sources: [
+      { label: "Yost Serial Device Wiring Standard", url: "https://yost.com/computers/RJ45-serial/" },
+      { label: "RS-232 DB25 Pinout Reference", url: "https://www.ti.com/lit/an/snla039/snla039.pdf" },
+    ],
   },
 
   {
@@ -554,58 +600,67 @@ const STANDARD_BUILDS = [
     notes: "Mic and earphone signals are unbalanced over Cat5. Keep runs under 100 ft for reliable mic level.",
   },
   {
-    from: "rj45", to: "bnc", status: "field_hack", title: "RJ45 to BNC \u2014 Cat5 to Coax",
-    use: "Field hack: receiving end of an SDI-over-Cat5 run at the BNC side.",
-    wiring: [
-      { fromPin: 1, toPin: 1, desc: "RJ45 pin 1 (Wht/Org) to BNC center \u2014 Signal" },
-      { fromPin: 2, toPin: 1, desc: "RJ45 pin 2 (Orange) to BNC center \u2014 same pair" },
-      { fromPin: 4, toPin: 2, desc: "RJ45 pin 4 (Blue) to BNC shell \u2014 Ground" },
-      { fromPin: 5, toPin: 2, desc: "RJ45 pin 5 (Wht/Blue) to BNC shell \u2014 same pair" },
+    from: "rj45", to: "bnc", status: "not_possible", title: "RJ45 to BNC \u2014 NOT a Real SDI-over-Cat5 Path",
+    use: "\u26a0\ufe0f This is NOT a working SDI-over-Cat5 cable. A raw pin-to-pin bodge between BNC and RJ45 almost never works even at short distances.",
+    wiring: [],
+    notes: "SDI is 75\u03A9 single-ended and runs at 1.5\u201312 GHz. Cat5/5e/6 is 100\u03A9 balanced. Tying RJ45 pins together to mate a single-ended signal to a balanced cable violates impedance AND defeats the twisted pair's common-mode rejection. The signal will almost never lock even at 1 m. For real SDI over Cat5, use an ACTIVE extender with a 75\u03A9/100\u03A9 balun and equalizer (MuxLab, AAS, Foresight). For long runs, use SDI-to-fiber. For IP transport, use SMPTE ST 2022-6 or ST 2110.",
+    sources: [
+      { label: "Belden \u2014 Key to Video Cable Performance", url: "https://www.belden.com/blog/key-to-video-cable-performance" },
+      { label: "SMPTE ST 2110", url: "https://www.smpte.org/standards/st2110" },
     ],
-    notes: "Mate with BNC\u2192RJ45 at the other end. Emergency field hack only \u2014 not proper SDI.",
   },
 
   // BNC combos
   {
-    from: "bnc", to: "bnc", status: "standard", title: "BNC Straight-Through \u2014 SDI / Genlock",
-    use: "SDI video, genlock/blackburst, timecode. Always use 75\u03A9 cable!",
+    from: "bnc", to: "bnc", status: "standard", title: "BNC Straight-Through \u2014 SDI / Genlock / LTC",
+    use: "SDI video, genlock/blackburst, tri-level sync, LTC timecode. Always 75\u03A9 cable with 75\u03A9 connectors.",
     wiring: [
       { fromPin: 1, toPin: 1, desc: "Center conductor to Center conductor (Signal)" },
       { fromPin: 2, toPin: 2, desc: "Shell to Shell (Shield / Ground)" },
     ],
-    notes: "SDI requires true 75\u03A9 cable (Belden 1694A or similar). Do NOT use 50\u03A9 BNC cable \u2014 it will cause signal reflections.",
+    notes: "75\u03A9 cable is mandatory. Belden 1694A (RG-6) covers SD/HD/3G-SDI \u2014 NOT 12G-rated. For 12G-SDI use Belden 4694R, 4794R, or Canare L-5.5CUHD. 50\u03A9 BNC connectors look identical to 75\u03A9 but cause reflections. Analog sync (blackburst, tri-level) runs much longer than SDI on the same cable since it's baseband, not gigahertz.",
+    sources: [
+      { label: "Belden 12G-SDI Cable Portfolio", url: "https://www.belden.com/products/cable/broadcast-cable/sdi-video-coax-cable/12g-sdi" },
+      { label: "Canare 12G-SDI Solutions", url: "https://www.canare.com/12gsdi4ksolutions" },
+    ],
   },
   {
     from: "bnc", to: "triax", status: "partial", title: "BNC to Triax \u2014 SDI on Triax Cable",
-    use: "Running SDI video over triax cable. Inner shield is unused. Wastes triax capability but works in a pinch.",
+    use: "Run SDI through broadcast triax cable when you have triax in the ground and need to pull SDI. Uses center + outer shield only; inner shield is unused.",
     wiring: [
       { fromPin: 1, toPin: 1, desc: "BNC center to Triax center (Signal)" },
       { fromPin: 2, toPin: 3, desc: "BNC shell to Triax outer shield (Ground)" },
     ],
-    deadEnds: [{ connector: "to", pin: 2, desc: "Triax inner shield \u2014 unused" }],
-    notes: "This wastes the triax inner conductor but works for SDI passthrough. Not for camera control.",
+    deadEnds: [{ connector: "to", pin: 2, desc: "Triax inner shield \u2014 unused (normally carries DC return in a camera system)" }],
+    notes: "Only works with 75\u03A9 broadcast triax (Belden 9232/1857A, Canare LV-77S, Clark Wire TV series). 50\u03A9 and 90\u03A9 instrumentation triax also exists \u2014 verify cable type before trusting SDI through it. For camera control, use proper triax-rated camera control units, not this passthrough.",
+    sources: [
+      { label: "Canford LEMO/Triax/HDTV Fibre Guide", url: "https://www.canford.co.uk/ProductResources/resources/Reference/Lemo%20and%20Fischer%20Triax%20and%20HDTV%20Fibre%20connectors%20guide%20IBC%20lr%20Connector%20Guide.pdf" },
+      { label: "Triaxial cable \u2014 Wikipedia", url: "https://en.wikipedia.org/wiki/Triaxial_cable" },
+    ],
   },
   {
-    from: "bnc", to: "rj45", status: "field_hack", title: "BNC to RJ45 \u2014 SDI over Cat5 (HDBaseT style)",
-    use: "Field hack: running a single SDI signal over a Cat5 run using a pair for signal and a pair for ground.",
-    wiring: [
-      { fromPin: 1, toPin: 1, desc: "Center (Signal) to RJ45 pin 1 (Wht/Org)" },
-      { fromPin: 1, toPin: 2, desc: "Center (Signal) to RJ45 pin 2 (Orange) \u2014 same pair" },
-      { fromPin: 2, toPin: 4, desc: "Shell (Ground) to RJ45 pin 4 (Blue)" },
-      { fromPin: 2, toPin: 5, desc: "Shell (Ground) to RJ45 pin 5 (Wht/Blue) \u2014 same pair" },
+    from: "bnc", to: "rj45", status: "not_possible", title: "BNC to RJ45 \u2014 NOT a Real SDI-over-Cat5 Path",
+    use: "\u26a0\ufe0f Do not build this. A raw pin-to-pin BNC\u2013Cat5 bodge is not a functional SDI path at any useful distance.",
+    wiring: [],
+    notes: "75\u03A9 single-ended SDI cannot be passed cleanly down 100\u03A9 twisted pair without impedance matching and equalization. Tying pairs together at both ends defeats the cable's EMI geometry. For SDI over Cat cable use a proper active extender with balun/EQ (MuxLab, AAS, Foresight); for long distance use SDI\u2013fiber; for IP transport use SMPTE ST 2022-6 or ST 2110.",
+    sources: [
+      { label: "Belden \u2014 Key to Video Cable Performance", url: "https://www.belden.com/blog/key-to-video-cable-performance" },
+      { label: "SMPTE ST 2110", url: "https://www.smpte.org/standards/st2110" },
     ],
-    notes: "This is NOT proper SDI-over-IP. It's an emergency field hack for short runs. Signal degradation likely over 100ft. Use proper SDI-to-fiber for real runs.",
   },
 
   {
-    from: "triax", to: "bnc", status: "partial", title: "Triax to BNC \u2014 Camera Cable as Coax",
-    use: "Using triax cable as a single coax run. Only center and outer shield used.",
+    from: "triax", to: "bnc", status: "partial", title: "Triax to BNC \u2014 Receive Side of Triax-as-Coax",
+    use: "Receive end when using broadcast triax cable as a coax path for SDI. Center + outer shield only.",
     wiring: [
       { fromPin: 1, toPin: 1, desc: "Center to BNC center (Signal)" },
       { fromPin: 3, toPin: 2, desc: "Outer shield to BNC shell (Ground)" },
     ],
     deadEnds: [{ connector: "from", pin: 2, desc: "Triax inner shield \u2014 unused" }],
-    notes: "Wastes triax capability. Emergency SDI passthrough only. Not for camera control.",
+    notes: "Only works with 75\u03A9 broadcast triax (Belden 9232/1857A, Canare LV-77S, Clark Wire TV series). 50\u03A9/90\u03A9 instrumentation triax exists and will not pass SDI cleanly. Not for camera control systems.",
+    sources: [
+      { label: "Canford LEMO/Triax/HDTV Fibre Guide", url: "https://www.canford.co.uk/ProductResources/resources/Reference/Lemo%20and%20Fischer%20Triax%20and%20HDTV%20Fibre%20connectors%20guide%20IBC%20lr%20Connector%20Guide.pdf" },
+    ],
   },
 
   // Triax
@@ -628,8 +683,8 @@ const STANDARD_BUILDS = [
     })),
   },
   {
-    from: "db9", to: "db9", status: "standard", title: "DB9 Null Modem (Crossover)",
-    use: "Timing/scoring: connects two DTE devices directly (two computers, computer to scoreboard controller)",
+    from: "db9", to: "db9", status: "standard", title: "DB9 Null Modem (Full Handshake)",
+    use: "Full-handshake crossover between two DTE devices (two PCs, PC to serial device). Needed when the PC requires hardware flow control or DTR/DSR lines high to open the port.",
     wiring: [
       { fromPin: 2, toPin: 3, desc: "Pin 2 (RxD) to Pin 3 (TxD) \u2014 cross Tx/Rx" },
       { fromPin: 3, toPin: 2, desc: "Pin 3 (TxD) to Pin 2 (RxD) \u2014 cross Tx/Rx" },
@@ -639,7 +694,29 @@ const STANDARD_BUILDS = [
       { fromPin: 4, toPin: 6, desc: "Pin 4 (DTR) to Pin 6 (DSR)" },
       { fromPin: 6, toPin: 4, desc: "Pin 6 (DSR) to Pin 4 (DTR)" },
     ],
-    notes: "Essential for Daktronics and DV Sport setups where two controllers talk directly.",
+    notes: "Use this when handshake lines matter (some PCs/terminal emulators won't open the port without DTR/DSR). For most sports-timing use (Daktronics, OES, Fairplay, Swiss Timing RS-232, DVSport replay ingest), the simpler 3-wire null modem is preferred \u2014 scoreboard controllers broadcast one-way, no flow control needed.",
+    sources: [
+      { label: "Null Modem \u2014 Wikipedia", url: "https://en.wikipedia.org/wiki/Null_modem" },
+      { label: "RS-232 Null Modem Wiring \u2014 Lammert Bies", url: "https://www.lammertbies.nl/comm/info/rs-232-null-modem" },
+    ],
+  },
+  {
+    from: "db9", to: "db9", status: "standard", title: "DB9 Null Modem (3-Wire, Scoreboard/Timing)",
+    use: "Minimal null modem for one-way scoreboard/timing data feeds. Daktronics (All Sport, OmniSport), OES, Fairplay, Colorado Time Systems, Swiss Timing RS-232 outputs \u2014 all broadcast one-way with no flow control. DVSport / graphics / streaming PCs ingest with this.",
+    wiring: [
+      { fromPin: 2, toPin: 3, desc: "Pin 2 (RxD) to Pin 3 (TxD) \u2014 cross Tx/Rx" },
+      { fromPin: 3, toPin: 2, desc: "Pin 3 (TxD) to Pin 2 (RxD) \u2014 cross Tx/Rx" },
+      { fromPin: 5, toPin: 5, desc: "Pin 5 (Ground) to Pin 5 (Ground)" },
+    ],
+    deadEnds: [
+      { connector: "from", pin: 4, desc: "DTR/DSR/RTS/CTS \u2014 not used (one-way data)" },
+      { connector: "to", pin: 4, desc: "DTR/DSR/RTS/CTS \u2014 not used (one-way data)" },
+    ],
+    notes: "If the PC refuses to open the port, loop DTR\u2194DSR (pins 4\u21946) and RTS\u2194CTS (pins 7\u21948) LOCALLY inside each shell to fake handshake, or use the full-handshake variant instead.",
+    sources: [
+      { label: "Daktronics Loopback Test (pins 2\u00263)", url: "https://www.daktronics.com/en-us/support/kb/DD2127080" },
+      { label: "Connect serial data from Daktronics \u2014 NewBlue", url: "https://newbluefx.zendesk.com/hc/en-us/articles/15498307081243-Connect-serial-data-from-Daktronics-All-Sport-5000" },
+    ],
   },
   {
     from: "db9", to: "db25", status: "standard", title: "DB9 to DB25 \u2014 Serial Adapter",
@@ -666,25 +743,59 @@ const STANDARD_BUILDS = [
     })),
   },
   {
-    from: "db25", to: "xlr3", status: "field_hack", title: "DB25 to XLR3 \u2014 Audio Snake Channel",
-    use: "Field hack: receiving one channel of a DB25 audio snake as a balanced XLR output.",
+    from: "db25", to: "xlr3", status: "standard", title: "DB25 to XLR3 \u2014 Tascam/AES59 Audio Breakout",
+    use: "Receiving end of a Tascam/AES59 8-channel DB25 snake as balanced XLR3 outputs. Channels run right-to-left on the DB25 \u2014 Ch1 is at the far end (pins 24/12/25).",
+    multiChannel: {
+      max: 8,
+      multiSide: "from",
+      channelLabels: [
+        "Ch1 \u2014 pins 24/12/25",
+        "Ch2 \u2014 pins 10/23/11",
+        "Ch3 \u2014 pins 21/9/22",
+        "Ch4 \u2014 pins 7/20/8",
+        "Ch5 \u2014 pins 18/6/19",
+        "Ch6 \u2014 pins 4/17/5",
+        "Ch7 \u2014 pins 15/3/16",
+        "Ch8 \u2014 pins 1/14/2",
+      ],
+      perChannel: [
+        { wiring: [{ fromPin: 24, toPin: 2, desc: "DB25 pin 24 (Ch1 Hot) to XLR Hot +" }, { fromPin: 12, toPin: 3, desc: "DB25 pin 12 (Ch1 Cold) to XLR Cold \u2212" }, { fromPin: 25, toPin: 1, desc: "DB25 pin 25 (Ch1 Gnd) to XLR Ground" }] },
+        { wiring: [{ fromPin: 10, toPin: 2, desc: "DB25 pin 10 (Ch2 Hot) to XLR Hot +" }, { fromPin: 23, toPin: 3, desc: "DB25 pin 23 (Ch2 Cold) to XLR Cold \u2212" }, { fromPin: 11, toPin: 1, desc: "DB25 pin 11 (Ch2 Gnd) to XLR Ground" }] },
+        { wiring: [{ fromPin: 21, toPin: 2, desc: "DB25 pin 21 (Ch3 Hot) to XLR Hot +" }, { fromPin: 9, toPin: 3, desc: "DB25 pin 9 (Ch3 Cold) to XLR Cold \u2212" }, { fromPin: 22, toPin: 1, desc: "DB25 pin 22 (Ch3 Gnd) to XLR Ground" }] },
+        { wiring: [{ fromPin: 7, toPin: 2, desc: "DB25 pin 7 (Ch4 Hot) to XLR Hot +" }, { fromPin: 20, toPin: 3, desc: "DB25 pin 20 (Ch4 Cold) to XLR Cold \u2212" }, { fromPin: 8, toPin: 1, desc: "DB25 pin 8 (Ch4 Gnd) to XLR Ground" }] },
+        { wiring: [{ fromPin: 18, toPin: 2, desc: "DB25 pin 18 (Ch5 Hot) to XLR Hot +" }, { fromPin: 6, toPin: 3, desc: "DB25 pin 6 (Ch5 Cold) to XLR Cold \u2212" }, { fromPin: 19, toPin: 1, desc: "DB25 pin 19 (Ch5 Gnd) to XLR Ground" }] },
+        { wiring: [{ fromPin: 4, toPin: 2, desc: "DB25 pin 4 (Ch6 Hot) to XLR Hot +" }, { fromPin: 17, toPin: 3, desc: "DB25 pin 17 (Ch6 Cold) to XLR Cold \u2212" }, { fromPin: 5, toPin: 1, desc: "DB25 pin 5 (Ch6 Gnd) to XLR Ground" }] },
+        { wiring: [{ fromPin: 15, toPin: 2, desc: "DB25 pin 15 (Ch7 Hot) to XLR Hot +" }, { fromPin: 3, toPin: 3, desc: "DB25 pin 3 (Ch7 Cold) to XLR Cold \u2212" }, { fromPin: 16, toPin: 1, desc: "DB25 pin 16 (Ch7 Gnd) to XLR Ground" }] },
+        { wiring: [{ fromPin: 1, toPin: 2, desc: "DB25 pin 1 (Ch8 Hot) to XLR Hot +" }, { fromPin: 14, toPin: 3, desc: "DB25 pin 14 (Ch8 Cold) to XLR Cold \u2212" }, { fromPin: 2, toPin: 1, desc: "DB25 pin 2 (Ch8 Gnd) to XLR Ground" }] },
+      ],
+    },
     wiring: [
-      { fromPin: 1, toPin: 1, desc: "DB25 pin 1 (Ch 1 Ground) to XLR Ground" },
-      { fromPin: 2, toPin: 2, desc: "DB25 pin 2 (Ch 1 Hot) to XLR Hot +" },
-      { fromPin: 3, toPin: 3, desc: "DB25 pin 3 (Ch 1 Cold) to XLR Cold \u2212" },
+      { fromPin: 24, toPin: 2, desc: "DB25 pin 24 (Ch1 Hot) to XLR Hot +" },
+      { fromPin: 12, toPin: 3, desc: "DB25 pin 12 (Ch1 Cold) to XLR Cold \u2212" },
+      { fromPin: 25, toPin: 1, desc: "DB25 pin 25 (Ch1 Gnd) to XLR Ground" },
     ],
-    notes: "This is Channel 1 on a Tascam-standard DB25 pinout. For other channels, shift by 3 pins per channel. Always verify your snake\u2019s pinout.",
+    deadEnds: [{ connector: "from", pin: 13, desc: "DB25 pin 13 \u2014 No Connect (only unused pin)" }],
+    notes: "AES59-2012 / Tascam DA-88 standard. Yamaha DB25 (AES3 digital) is NOT compatible \u2014 verify which standard the snake follows. Pair with XLR3\u2192DB25 at the source.",
+    sources: [
+      { label: "TASCAM DB-25 Pinout Standard (official)", url: "https://www.tascam.eu/en/docs/DB-25_Pinout.pdf" },
+      { label: "Aviom DB25 Pinout Information", url: "https://www.aviom.com/library/Technical-Resources/75_DB25-Pinout-Information.pdf" },
+      { label: "AES59-2012 Standard", url: "https://www.aes.org/publications/standards/search.cfm?docID=92" },
+    ],
   },
 
   // XLR4 combos
   {
     from: "xlr4", to: "xlr4", status: "standard", title: "XLR4 Headset Extension",
-    use: "Extending a 4-pin intercom headset cable",
+    use: "Extending a 4-pin intercom headset cable (Clear-Com, RTS, Telex)",
     wiring: [
       { fromPin: 1, toPin: 1, desc: "Mic Ground to Mic Ground" },
       { fromPin: 2, toPin: 2, desc: "Mic Signal to Mic Signal" },
       { fromPin: 3, toPin: 3, desc: "Earphone Return to Earphone Return" },
       { fromPin: 4, toPin: 4, desc: "Earphone Signal to Earphone Signal" },
+    ],
+    sources: [
+      { label: "Clear-Com V-Series Headset Connectors", url: "https://www.clearcom.com/DownloadCenter/manuals/V-Series_Iris_Online_Manual/Content/Common%20Topics/Headset%20connectors.htm" },
+      { label: "RTS BP-325 User Manual", url: "https://products.rtsintercoms.com/binary/F01U382482.pdf" },
     ],
   },
   {
@@ -724,6 +835,10 @@ const STANDARD_BUILDS = [
     ],
     deadEnds: [{ connector: "to", pin: 5, desc: "XLR5 pin 5 (Right Earphone) \u2014 XLR4 is mono, right channel not present" }],
     notes: "XLR4 headsets are mono \u2014 right earphone not present. Both mic and earphone pass through correctly.",
+    sources: [
+      { label: "Clear-Com V-Series Headset Connectors", url: "https://www.clearcom.com/DownloadCenter/manuals/V-Series_Iris_Online_Manual/Content/Common%20Topics/Headset%20connectors.htm" },
+      { label: "RTS BP-325 User Manual", url: "https://products.rtsintercoms.com/binary/F01U382482.pdf" },
+    ],
   },
   {
     from: "xlr4", to: "xlr3", status: "partial", title: "XLR4 to XLR3 \u2014 Headset Mic to Balanced Output",
@@ -752,8 +867,8 @@ const STANDARD_BUILDS = [
     ],
   },
   {
-    from: "speakon", to: "xlr3", status: "field_hack", title: "Speakon NL4 to XLR3 \u2014 Speaker Adapter",
-    use: "Field hack: driving a powered monitor from a Speakon output. NL4 Ch1 only, or break out both Ch1 and Ch2 to separate XLR3 connectors.",
+    from: "speakon", to: "xlr3", status: "standard", title: "Speakon NL4 to XLR3 \u2014 Passive Speaker Adapter",
+    use: "Passive speaker cable adapter \u2014 amp Speakon output to a passive speaker with XLR3 input (older PA cabinets). NOT for driving a powered monitor's line input.",
     multiChannel: {
       max: 2,
       multiSide: "to",
@@ -761,32 +876,36 @@ const STANDARD_BUILDS = [
       perChannel: [
         {
           wiring: [
-            { fromPin: 1, toPin: 2, desc: "NL4 1+ to XLR3 pin 2 (Hot +)" },
-            { fromPin: 2, toPin: 3, desc: "NL4 1\u2212 to XLR3 pin 3 (Cold \u2212)" },
+            { fromPin: 1, toPin: 2, desc: "NL4 1+ to XLR3 pin 2 (+ Hot)" },
+            { fromPin: 2, toPin: 1, desc: "NL4 1\u2212 to XLR3 pin 1 (Speaker Return)" },
           ],
         },
         {
           wiring: [
-            { fromPin: 3, toPin: 2, desc: "NL4 2+ to XLR3 pin 2 (Hot +)" },
-            { fromPin: 4, toPin: 3, desc: "NL4 2\u2212 to XLR3 pin 3 (Cold \u2212)" },
+            { fromPin: 3, toPin: 2, desc: "NL4 2+ to XLR3 pin 2 (+ Hot)" },
+            { fromPin: 4, toPin: 1, desc: "NL4 2\u2212 to XLR3 pin 1 (Speaker Return)" },
           ],
         },
       ],
     },
     wiring: [
-      { fromPin: 1, toPin: 2, desc: "1+ to Hot (+) \u2014 Signal" },
-      { fromPin: 2, toPin: 3, desc: "1\u2212 to Cold (\u2212) \u2014 Return" },
+      { fromPin: 1, toPin: 2, desc: "NL4 1+ to XLR3 pin 2 (+ Hot)" },
+      { fromPin: 2, toPin: 1, desc: "NL4 1\u2212 to XLR3 pin 1 (Speaker Return)" },
     ],
     deadEnds: [
       { connector: "from", pin: 3, desc: "NL4 2+ \u2014 unused (add 2nd XLR3 for Ch2)" },
       { connector: "from", pin: 4, desc: "NL4 2\u2212 \u2014 unused (add 2nd XLR3 for Ch2)" },
-      { connector: "to", pin: 1, desc: "XLR pin 1 (Ground) \u2014 unused, leave open" },
+      { connector: "to", pin: 3, desc: "XLR3 pin 3 \u2014 No Connect (speaker signal is 2-wire, no cold/return)" },
     ],
-    notes: "Only for powered monitors! Do NOT send amplified speaker signal into an XLR mic input \u2014 you will destroy it.",
+    notes: "\u26a0\ufe0f PASSIVE SPEAKER USE ONLY. Speaker-level signal is tens of volts at high current \u2014 NEVER plug this into a mic input, line input, or powered speaker's input jack. Will destroy the input stage. This follows Neutrik's factory NA4FC-M / NA4FX-F adapter wiring: XLR pin 1 carries speaker return (1\u2212), pin 3 is NC.",
+    sources: [
+      { label: "Neutrik Speakon Wiring Suggestion (official)", url: "https://www.neutrik.com/media/8027/download/speakon-wiring-suggestion.pdf" },
+      { label: "Neutrik NA4FC-M (factory adapter)", url: "https://www.markertek.com/product/na4fc-m/neutrik-na4fc-m-speakon-to-3-pin-xlr-male-adapter" },
+    ],
   },
   {
-    from: "speakon", to: "trs", status: "field_hack", title: "Speakon NL4 to TRS \u2014 Powered Monitor",
-    use: "Connecting a Speakon output to a powered monitor with 1/4\" TRS input. One or two monitors from a single NL4 run.",
+    from: "speakon", to: "trs", status: "field_hack", title: "Speakon NL4 to 1/4\" TS \u2014 Passive Speaker Only",
+    use: "Passive speaker cable adapter \u2014 amp Speakon output to a passive speaker with 1/4\" jack input (older PA cabinets and guitar-style speakers). NOT for powered monitors.",
     multiChannel: {
       max: 2,
       multiSide: "to",
@@ -794,28 +913,32 @@ const STANDARD_BUILDS = [
       perChannel: [
         {
           wiring: [
-            { fromPin: 1, toPin: 1, desc: "NL4 1+ to Tip \u2014 Signal +" },
-            { fromPin: 2, toPin: 3, desc: "NL4 1\u2212 to Sleeve \u2014 Return" },
+            { fromPin: 1, toPin: 1, desc: "NL4 1+ to Tip \u2014 Speaker +" },
+            { fromPin: 2, toPin: 3, desc: "NL4 1\u2212 to Sleeve \u2014 Speaker Return" },
           ],
         },
         {
           wiring: [
-            { fromPin: 3, toPin: 1, desc: "NL4 2+ to Tip \u2014 Signal +" },
-            { fromPin: 4, toPin: 3, desc: "NL4 2\u2212 to Sleeve \u2014 Return" },
+            { fromPin: 3, toPin: 1, desc: "NL4 2+ to Tip \u2014 Speaker +" },
+            { fromPin: 4, toPin: 3, desc: "NL4 2\u2212 to Sleeve \u2014 Speaker Return" },
           ],
         },
       ],
     },
     wiring: [
-      { fromPin: 1, toPin: 1, desc: "1+ to Tip \u2014 Signal +" },
-      { fromPin: 2, toPin: 3, desc: "1\u2212 to Sleeve \u2014 Return" },
+      { fromPin: 1, toPin: 1, desc: "NL4 1+ to Tip \u2014 Speaker +" },
+      { fromPin: 2, toPin: 3, desc: "NL4 1\u2212 to Sleeve \u2014 Speaker Return" },
     ],
     deadEnds: [
-      { connector: "from", pin: 3, desc: "NL4 2+ \u2014 unused (add 2nd TRS for Ch2 monitor)" },
-      { connector: "from", pin: 4, desc: "NL4 2\u2212 \u2014 unused (add 2nd TRS for Ch2 monitor)" },
-      { connector: "to", pin: 2, desc: "TRS Ring \u2014 unused, leave open" },
+      { connector: "from", pin: 3, desc: "NL4 2+ \u2014 unused (add 2nd cable for Ch2)" },
+      { connector: "from", pin: 4, desc: "NL4 2\u2212 \u2014 unused" },
+      { connector: "to", pin: 2, desc: "TRS Ring \u2014 use a TS (mono) jack; if TRS is all you have, leave Ring floating" },
     ],
-    notes: "Line-level only. Do not send amplified speaker signal to a TRS input.",
+    notes: "\u26a0\ufe0f DANGER \u2014 PASSIVE SPEAKER USE ONLY. Never plug this into a powered speaker's TRS line input \u2014 the speaker-level signal (tens of volts, amperes) will destroy the monitor's differential receiver, can damage Class-D amp output stages if pins short during mating, and presents a shock hazard on exposed barrels during partial insertion. Commercial equivalents (Hosa NA4LJX etc.) are all sold for passive-speaker use only. For powered speakers, use a line-level XLR or TRS cable from the mixer output instead.",
+    sources: [
+      { label: "Neutrik Speakon Wiring Suggestion", url: "https://www.neutrik.com/media/8027/download/speakon-wiring-suggestion.pdf" },
+      { label: "Hosa NA4LJX Speakon-to-1/4\" Adapter", url: "https://hosatech.com/product/na4ljx/" },
+    ],
   },
 
   // ─── TS BUILDS ──────────────────────────────────────────────────────────────
@@ -838,14 +961,17 @@ const STANDARD_BUILDS = [
     notes: "For proper unbalanced operation, jumper XLR pin 3 to pin 1 at the XLR end.",
   },
   {
-    from: "ts", to: "rj45", status: "field_hack", title: "TS to RJ45 \u2014 Unbalanced Audio over Cat5",
-    use: "Single unbalanced audio channel over Cat5",
+    from: "ts", to: "rj45", status: "standard", title: "TS to RJ45 \u2014 Unbalanced Audio over Cat5 (StudioHub+)",
+    use: "Single unbalanced audio channel over Cat5, using the StudioHub+ ADAPT-RCA/TS pair convention. Signal and ground share a twisted pair to preserve EMI rejection.",
     wiring: [
       { fromPin: 1, toPin: 1, desc: "Tip (Signal) to RJ45 pin 1 (Wht/Org)" },
-      { fromPin: 2, toPin: 4, desc: "Sleeve (Ground) to RJ45 pin 4 (Blue)" },
+      { fromPin: 2, toPin: 2, desc: "Sleeve (Ground) to RJ45 pin 2 (Orange)" },
     ],
-    deadEnds: [{ connector: "to", pin: 2, desc: "RJ45 pins 2,3,5,6,7,8 \u2014 unused" }],
-    notes: "Unbalanced signal on Cat5 \u2014 keep runs short. Susceptible to interference.",
+    deadEnds: [{ connector: "to", pin: 3, desc: "RJ45 pins 3\u20138 \u2014 unused (pins 7/8 reserved for DC on powered StudioHub+ panels)" }],
+    notes: "StudioHub+ layout: signal on pin 1, ground on pin 2 (same twisted pair) preserves common-mode rejection even though the signal itself is unbalanced. Putting ground on pin 4 (different pair) breaks the twist and picks up more noise.",
+    sources: [
+      { label: "StudioHub+ Adapter Pinout Guide (official)", url: "https://studiohub.com/wp-content/uploads/2019/10/AAPinoutandAdapterGuide.pdf" },
+    ],
   },
   {
     from: "ts", to: "mini_trs", status: "standard", title: "TS to 3.5mm \u2014 1/4\" Mono to Headphone",
@@ -854,8 +980,11 @@ const STANDARD_BUILDS = [
       { fromPin: 1, toPin: 1, desc: "Tip to Tip \u2014 Signal" },
       { fromPin: 2, toPin: 3, desc: "Sleeve to Sleeve \u2014 Ground" },
     ],
-    deadEnds: [{ connector: "to", pin: 2, desc: "3.5mm Ring \u2014 mono signal, Ring floats or ties to Tip" }],
-    notes: "Mono-to-stereo: Ring is undriven. Some devices sum Tip and Ring \u2014 tie Ring to Tip if you need both ears.",
+    deadEnds: [{ connector: "to", pin: 2, desc: "3.5mm Ring \u2014 leave floating (do not tie to Tip)" }],
+    notes: "\u26a0\ufe0f Leave Ring floating. Only the Left channel will play into a stereo source \u2014 this is safe. Do NOT hard-tie Ring to Tip \u2014 if this adapter is ever plugged into a stereo source, it shorts the right-channel amplifier output to the left output, which can damage op-amp stages. For dual-ear playback from a true mono source, use a proper Y-split with series summing resistors (Rolls SUM, Hosa stereo breakout).",
+    sources: [
+      { label: "Rane Note 110 — Sound System Interconnection", url: "https://www.ranecommercial.com/legacy/note110.html" },
+    ],
   },
 
   // ─── 3.5mm TRS BUILDS ──────────────────────────────────────────────────────
@@ -908,36 +1037,19 @@ const STANDARD_BUILDS = [
     notes: "Listen-only. Tie Sleeve to both XLR4 pins 1 and 3. No talkback \u2014 for 2-way use a TRRS headset.",
   },
   {
-    from: "mini_trs", to: "rj45", status: "field_hack", title: "3.5mm TRS to RJ45 \u2014 Stereo Audio over Cat5",
-    use: "Field hack: run one or two 3.5mm stereo feeds (IFB, aux, talkback return) over a single Cat5 run.",
-    multiChannel: {
-      max: 2,
-      multiSide: "from",
-      channelLabels: ["Feed A \u2014 Tip/Ring to Pins 1/3", "Feed B \u2014 Tip/Ring to Pins 2/6"],
-      perChannel: [
-        {
-          wiring: [
-            { fromPin: 1, toPin: 1, desc: "Tip (Left) to RJ45 pin 1 (Wht/Org)" },
-            { fromPin: 2, toPin: 3, desc: "Ring (Right) to RJ45 pin 3 (Wht/Grn)" },
-            { fromPin: 3, toPin: 4, desc: "Sleeve (Ground) to RJ45 pin 4 (Blue)" },
-          ],
-        },
-        {
-          wiring: [
-            { fromPin: 1, toPin: 2, desc: "Tip (Left) to RJ45 pin 2 (Orange)" },
-            { fromPin: 2, toPin: 6, desc: "Ring (Right) to RJ45 pin 6 (Green)" },
-            { fromPin: 3, toPin: 5, desc: "Sleeve (Ground) to RJ45 pin 5 (Wht/Blue)" },
-          ],
-        },
-      ],
-    },
+    from: "mini_trs", to: "rj45", status: "standard", title: "3.5mm TRS to RJ45 \u2014 Stereo Audio over Cat5 (StudioHub+)",
+    use: "Stereo 3.5mm feed (IFB, aux, talkback return) over Cat5, using the StudioHub+ ADAPT-MINIUNBAL layout. One stereo feed per Cat5.",
     wiring: [
-      { fromPin: 1, toPin: 1, desc: "Tip (Left) to RJ45 pin 1 (Wht/Org)" },
-      { fromPin: 2, toPin: 3, desc: "Ring (Right) to RJ45 pin 3 (Wht/Grn)" },
-      { fromPin: 3, toPin: 4, desc: "Sleeve (Ground) to RJ45 pin 4 (Blue)" },
+      { fromPin: 1, toPin: 1, desc: "Tip (Left Audio) to RJ45 pin 1 (Wht/Org)" },
+      { fromPin: 2, toPin: 3, desc: "Ring (Right Audio) to RJ45 pin 3 (Wht/Grn)" },
+      { fromPin: 3, toPin: 2, desc: "Sleeve (Ground) to RJ45 pin 2 (Orange)" },
+      { fromPin: 3, toPin: 6, desc: "Sleeve (Ground) to RJ45 pin 6 (Green)" },
     ],
-    deadEnds: [{ connector: "to", pin: 2, desc: "RJ45 pins 2,5,6 \u2014 unused (add 2nd 3.5mm for Feed B)" }],
-    notes: "Unbalanced on Cat5 \u2014 keep runs under 50ft. Two feeds share one ground path each; pins 7\u20138 remain spare.",
+    deadEnds: [{ connector: "to", pin: 4, desc: "RJ45 pins 4, 5, 7, 8 \u2014 unused (reserved for DC power in active StudioHub+ panels)" }],
+    notes: "StudioHub+ ADAPT-MINIUNBAL convention: left on pair 1/2, right on pair 3/6, ground shared on pins 2 and 6 to keep signal+return on the same twisted pair. Pins 7/8 carry \u00b115V DC on powered StudioHub+ panels \u2014 do not short to audio ground.",
+    sources: [
+      { label: "StudioHub+ Adapter Pinout Guide (official)", url: "https://studiohub.com/wp-content/uploads/2019/10/AAPinoutandAdapterGuide.pdf" },
+    ],
   },
   {
     from: "mini_trs", to: "ts", status: "standard", title: "3.5mm to TS \u2014 Headphone to 1/4\" Mono",
@@ -953,51 +1065,70 @@ const STANDARD_BUILDS = [
   // ─── 3.5mm TRRS BUILDS ─────────────────────────────────────────────────────
   {
     from: "mini_trrs", to: "mini_trrs", status: "standard", title: "3.5mm TRRS Straight-Through",
-    use: "Headset extension cable with mic",
+    use: "Headset extension cable with mic (CTIA: Apple/Android)",
     wiring: [
-      { fromPin: 1, toPin: 1, desc: "Tip to Tip \u2014 Left / Earpiece +" },
-      { fromPin: 2, toPin: 2, desc: "Ring 1 to Ring 1 \u2014 Right / Earpiece \u2212" },
-      { fromPin: 3, toPin: 3, desc: "Ring 2 to Ring 2 \u2014 Microphone" },
-      { fromPin: 4, toPin: 4, desc: "Sleeve to Sleeve \u2014 Ground" },
+      { fromPin: 1, toPin: 1, desc: "Tip to Tip \u2014 Left Audio" },
+      { fromPin: 2, toPin: 2, desc: "Ring 1 to Ring 1 \u2014 Right Audio" },
+      { fromPin: 3, toPin: 3, desc: "Ring 2 to Ring 2 \u2014 Ground (CTIA)" },
+      { fromPin: 4, toPin: 4, desc: "Sleeve to Sleeve \u2014 Microphone (CTIA)" },
+    ],
+    notes: "Standard CTIA headset extension. Works with both CTIA and OMTP wiring since all 4 conductors pass straight through \u2014 the host device determines which pinout is active.",
+    sources: [
+      { label: "Android AOSP 3.5mm Headset Jack Spec", url: "https://source.android.com/docs/core/interaction/accessories/headset/plug-headset-spec" },
     ],
   },
   {
     from: "mini_trrs", to: "xlr5", status: "standard", title: "3.5mm TRRS to XLR5 \u2014 Intercom 2-Way",
-    use: "Connect a consumer TRRS headset to a Clear-Com beltpack for full 2-way intercom (listen + talk).",
+    use: "Connect a CTIA TRRS headset (iPhone, modern Android) to a Clear-Com or RTS beltpack for full 2-way intercom (listen + talk).",
     wiring: [
-      { fromPin: 1, toPin: 4, desc: "Tip (earpiece +) to XLR5 pin 4 (Earpiece +)" },
-      { fromPin: 2, toPin: 5, desc: "Ring 1 (earpiece \u2212) to XLR5 pin 5 (Earpiece \u2212)" },
-      { fromPin: 3, toPin: 2, desc: "Ring 2 (mic) to XLR5 pin 2 (Mic +)" },
-      { fromPin: 4, toPin: 1, desc: "Sleeve (ground) to XLR5 pin 1 (Ground)" },
+      { fromPin: 1, toPin: 4, desc: "Tip (Left Audio) to XLR5 pin 4 (Left Earphone +)" },
+      { fromPin: 2, toPin: 5, desc: "Ring 1 (Right Audio) to XLR5 pin 5 (Right Earphone +)" },
+      { fromPin: 4, toPin: 2, desc: "Sleeve (Mic CTIA) to XLR5 pin 2 (Mic Signal)" },
+      { fromPin: 3, toPin: 1, desc: "Ring 2 (Ground CTIA) to XLR5 pin 1 (Ground)" },
+      { fromPin: 3, toPin: 3, desc: "Ring 2 (Ground CTIA) to XLR5 pin 3 (Earphone Return)" },
     ],
-    deadEnds: [
-      { connector: "to", pin: 3, desc: "Pin 3 (Earphone Return/Ground) \u2014 already ground, tie to pin 1 if needed" },
+    notes: "CTIA (Apple/Android) wiring: mic is on Sleeve, audio ground is on Ring 2. Tie Ring 2 to BOTH XLR5 pin 1 (ground) and pin 3 (earphone return). Beltpack has female XLR5, so cable needs male XLR5. If mic and earphone are swapped when tested, the headset uses OMTP \u2014 reverse Ring 2 and Sleeve.",
+    sources: [
+      { label: "Android AOSP 3.5mm Headset Jack Spec (LRGM)", url: "https://source.android.com/docs/core/interaction/accessories/headset/plug-headset-spec" },
+      { label: "Clear-Com V-Series Headset Connectors", url: "https://www.clearcom.com/DownloadCenter/manuals/V-Series_Iris_Online_Manual/Content/Common%20Topics/Headset%20connectors.htm" },
     ],
-    notes: "CTIA standard headset (Apple/Android). Mic is unbalanced \u2014 matches XLR5 intercom standard. Beltpack has female XLR5, so cable needs male XLR5. If mic and earphone are swapped, headset uses OMTP wiring.",
   },
 
   {
     from: "mini_trrs", to: "xlr4", status: "standard", title: "3.5mm TRRS to XLR4 \u2014 CTIA Headset to Intercom",
-    use: "Connect a CTIA TRRS headset (phone/consumer) to a broadcast XLR4 intercom beltpack. Full 2-way \u2014 both earphone and mic work.",
+    use: "Connect a CTIA TRRS headset (iPhone, modern Android) to a broadcast XLR4 intercom beltpack. Full 2-way \u2014 both earphone and mic work.",
     wiring: [
-      { fromPin: 4, toPin: 1, desc: "Sleeve to Mic Ground (pin 1)" },
-      { fromPin: 3, toPin: 2, desc: "Ring 2 (Mic) to Mic Signal (pin 2)" },
-      { fromPin: 2, toPin: 3, desc: "Ring 1 (Right / Earphone Return) to Earphone Return (pin 3)" },
-      { fromPin: 1, toPin: 4, desc: "Tip (Left / Earphone +) to Earphone Signal (pin 4)" },
+      { fromPin: 4, toPin: 2, desc: "Sleeve (Mic CTIA) to Mic Signal (pin 2)" },
+      { fromPin: 3, toPin: 1, desc: "Ring 2 (Ground CTIA) to Mic Ground (pin 1)" },
+      { fromPin: 3, toPin: 3, desc: "Ring 2 (Ground CTIA) to Earphone Return (pin 3)" },
+      { fromPin: 1, toPin: 4, desc: "Tip (Left Audio) to Earphone Signal (pin 4)" },
     ],
-    notes: "CTIA standard headset (Apple/Android). Mic is unbalanced \u2014 matches XLR4 intercom standard. If mic and earphone signals are swapped, your headset uses OMTP wiring instead of CTIA.",
+    deadEnds: [
+      { connector: "from", pin: 2, desc: "Ring 1 (Right Audio) \u2014 XLR4 earphone is mono, right channel dropped" },
+    ],
+    notes: "CTIA (Apple/Android) wiring: mic is on Sleeve, audio ground is on Ring 2. Tie Ring 2 to BOTH XLR4 pin 1 (mic ground) and pin 3 (earphone return). If mic and earphone are swapped when tested, the headset uses OMTP wiring \u2014 reverse Ring 2 and Sleeve.",
+    sources: [
+      { label: "Android AOSP 3.5mm Headset Jack Spec (LRGM)", url: "https://source.android.com/docs/core/interaction/accessories/headset/plug-headset-spec" },
+      { label: "Clear-Com V-Series Headset Connectors", url: "https://www.clearcom.com/DownloadCenter/manuals/V-Series_Iris_Online_Manual/Content/Common%20Topics/Headset%20connectors.htm" },
+    ],
   },
   {
-    from: "mini_trrs", to: "rj45", status: "field_hack", title: "3.5mm TRRS to RJ45 \u2014 Headset over Cat5",
-    use: "Field hack: run a TRRS headset (audio + mic) over Cat5. Useful for comms or IFB with talkback.",
+    from: "mini_trrs", to: "rj45", status: "field_hack", title: "3.5mm TRRS to RJ45 \u2014 Headset over Cat5 (non-standard)",
+    use: "Run a CTIA TRRS headset (audio + mic) over Cat5. \u26a0\ufe0f No formal published standard \u2014 every manufacturer does this differently. OHIS (Open Headset Interconnect Standard) is the closest published best-practice reference.",
     wiring: [
-      { fromPin: 1, toPin: 1, desc: "Tip (Left +) to RJ45 pin 1 (Wht/Org)" },
-      { fromPin: 2, toPin: 3, desc: "Ring 1 (Right +) to RJ45 pin 3 (Wht/Grn)" },
-      { fromPin: 3, toPin: 7, desc: "Ring 2 (Mic) to RJ45 pin 7 (Wht/Brn)" },
-      { fromPin: 4, toPin: 4, desc: "Sleeve (Ground) to RJ45 pin 4 (Blue)" },
+      { fromPin: 1, toPin: 1, desc: "Tip (Left Audio) to RJ45 pin 1 (Wht/Org)" },
+      { fromPin: 3, toPin: 2, desc: "Ring 2 (Audio Ground CTIA) to RJ45 pin 2 (Orange) \u2014 same twisted pair as Tip" },
+      { fromPin: 2, toPin: 3, desc: "Ring 1 (Right Audio) to RJ45 pin 3 (Wht/Grn)" },
+      { fromPin: 3, toPin: 6, desc: "Ring 2 (Audio Ground CTIA) to RJ45 pin 6 (Green) \u2014 same twisted pair as Ring 1" },
+      { fromPin: 4, toPin: 7, desc: "Sleeve (Mic CTIA) to RJ45 pin 7 (Wht/Brn)" },
+      { fromPin: 3, toPin: 8, desc: "Ring 2 (Audio Ground CTIA) to RJ45 pin 8 (Brown) \u2014 mic return on same pair" },
     ],
-    deadEnds: [{ connector: "to", pin: 2, desc: "RJ45 pins 2,5,6,8 \u2014 unused" }],
-    notes: "Unbalanced on Cat5. Keep runs under 50ft. Pair with the same wiring at the far end.",
+    deadEnds: [{ connector: "to", pin: 4, desc: "RJ45 pins 4, 5 \u2014 unused" }],
+    notes: "Non-standard \u2014 document your pinout on the cable itself. This layout pairs each signal with its ground on a twisted pair (per OHIS best practice): L+Gnd on pair 1/2, R+Gnd on pair 3/6, Mic+Gnd on pair 7/8. Keep runs under 50 ft. Pair with identical wiring at the far end.",
+    sources: [
+      { label: "Android AOSP 3.5mm Headset Jack Spec", url: "https://source.android.com/docs/core/interaction/accessories/headset/plug-headset-spec" },
+      { label: "OHIS \u2014 Open Headset Interconnect Standard", url: "https://www.ohis.org/" },
+    ],
   },
 
   // ─── RCA BUILDS ─────────────────────────────────────────────────────────────
