@@ -30,29 +30,69 @@ function getPinColors(connKey) {
 export default function PinoutsTab({ onNavigateToBuild }) {
   const [selected, setSelected] = useState(null);
   const [side, setSide] = useState("face");
+  const [variantId, setVariantId] = useState(null);
   const connKeys = Object.keys(CONNECTORS);
 
   if (selected) {
-    const conn = CONNECTORS[selected];
+    const baseConn = CONNECTORS[selected];
     const { highlights, pinColors } = getPinColors(selected);
+    const variants = baseConn.variants || null;
+    const activeVariant = variants
+      ? (variants.find(v => v.id === variantId) || variants.find(v => v.default) || variants[0])
+      : null;
+    // When a variant is active, swap pins/sources in the displayed conn.
+    const conn = activeVariant
+      ? { ...baseConn, pins: activeVariant.pins, sources: activeVariant.sources }
+      : baseConn;
 
     return (
       <div>
-        <button onClick={() => setSelected(null)} style={styles.backBtn}>&larr; All Connectors</button>
+        <button onClick={() => { setSelected(null); setVariantId(null); }} style={styles.backBtn}>&larr; All Connectors</button>
         <h2 style={{ color: T.text, fontSize: 18, margin: "12px 0 4px", fontFamily: "'JetBrains Mono', monospace" }}>{conn.name}</h2>
 
-        {conn.type !== "coax" && conn.type !== "dt12" && (
-          <div style={{ display: "flex", gap: 4, marginBottom: 12 }}>
-            {["face", "solder"].map((s) => (
-              <button key={s} onClick={() => setSide(s)} style={{
-                ...styles.toggleBtn,
-                background: side === s ? T.accent : T.surface2,
-                color: side === s ? "#fff" : T.textDim,
-              }}>
-                {s === "face" ? "Face View" : "Solder Side"}
-              </button>
-            ))}
+        {variants && (
+          <div style={{ marginBottom: 12 }}>
+            <div style={{ fontSize: 10, color: T.accent2, fontWeight: 700, fontFamily: "monospace", marginBottom: 4, letterSpacing: 1 }}>PINOUT VARIANT</div>
+            <div style={{ display: "flex", gap: 4, flexWrap: "wrap" }}>
+              {variants.map((v) => (
+                <button key={v.id} onClick={() => setVariantId(v.id)} style={{
+                  ...styles.toggleBtn,
+                  background: v.id === activeVariant.id ? T.accent : T.surface2,
+                  color: v.id === activeVariant.id ? "#fff" : T.textDim,
+                }}>
+                  {v.name}
+                </button>
+              ))}
+            </div>
+            {activeVariant.description && (
+              <div style={{ fontSize: 10, color: T.textDim, fontFamily: "'Segoe UI', system-ui, sans-serif", marginTop: 6, fontStyle: "italic", lineHeight: 1.4 }}>
+                {activeVariant.description}
+              </div>
+            )}
           </div>
+        )}
+
+        {conn.faceGender && (
+          <>
+            <div style={{ display: "flex", gap: 4, marginBottom: 4 }}>
+              {["face", "solder"].map((s) => {
+                const isFaceSide = s === "face";
+                const gender = isFaceSide === (conn.faceGender === "female") ? "Female" : "Male";
+                return (
+                  <button key={s} onClick={() => setSide(s)} style={{
+                    ...styles.toggleBtn,
+                    background: side === s ? T.accent : T.surface2,
+                    color: side === s ? "#fff" : T.textDim,
+                  }}>
+                    {`${gender} (Face)`}
+                  </button>
+                );
+              })}
+            </div>
+            <div style={{ fontSize: 10, color: T.textDim, fontFamily: "monospace", marginBottom: 12, fontStyle: "italic" }}>
+              Solder side of one gender = face of the other (mirrored).
+            </div>
+          </>
         )}
 
         <div style={{ display: "flex", justifyContent: "center", padding: "16px 0" }}>

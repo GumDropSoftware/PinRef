@@ -11,7 +11,7 @@ Built by people who have been burned by a wrong XLR wiring diagram at 2am during
 
 ## What's in it
 
-**PINOUTS** — Every connector you'll touch in broadcast: XLR3, XLR5, XLR4, TRS, TS, NL4, 3.5mm, TRRS, RCA, RJ45, RJ12, DB9, DB25, BNC, Triax, DT12, PowerCON. Tap one, see the pinout.
+**PINOUTS** — Every connector you'll touch in broadcast: XLR3, XLR5, XLR4, TRS, TS, NL4, 3.5mm, TRRS, RCA, RJ45, RJ12, DE-9, DB25, BNC, Triax, DT12, PowerCON. Tap one, see the pinout.
 
 **BUILDS** — Pre-built wiring diagrams for real-world cable runs. Wire colors match the actual cable you're holding. Solder side and face view. Continuity test checklist included.
 

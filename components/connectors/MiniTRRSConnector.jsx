@@ -3,7 +3,7 @@ import { T } from "@/lib/theme";
 export default function MiniTRRSConnector({ conn, side = "face", highlightPins = [], pinColors = {}, size = 140, label, viewLabel }) {
   const w = 140;
   const h = 60;
-  const sideText = viewLabel || (side === "solder" ? "SOLDER SIDE" : "SIDE VIEW");
+  const sideText = viewLabel;
 
   const getColor = (pinId) => {
     const pc = pinColors[pinId];
@@ -45,7 +45,7 @@ export default function MiniTRRSConnector({ conn, side = "face", highlightPins =
         <line x1={97} y1={20} x2={97} y2={38} stroke={T.bg} strokeWidth={2} />
         {/* Size label */}
         <text x={8} y={50} fill={T.textDim} fontSize={6} fontFamily="monospace">3.5mm</text>
-        <text x={70} y={53} textAnchor="middle" fill={T.textDim} fontSize={7} fontFamily="monospace">{sideText}</text>
+        {sideText && <text x={70} y={53} textAnchor="middle" fill={T.textDim} fontSize={7} fontFamily="monospace">{sideText}</text>}
       </svg>
       <div style={{ fontSize: 11, color: T.text, fontWeight: 600, marginTop: 2 }}>{conn.name}</div>
     </div>

@@ -9,7 +9,7 @@ export default function CircularConnector({ conn, side = "face", highlightPins =
   const isSolder = side === "solder";
   const positions = isSolder ? mirrorX(conn.facePositions) : conn.facePositions;
   const pinSize = conn.pins.length > 8 ? 7 : conn.pins.length > 4 ? 9 : 11;
-  const sideText = viewLabel || (isSolder ? "SOLDER SIDE" : "FACE VIEW");
+  const sideText = viewLabel;
 
   return (
     <div style={{ textAlign: "center" }}>
@@ -31,9 +31,11 @@ export default function CircularConnector({ conn, side = "face", highlightPins =
             />
           );
         })}
-        <text x={50} y={96} textAnchor="middle" fill={T.textDim} fontSize={7} fontFamily="monospace">
-          {sideText}
-        </text>
+        {sideText && (
+          <text x={50} y={96} textAnchor="middle" fill={T.textDim} fontSize={7} fontFamily="monospace">
+            {sideText}
+          </text>
+        )}
       </svg>
       <div style={{ fontSize: 11, color: T.text, fontWeight: 600, marginTop: 2 }}>{conn.name}</div>
     </div>

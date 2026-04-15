@@ -2,8 +2,8 @@ import { T } from "@/lib/theme";
 import PinCircle from "./PinCircle";
 
 export default function DSubConnector({ conn, side = "face", highlightPins = [], pinColors = {}, size = 200, label, viewLabel }) {
+  const sideText = viewLabel;
   const isSolder = side === "solder";
-  const sideText = viewLabel || (isSolder ? "SOLDER SIDE" : "FACE VIEW");
   const topRow = conn.topRow;
   const botRow = conn.botRow;
   const isDB25 = conn.pins.length === 25;
@@ -46,9 +46,11 @@ export default function DSubConnector({ conn, side = "face", highlightPins = [],
             />
           );
         })}
-        <text x={w / 2} y={76} textAnchor="middle" fill={T.textDim} fontSize={7} fontFamily="monospace">
-          {sideText}
-        </text>
+        {sideText && (
+          <text x={w / 2} y={76} textAnchor="middle" fill={T.textDim} fontSize={7} fontFamily="monospace">
+            {sideText}
+          </text>
+        )}
       </svg>
       <div style={{ fontSize: 11, color: T.text, fontWeight: 600, marginTop: 2 }}>{conn.name}</div>
     </div>

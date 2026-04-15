@@ -8,14 +8,17 @@ export const CONNECTORS = {
     short: "XLR3",
     type: "circular",
     group: "audio",
+    faceGender: "female",
     pins: [
       { id: 1, label: "1", name: "Ground / Shield" },
       { id: 2, label: "2", name: "Signal + (Hot)" },
       { id: 3, label: "3", name: "Signal \u2212 (Cold)" },
     ],
+    // Female face view per physical inspection: Pin 2 top-left on female
+    // (Pin 2 top-right on male; female is the mirror).
     facePositions: [
-      { x: 30, y: 35 },  // pin 1 — top left (near notch)
-      { x: 70, y: 35 },  // pin 2 — top right (notch side)
+      { x: 70, y: 35 },  // pin 1 — top right (female face)
+      { x: 30, y: 35 },  // pin 2 — top left (female face)
       { x: 50, y: 68 },  // pin 3 — bottom center
     ],
     radius: 42,
@@ -30,6 +33,7 @@ export const CONNECTORS = {
     short: "XLR5",
     type: "circular",
     group: "audio",
+    faceGender: "female",
     pins: [
       { id: 1, label: "1", name: "Ground / Shield" },
       { id: 2, label: "2", name: "Mic Signal (Hot)" },
@@ -37,12 +41,14 @@ export const CONNECTORS = {
       { id: 4, label: "4", name: "Left Earphone (Hot)" },
       { id: 5, label: "5", name: "Right Earphone (Hot)" },
     ],
+    // Female face view per Clear-Com XLR-5F diagram (verified against a physical male:
+    // Pin 5 is top-right on male → Pin 5 top-left on female face, mirror).
     facePositions: [
-      { x: 30, y: 28 },  // pin 1 — top left (near notch)
-      { x: 24, y: 55 },  // pin 2 — left
+      { x: 70, y: 28 },  // pin 1 — top right (female face)
+      { x: 76, y: 55 },  // pin 2 — right
       { x: 50, y: 75 },  // pin 3 — bottom center
-      { x: 76, y: 55 },  // pin 4 — right
-      { x: 70, y: 28 },  // pin 5 — top right
+      { x: 24, y: 55 },  // pin 4 — left
+      { x: 30, y: 28 },  // pin 5 — top left (female face)
     ],
     radius: 42,
     notch: "top",
@@ -57,17 +63,20 @@ export const CONNECTORS = {
     short: "XLR4",
     type: "circular",
     group: "audio",
+    faceGender: "female",
     pins: [
       { id: 1, label: "1", name: "Mic Ground / Shield" },
       { id: 2, label: "2", name: "Mic Signal (Hot)" },
       { id: 3, label: "3", name: "Earphone Return (Ground)" },
       { id: 4, label: "4", name: "Earphone Signal (Hot)" },
     ],
+    // Female face view per Clear-Com XLR-4M diagram (rotated to notch-top).
+    // Male face: pins go 1→2→3→4 counter-clockwise starting upper-left. Female is mirrored.
     facePositions: [
-      { x: 35, y: 68 },
-      { x: 35, y: 32 },
-      { x: 65, y: 32 },
-      { x: 65, y: 68 },
+      { x: 65, y: 32 },  // pin 1 — upper right (female face)
+      { x: 65, y: 68 },  // pin 2 — lower right
+      { x: 35, y: 68 },  // pin 3 — lower left
+      { x: 35, y: 32 },  // pin 4 — upper left
     ],
     radius: 42,
     notch: "top",
@@ -83,84 +92,91 @@ export const CONNECTORS = {
     short: "DT12",
     type: "dt12",
     group: "multi",
+    // Pin assignments per Clark Wire DT12 pinout (clarkwire.com/dt12-audio-multipin-pinout).
+    // Pin 37 is the unused/spare contact.
     pins: [
-      { id: 1, label: "1", name: "Ch 1 High (+)", ch: 1, role: "+" },
-      { id: 2, label: "2", name: "Ch 1 Ground", ch: 1, role: "G" },
-      { id: 3, label: "3", name: "Ch 2 High (+)", ch: 2, role: "+" },
-      { id: 4, label: "4", name: "Ch 2 Ground", ch: 2, role: "G" },
-      { id: 5, label: "5", name: "Ch 1 Low (\u2212)", ch: 1, role: "\u2212" },
-      { id: 6, label: "6", name: "Ch 2 Low (\u2212)", ch: 2, role: "\u2212" },
-      { id: 7, label: "7", name: "Ch 3 Ground", ch: 3, role: "G" },
-      { id: 8, label: "8", name: "Ch 3 High (+)", ch: 3, role: "+" },
-      { id: 9, label: "9", name: "Ch 3 Low (\u2212)", ch: 3, role: "\u2212" },
-      { id: 10, label: "10", name: "Ch 4 High (+)", ch: 4, role: "+" },
-      { id: 11, label: "11", name: "Ch 4 Ground", ch: 4, role: "G" },
-      { id: 12, label: "12", name: "Ch 4 Low (\u2212)", ch: 4, role: "\u2212" },
-      { id: 13, label: "13", name: "Ch 5 Ground", ch: 5, role: "G" },
-      { id: 14, label: "14", name: "Ch 5 High (+)", ch: 5, role: "+" },
-      { id: 15, label: "15", name: "Ch 5 Low (\u2212)", ch: 5, role: "\u2212" },
-      { id: 16, label: "16", name: "Ch 6 High (+)", ch: 6, role: "+" },
-      { id: 17, label: "17", name: "Ch 6 Ground", ch: 6, role: "G" },
-      { id: 18, label: "18", name: "Ch 6 Low (\u2212)", ch: 6, role: "\u2212" },
-      { id: 19, label: "19", name: "Ch 7 High (+)", ch: 7, role: "+" },
-      { id: 20, label: "20", name: "Ch 7 Ground", ch: 7, role: "G" },
-      { id: 21, label: "21", name: "Ch 7 Low (\u2212)", ch: 7, role: "\u2212" },
-      { id: 22, label: "22", name: "Spare (unused)" },
-      { id: 23, label: "23", name: "Ch 8 High (+)", ch: 8, role: "+" },
-      { id: 24, label: "24", name: "Ch 8 Ground", ch: 8, role: "G" },
-      { id: 25, label: "25", name: "Ch 8 Low (\u2212)", ch: 8, role: "\u2212" },
-      { id: 26, label: "26", name: "Ch 9 Ground", ch: 9, role: "G" },
-      { id: 27, label: "27", name: "Ch 9 High (+)", ch: 9, role: "+" },
-      { id: 28, label: "28", name: "Ch 9 Low (\u2212)", ch: 9, role: "\u2212" },
-      { id: 29, label: "29", name: "Ch 10 High (+)", ch: 10, role: "+" },
-      { id: 30, label: "30", name: "Ch 10 Ground", ch: 10, role: "G" },
-      { id: 31, label: "31", name: "Ch 10 Low (\u2212)", ch: 10, role: "\u2212" },
-      { id: 32, label: "32", name: "Ch 11 Ground", ch: 11, role: "G" },
-      { id: 33, label: "33", name: "Ch 11 High (+)", ch: 11, role: "+" },
-      { id: 34, label: "34", name: "Ch 11 Low (\u2212)", ch: 11, role: "\u2212" },
-      { id: 35, label: "35", name: "Ch 12 High (+)", ch: 12, role: "+" },
-      { id: 36, label: "36", name: "Ch 12 Ground", ch: 12, role: "G" },
-      { id: 37, label: "37", name: "Ch 12 Low (\u2212)", ch: 12, role: "\u2212" },
+      { id: 1,  label: "1",  name: "Ch 1 Ground",    ch: 1,  role: "G" },
+      { id: 2,  label: "2",  name: "Ch 2 Ground",    ch: 2,  role: "G" },
+      { id: 3,  label: "3",  name: "Ch 2 Hot (+)",   ch: 2,  role: "+" },
+      { id: 4,  label: "4",  name: "Ch 3 Ground",    ch: 3,  role: "G" },
+      { id: 5,  label: "5",  name: "Ch 1 Hot (+)",   ch: 1,  role: "+" },
+      { id: 6,  label: "6",  name: "Ch 1 Cold (\u2212)", ch: 1,  role: "\u2212" },
+      { id: 7,  label: "7",  name: "Ch 2 Cold (\u2212)", ch: 2,  role: "\u2212" },
+      { id: 8,  label: "8",  name: "Ch 3 Hot (+)",   ch: 3,  role: "+" },
+      { id: 9,  label: "9",  name: "Ch 3 Cold (\u2212)", ch: 3,  role: "\u2212" },
+      { id: 10, label: "10", name: "Ch 4 Ground",    ch: 4,  role: "G" },
+      { id: 11, label: "11", name: "Ch 5 Ground",    ch: 5,  role: "G" },
+      { id: 12, label: "12", name: "Ch 5 Hot (+)",   ch: 5,  role: "+" },
+      { id: 13, label: "13", name: "Ch 6 Ground",    ch: 6,  role: "G" },
+      { id: 14, label: "14", name: "Ch 7 Ground",    ch: 7,  role: "G" },
+      { id: 15, label: "15", name: "Ch 7 Hot (+)",   ch: 7,  role: "+" },
+      { id: 16, label: "16", name: "Ch 4 Hot (+)",   ch: 4,  role: "+" },
+      { id: 17, label: "17", name: "Ch 4 Cold (\u2212)", ch: 4,  role: "\u2212" },
+      { id: 18, label: "18", name: "Ch 5 Cold (\u2212)", ch: 5,  role: "\u2212" },
+      { id: 19, label: "19", name: "Ch 6 Hot (+)",   ch: 6,  role: "+" },
+      { id: 20, label: "20", name: "Ch 6 Cold (\u2212)", ch: 6,  role: "\u2212" },
+      { id: 21, label: "21", name: "Ch 7 Cold (\u2212)", ch: 7,  role: "\u2212" },
+      { id: 22, label: "22", name: "Ch 11 Ground",   ch: 11, role: "G" },
+      { id: 23, label: "23", name: "Ch 8 Ground",    ch: 8,  role: "G" },
+      { id: 24, label: "24", name: "Ch 8 Hot (+)",   ch: 8,  role: "+" },
+      { id: 25, label: "25", name: "Ch 9 Ground",    ch: 9,  role: "G" },
+      { id: 26, label: "26", name: "Ch 10 Ground",   ch: 10, role: "G" },
+      { id: 27, label: "27", name: "Ch 10 Hot (+)",  ch: 10, role: "+" },
+      { id: 28, label: "28", name: "Ch 11 Hot (+)",  ch: 11, role: "+" },
+      { id: 29, label: "29", name: "Ch 8 Cold (\u2212)", ch: 8,  role: "\u2212" },
+      { id: 30, label: "30", name: "Ch 9 Hot (+)",   ch: 9,  role: "+" },
+      { id: 31, label: "31", name: "Ch 9 Cold (\u2212)", ch: 9,  role: "\u2212" },
+      { id: 32, label: "32", name: "Ch 10 Cold (\u2212)", ch: 10, role: "\u2212" },
+      { id: 33, label: "33", name: "Ch 11 Cold (\u2212)", ch: 11, role: "\u2212" },
+      { id: 34, label: "34", name: "Ch 12 Ground",   ch: 12, role: "G" },
+      { id: 35, label: "35", name: "Ch 12 Hot (+)",  ch: 12, role: "+" },
+      { id: 36, label: "36", name: "Ch 12 Cold (\u2212)", ch: 12, role: "\u2212" },
+      { id: 37, label: "37", name: "Spare (unused)" },
     ],
     facePositions: (() => {
-      // FK37 DT12 female face view — channels in hex diamond pattern
-      // Layout: 2-3-3-3-1 rows, matching Whirlwind reference
+      // FK37 DT12 female-face view (mirror of Clark Wire's female-rear diagram).
+      // 3-4-4-1 channel grid per Clark Wire. Pin 22 (Ch11 Gnd) sits on the right
+      // edge between rows 2 and 3; pin 37 (spare) sits to the right of Ch12.
       const pts = {};
-      const s = 4.2; // pin spacing within channel triangle
-      // Channel centers in hex diamond grid
+      const s = 3.6; // pin spacing within channel triangle
       const grid = [
-        // Row 1: Ch3, Ch6
-        { ch: 3, x: 36, y: 16 }, { ch: 6, x: 64, y: 16 },
-        // Row 2: Ch1, Ch5, Ch2
-        { ch: 1, x: 22, y: 33 }, { ch: 5, x: 50, y: 33 }, { ch: 2, x: 78, y: 33 },
-        // Row 3: Ch4, Ch10, Ch7
-        { ch: 4, x: 22, y: 52 }, { ch: 10, x: 50, y: 52 }, { ch: 7, x: 78, y: 52 },
-        // Row 4: Ch8, Ch11, Ch9
-        { ch: 8, x: 22, y: 71 }, { ch: 11, x: 50, y: 71 }, { ch: 9, x: 78, y: 71 },
-        // Row 5: Ch12
-        { ch: 12, x: 50, y: 88 },
+        { ch: 1,  x: 25, y: 20 }, { ch: 2,  x: 50, y: 20 }, { ch: 3,  x: 75, y: 20 },
+        { ch: 4,  x: 18, y: 42 }, { ch: 5,  x: 39, y: 42 }, { ch: 6,  x: 60, y: 42 }, { ch: 7,  x: 81, y: 42 },
+        { ch: 8,  x: 18, y: 64 }, { ch: 9,  x: 39, y: 64 }, { ch: 10, x: 60, y: 64 }, { ch: 11, x: 81, y: 64 },
+        { ch: 12, x: 39, y: 86 },
       ];
+      // [Gnd, Hot, Cold] pin IDs per channel (Clark Wire table).
       const chPins = {
-        1: [1, 2, 5], 2: [3, 4, 6], 3: [8, 7, 9],
-        4: [10, 11, 12], 5: [14, 13, 15], 6: [16, 17, 18],
-        7: [19, 20, 21], 8: [23, 24, 25], 9: [27, 26, 28],
-        10: [29, 30, 31], 11: [33, 32, 34], 12: [35, 36, 37],
+        1:  [1,  5,  6],  2:  [2,  3,  7],  3:  [4,  8,  9],
+        4:  [10, 16, 17], 5:  [11, 12, 18], 6:  [13, 19, 20], 7: [14, 15, 21],
+        8:  [23, 24, 29], 9:  [25, 30, 31], 10: [26, 27, 32], 11: [22, 28, 33],
+        12: [34, 35, 36],
       };
       grid.forEach(({ ch, x, y }) => {
-        const [hi, gnd, lo] = chPins[ch];
-        // Triangle: Hi(+) top-left, Gnd top-right, Lo(-) bottom-center
-        pts[hi]  = { x: x - s, y: y - s * 0.6 };
-        pts[gnd] = { x: x + s, y: y - s * 0.6 };
+        const [gnd, hi, lo] = chPins[ch];
+        // Triangle: Gnd top-left, Hot top-right, Cold bottom-center
+        pts[gnd] = { x: x - s, y: y - s * 0.6 };
+        pts[hi]  = { x: x + s, y: y - s * 0.6 };
         pts[lo]  = { x: x, y: y + s * 0.8 };
       });
-      // Pin 22 = spare
-      pts[22] = { x: 36, y: 52 };
+      // Pin 22 (Ch11 Gnd) is physically offset to the right edge of the face,
+      // not inside the Ch11 triangle. Place it there and leave Ch11 as a pair.
+      pts[22] = { x: 93, y: 52 };
+      // Re-center Ch11 triangle as a 2-pin pair since its Gnd is offset.
+      pts[28] = { x: 81 - s, y: 64 - s * 0.6 };
+      pts[33] = { x: 81 + s, y: 64 - s * 0.6 };
+      // Pin 37 = spare, offset right of Ch12
+      pts[37] = { x: 62, y: 86 };
       const arr = [];
       for (let i = 1; i <= 37; i++) arr.push(pts[i] || { x: 50, y: 50 });
       return arr;
     })(),
     radius: 48,
     notch: "top",
+    sources: [
+      { label: "Clark Wire DT12 Audio Multipin Pinout", url: "https://www.clarkwire.com/dt12-audio-multipin-pinout" },
+      { label: "Whirlwind DT12 Series", url: "https://www.whirlwindusa.com/products/ac-power-dt-12-dt12-series-broadcast-multipin-connectors" },
+    ],
   },
   trs: {
     name: '1/4" TRS',
@@ -199,12 +215,17 @@ export const CONNECTORS = {
     type: "rj12",
     group: "data",
     pins: [
-      { id: 1, label: "1", name: "Pin 1 \u2014 White" },
-      { id: 2, label: "2", name: "Pin 2 \u2014 Black" },
-      { id: 3, label: "3", name: "Pin 3 \u2014 Red" },
-      { id: 4, label: "4", name: "Pin 4 \u2014 Green" },
-      { id: 5, label: "5", name: "Pin 5 \u2014 Yellow" },
-      { id: 6, label: "6", name: "Pin 6 \u2014 Blue" },
+      { id: 1, label: "1", name: "Pin 1 \u2014 White (T3)" },
+      { id: 2, label: "2", name: "Pin 2 \u2014 Black (T2)" },
+      { id: 3, label: "3", name: "Pin 3 \u2014 Red (R1)" },
+      { id: 4, label: "4", name: "Pin 4 \u2014 Green (T1)" },
+      { id: 5, label: "5", name: "Pin 5 \u2014 Yellow (R2)" },
+      { id: 6, label: "6", name: "Pin 6 \u2014 Blue (R3)" },
+    ],
+    sources: [
+      { label: "Registered jack \u2014 Wikipedia", url: "https://en.wikipedia.org/wiki/Registered_jack" },
+      { label: "Pshine Cable \u2014 RJ12 6P6C Color Order", url: "https://www.pshinecable.com/article/how-to-connect-the-network-cables-and-what-is-their-color-order.html" },
+      { label: "Telex/RTS RJ12 Pinouts (plsystem.com)", url: "https://www.plsystem.com/pinout1.htm" },
     ],
   },
   bnc: {
@@ -213,8 +234,12 @@ export const CONNECTORS = {
     type: "coax",
     group: "video",
     pins: [
-      { id: 1, label: "C", name: "Center \u2014 Signal" },
-      { id: 2, label: "S", name: "Shell \u2014 Ground / Shield" },
+      { id: 1, label: "C", name: "Center \u2014 Signal (75\u03A9 broadcast)" },
+      { id: 2, label: "S", name: "Shell \u2014 Ground / Shield (bayonet lug)" },
+    ],
+    sources: [
+      { label: "BNC connector \u2014 Wikipedia", url: "https://en.wikipedia.org/wiki/BNC_connector" },
+      { label: "SMPTE ST 292 (HD-SDI over 75\u03A9 BNC)", url: "https://pub.smpte.org/doc/292-1/" },
     ],
   },
   triax: {
@@ -223,43 +248,169 @@ export const CONNECTORS = {
     type: "coax",
     group: "video",
     pins: [
-      { id: 1, label: "C", name: "Center \u2014 Signal" },
-      { id: 2, label: "I", name: "Inner Shield \u2014 Return / Power" },
-      { id: 3, label: "O", name: "Outer Shield \u2014 Ground" },
+      { id: 1, label: "C", name: "Center \u2014 Signal (video/data/audio, modulated)" },
+      { id: 2, label: "I", name: "Inner Shield \u2014 DC Return" },
+      { id: 3, label: "O", name: "Outer Shield \u2014 DC Supply / Ground (120\u2013170 VDC in broadcast)" },
+    ],
+    sources: [
+      { label: "Triaxial cable \u2014 Wikipedia", url: "https://en.wikipedia.org/wiki/Triaxial_cable" },
+      { label: "Canford LEMO/Triax/HDTV Fibre Connector Guide (PDF)", url: "https://www.canford.co.uk/ProductResources/resources/Reference/Lemo%20and%20Fischer%20Triax%20and%20HDTV%20Fibre%20connectors%20guide%20IBC%20lr%20Connector%20Guide.pdf" },
     ],
   },
-  db9: {
-    name: "DB9",
-    short: "DB9",
+  de9: {
+    name: "DE-9",
+    short: "DE-9",
     type: "dsub",
     group: "data",
+    faceGender: "male",
     pins: [
-      { id: 1, label: "1", name: "Pin 1" },
+      { id: 1, label: "1", name: "Pin 1 \u2014 DCD (Data Carrier Detect)" },
       { id: 2, label: "2", name: "Pin 2 \u2014 RxD (Receive)" },
       { id: 3, label: "3", name: "Pin 3 \u2014 TxD (Transmit)" },
-      { id: 4, label: "4", name: "Pin 4 \u2014 DTR" },
-      { id: 5, label: "5", name: "Pin 5 \u2014 Ground" },
-      { id: 6, label: "6", name: "Pin 6 \u2014 DSR" },
-      { id: 7, label: "7", name: "Pin 7 \u2014 RTS" },
-      { id: 8, label: "8", name: "Pin 8 \u2014 CTS" },
-      { id: 9, label: "9", name: "Pin 9" },
+      { id: 4, label: "4", name: "Pin 4 \u2014 DTR (Data Terminal Ready)" },
+      { id: 5, label: "5", name: "Pin 5 \u2014 GND (Signal Ground)" },
+      { id: 6, label: "6", name: "Pin 6 \u2014 DSR (Data Set Ready)" },
+      { id: 7, label: "7", name: "Pin 7 \u2014 RTS (Request to Send)" },
+      { id: 8, label: "8", name: "Pin 8 \u2014 CTS (Clear to Send)" },
+      { id: 9, label: "9", name: "Pin 9 \u2014 RI (Ring Indicator)" },
     ],
     topRow: [1, 2, 3, 4, 5],
     botRow: [6, 7, 8, 9],
+    sources: [
+      { label: "D-subminiature \u2014 Wikipedia (DE-9 naming)", url: "https://en.wikipedia.org/wiki/D-subminiature" },
+      { label: "Serial port pinouts \u2014 Wikipedia (DTE-side RS-232)", url: "https://en.wikipedia.org/wiki/Serial_port" },
+    ],
   },
-  db25: {
-    name: "DB25",
-    short: "DB25",
-    type: "dsub",
-    group: "data",
-    pins: Array.from({ length: 25 }, (_, i) => ({
-      id: i + 1,
-      label: `${i + 1}`,
-      name: `Pin ${i + 1}`,
-    })),
-    topRow: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
-    botRow: [14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25],
-  },
+  db25: (() => {
+    const variants = [
+      {
+        id: "tascam_analog",
+        name: "Tascam Analog (AES59)",
+        default: true,
+        description: "8-channel balanced analog audio breakout. The broadcast/pro-audio standard.",
+        pins: [
+          { id: 1,  label: "1",  name: "Pin 1 \u2014 Ch 8 Hot (+)" },
+          { id: 2,  label: "2",  name: "Pin 2 \u2014 Ch 8 Shield (GND)" },
+          { id: 3,  label: "3",  name: "Pin 3 \u2014 Ch 7 Cold (\u2212)" },
+          { id: 4,  label: "4",  name: "Pin 4 \u2014 Ch 6 Hot (+)" },
+          { id: 5,  label: "5",  name: "Pin 5 \u2014 Ch 6 Shield (GND)" },
+          { id: 6,  label: "6",  name: "Pin 6 \u2014 Ch 5 Cold (\u2212)" },
+          { id: 7,  label: "7",  name: "Pin 7 \u2014 Ch 4 Hot (+)" },
+          { id: 8,  label: "8",  name: "Pin 8 \u2014 Ch 4 Shield (GND)" },
+          { id: 9,  label: "9",  name: "Pin 9 \u2014 Ch 3 Cold (\u2212)" },
+          { id: 10, label: "10", name: "Pin 10 \u2014 Ch 2 Hot (+)" },
+          { id: 11, label: "11", name: "Pin 11 \u2014 Ch 2 Shield (GND)" },
+          { id: 12, label: "12", name: "Pin 12 \u2014 Ch 1 Cold (\u2212)" },
+          { id: 13, label: "13", name: "Pin 13 \u2014 NC" },
+          { id: 14, label: "14", name: "Pin 14 \u2014 Ch 8 Cold (\u2212)" },
+          { id: 15, label: "15", name: "Pin 15 \u2014 Ch 7 Hot (+)" },
+          { id: 16, label: "16", name: "Pin 16 \u2014 Ch 7 Shield (GND)" },
+          { id: 17, label: "17", name: "Pin 17 \u2014 Ch 6 Cold (\u2212)" },
+          { id: 18, label: "18", name: "Pin 18 \u2014 Ch 5 Hot (+)" },
+          { id: 19, label: "19", name: "Pin 19 \u2014 Ch 5 Shield (GND)" },
+          { id: 20, label: "20", name: "Pin 20 \u2014 Ch 4 Cold (\u2212)" },
+          { id: 21, label: "21", name: "Pin 21 \u2014 Ch 3 Hot (+)" },
+          { id: 22, label: "22", name: "Pin 22 \u2014 Ch 3 Shield (GND)" },
+          { id: 23, label: "23", name: "Pin 23 \u2014 Ch 2 Cold (\u2212)" },
+          { id: 24, label: "24", name: "Pin 24 \u2014 Ch 1 Hot (+)" },
+          { id: 25, label: "25", name: "Pin 25 \u2014 Ch 1 Shield (GND)" },
+        ],
+        sources: [
+          { label: "TASCAM DB-25 Pinout Standard (PDF)", url: "https://www.tascam.eu/en/docs/DB-25_Pinout.pdf" },
+          { label: "AES59-2012 Standard", url: "https://www.aes.org/publications/standards/search.cfm?docID=92" },
+          { label: "Hosa \"DB-25 Enigma\" Explainer", url: "https://hosatech.com/press-release/db-25-enigma/" },
+          { label: "Aviom DB25 Pinout Reference (PDF)", url: "https://www.aviom.com/library/Technical-Resources/75_DB25-Pinout-Information.pdf" },
+        ],
+      },
+      {
+        id: "tascam_aesebu",
+        name: "Tascam AES/EBU",
+        description: "4 AES3 input pairs + 4 AES3 output pairs. Same physical pinout as Tascam analog, re-labeled: analog Ch 1\u20134 = AES IN 1\u20134, analog Ch 5\u20138 = AES OUT 1\u20134. DB25\u2194DB25 cables need a crossover (IN end meets OUT end).",
+        pins: [
+          { id: 1,  label: "1",  name: "Pin 1 \u2014 AES OUT 7/8 Hot (+)" },
+          { id: 2,  label: "2",  name: "Pin 2 \u2014 AES OUT 7/8 Shield (GND)" },
+          { id: 3,  label: "3",  name: "Pin 3 \u2014 AES OUT 5/6 Cold (\u2212)" },
+          { id: 4,  label: "4",  name: "Pin 4 \u2014 AES OUT 3/4 Hot (+)" },
+          { id: 5,  label: "5",  name: "Pin 5 \u2014 AES OUT 3/4 Shield (GND)" },
+          { id: 6,  label: "6",  name: "Pin 6 \u2014 AES OUT 1/2 Cold (\u2212)" },
+          { id: 7,  label: "7",  name: "Pin 7 \u2014 AES IN 7/8 Hot (+)" },
+          { id: 8,  label: "8",  name: "Pin 8 \u2014 AES IN 7/8 Shield (GND)" },
+          { id: 9,  label: "9",  name: "Pin 9 \u2014 AES IN 5/6 Cold (\u2212)" },
+          { id: 10, label: "10", name: "Pin 10 \u2014 AES IN 3/4 Hot (+)" },
+          { id: 11, label: "11", name: "Pin 11 \u2014 AES IN 3/4 Shield (GND)" },
+          { id: 12, label: "12", name: "Pin 12 \u2014 AES IN 1/2 Cold (\u2212)" },
+          { id: 13, label: "13", name: "Pin 13 \u2014 NC" },
+          { id: 14, label: "14", name: "Pin 14 \u2014 AES OUT 7/8 Cold (\u2212)" },
+          { id: 15, label: "15", name: "Pin 15 \u2014 AES OUT 5/6 Hot (+)" },
+          { id: 16, label: "16", name: "Pin 16 \u2014 AES OUT 5/6 Shield (GND)" },
+          { id: 17, label: "17", name: "Pin 17 \u2014 AES OUT 3/4 Cold (\u2212)" },
+          { id: 18, label: "18", name: "Pin 18 \u2014 AES OUT 1/2 Hot (+)" },
+          { id: 19, label: "19", name: "Pin 19 \u2014 AES OUT 1/2 Shield (GND)" },
+          { id: 20, label: "20", name: "Pin 20 \u2014 AES IN 7/8 Cold (\u2212)" },
+          { id: 21, label: "21", name: "Pin 21 \u2014 AES IN 5/6 Hot (+)" },
+          { id: 22, label: "22", name: "Pin 22 \u2014 AES IN 5/6 Shield (GND)" },
+          { id: 23, label: "23", name: "Pin 23 \u2014 AES IN 3/4 Cold (\u2212)" },
+          { id: 24, label: "24", name: "Pin 24 \u2014 AES IN 1/2 Hot (+)" },
+          { id: 25, label: "25", name: "Pin 25 \u2014 AES IN 1/2 Shield (GND)" },
+        ],
+        sources: [
+          { label: "TASCAM DB-25 Pinout Standard (PDF)", url: "https://www.tascam.eu/en/docs/DB-25_Pinout.pdf" },
+          { label: "Aviom DB25 Pinout Reference (PDF)", url: "https://www.aviom.com/library/Technical-Resources/75_DB25-Pinout-Information.pdf" },
+        ],
+      },
+      {
+        id: "yamaha_aesebu",
+        name: "Yamaha AES/EBU",
+        description: "4 AES3 input pairs + 4 AES3 output pairs. Different pin layout from Tascam \u2014 all Hots on pins 1\u20138, all Colds on pins 14\u201321, grounds clustered at 10/12/13/22\u201325. Used by Yamaha YGDAI cards (MY8-AE series), Apogee, and Mackie.",
+        pins: [
+          { id: 1,  label: "1",  name: "Pin 1 \u2014 AES IN 1/2 Hot (+)" },
+          { id: 2,  label: "2",  name: "Pin 2 \u2014 AES IN 3/4 Hot (+)" },
+          { id: 3,  label: "3",  name: "Pin 3 \u2014 AES IN 5/6 Hot (+)" },
+          { id: 4,  label: "4",  name: "Pin 4 \u2014 AES IN 7/8 Hot (+)" },
+          { id: 5,  label: "5",  name: "Pin 5 \u2014 AES OUT 1/2 Hot (+)" },
+          { id: 6,  label: "6",  name: "Pin 6 \u2014 AES OUT 3/4 Hot (+)" },
+          { id: 7,  label: "7",  name: "Pin 7 \u2014 AES OUT 5/6 Hot (+)" },
+          { id: 8,  label: "8",  name: "Pin 8 \u2014 AES OUT 7/8 Hot (+)" },
+          { id: 9,  label: "9",  name: "Pin 9 \u2014 NC" },
+          { id: 10, label: "10", name: "Pin 10 \u2014 GND" },
+          { id: 11, label: "11", name: "Pin 11 \u2014 NC" },
+          { id: 12, label: "12", name: "Pin 12 \u2014 GND" },
+          { id: 13, label: "13", name: "Pin 13 \u2014 GND" },
+          { id: 14, label: "14", name: "Pin 14 \u2014 AES IN 1/2 Cold (\u2212)" },
+          { id: 15, label: "15", name: "Pin 15 \u2014 AES IN 3/4 Cold (\u2212)" },
+          { id: 16, label: "16", name: "Pin 16 \u2014 AES IN 5/6 Cold (\u2212)" },
+          { id: 17, label: "17", name: "Pin 17 \u2014 AES IN 7/8 Cold (\u2212)" },
+          { id: 18, label: "18", name: "Pin 18 \u2014 AES OUT 1/2 Cold (\u2212)" },
+          { id: 19, label: "19", name: "Pin 19 \u2014 AES OUT 3/4 Cold (\u2212)" },
+          { id: 20, label: "20", name: "Pin 20 \u2014 AES OUT 5/6 Cold (\u2212)" },
+          { id: 21, label: "21", name: "Pin 21 \u2014 AES OUT 7/8 Cold (\u2212)" },
+          { id: 22, label: "22", name: "Pin 22 \u2014 GND" },
+          { id: 23, label: "23", name: "Pin 23 \u2014 GND" },
+          { id: 24, label: "24", name: "Pin 24 \u2014 GND" },
+          { id: 25, label: "25", name: "Pin 25 \u2014 GND" },
+        ],
+        sources: [
+          { label: "Aviom DB25 Pinout Reference (PDF)", url: "https://www.aviom.com/library/Technical-Resources/75_DB25-Pinout-Information.pdf" },
+          { label: "Yamaha AES/EBU YGDAI Card FAQ", url: "https://faq.yamaha.com/usa/s/article/U0001834" },
+        ],
+      },
+    ];
+    const defaultVariant = variants.find(v => v.default) || variants[0];
+    return {
+      name: "DB25",
+      short: "DB25",
+      type: "dsub",
+      group: "data",
+      faceGender: "male",
+      topRow: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+      botRow: [14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25],
+      // Top-level pins/sources mirror the default variant so builds.js and
+      // non-variant-aware consumers keep working without changes.
+      pins: defaultVariant.pins,
+      sources: defaultVariant.sources,
+      variants,
+    };
+  })(),
   speakon: {
     name: "Speakon NL4",
     short: "NL4",
@@ -271,13 +422,18 @@ export const CONNECTORS = {
       { id: 3, label: "2+", name: "2+ \u2014 Speaker + (Channel 2)" },
       { id: 4, label: "2\u2212", name: "2\u2212 \u2014 Speaker \u2212 (Channel 2)" },
     ],
+    // Diamond layout per Neutrik: 1+ top, 1− left, 2+ bottom, 2− right.
+    // Channel 1 pins on the vertical/left axis, Channel 2 pins on the opposite.
     facePositions: [
-      { x: 30, y: 30 },
-      { x: 70, y: 30 },
-      { x: 70, y: 70 },
-      { x: 30, y: 70 },
+      { x: 50, y: 24 },  // pin 1 (1+) — top
+      { x: 24, y: 50 },  // pin 2 (1−) — left
+      { x: 50, y: 76 },  // pin 3 (2+) — bottom
+      { x: 76, y: 50 },  // pin 4 (2−) — right
     ],
     radius: 42,
+    sources: [
+      { label: "Neutrik Speakon Wiring Suggestion (PDF)", url: "https://www.neutrik.com/media/8027/download/speakon-wiring-suggestion.pdf" },
+    ],
   },
   ts: {
     name: '1/4" TS (Mono)',
@@ -323,8 +479,12 @@ export const CONNECTORS = {
     type: "coax",
     group: "other",
     pins: [
-      { id: 1, label: "C", name: "Center \u2014 Signal" },
-      { id: 2, label: "S", name: "Shell \u2014 Ground" },
+      { id: 1, label: "C", name: "Center \u2014 Signal (audio / composite video / S/PDIF)" },
+      { id: 2, label: "S", name: "Shell \u2014 Ground / Shield" },
+    ],
+    sources: [
+      { label: "RCA connector \u2014 Wikipedia", url: "https://en.wikipedia.org/wiki/RCA_connector" },
+      { label: "Rane Note 110 \u2014 Sound System Interconnection", url: "https://www.ranecommercial.com/legacy/note110.html" },
     ],
   },
   powercon: {
@@ -333,9 +493,9 @@ export const CONNECTORS = {
     type: "powercon",
     group: "other",
     pins: [
-      { id: 1, label: "L", name: "Line (Hot) \u2014 Brown" },
-      { id: 2, label: "N", name: "Neutral \u2014 Blue" },
-      { id: 3, label: "G", name: "Ground \u2014 Green/Yellow" },
+      { id: 1, label: "L", name: "Line (Hot) \u2014 Brown (IEC) / Black (US NEC)" },
+      { id: 2, label: "N", name: "Neutral \u2014 Blue (IEC) / White (US NEC)" },
+      { id: 3, label: "PE", name: "Protective Earth \u2014 Green/Yellow (IEC) / Green (US NEC)" },
     ],
     facePositions: [
       { x: 35, y: 35 },
@@ -343,5 +503,10 @@ export const CONNECTORS = {
       { x: 50, y: 68 },
     ],
     radius: 42,
+    sources: [
+      { label: "Neutrik powerCON Assembly Instruction (BDA 452)", url: "https://www.neutrik.com/media/10217/download/BDA%20452%20V4%20-%20powerCON%20-%20NAC3FCA%20+%20NAC3FCB.pdf" },
+      { label: "Neutrik NAC3FCA Product Page (Power IN, Blue)", url: "https://www.neutrik.com/en/product/nac3fca" },
+      { label: "Neutrik NAC3FCB Product Page (Power OUT, Grey)", url: "https://www.neutrik.com/en/product/nac3fcb" },
+    ],
   },
 };

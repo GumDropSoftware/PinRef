@@ -9,7 +9,7 @@ import SourcesList from "./SourcesList";
 
 // Determine which connector is the "cable" — the one whose wire colors drive the diagram.
 // XLR → RJ45 = Cat5 cable with XLR ends, so RJ45 pin colors drive everything.
-// DB9 → RJ45 saved builds = Cable Wholesale shell, shell colors drive.
+// DE-9 → RJ45 saved builds = Cable Wholesale shell, shell colors drive.
 // XLR → XLR = mic cable, no standard wire colors → fall back to arbitrary.
 function getCableConnector(build) {
   // If one side is RJ45, the cable is Cat5 — RJ45 pin colors drive
@@ -18,10 +18,10 @@ function getCableConnector(build) {
   // If one side is RJ12, that side's colors drive
   if (build.to === "rj12") return "to";
   if (build.from === "rj12") return "from";
-  // Saved DB9 builds with shell wire colors
+  // Saved DE-9 builds with shell wire colors
   if (build.tag === "shell") {
-    if (build.to === "db9") return "to";
-    if (build.from === "db9") return "from";
+    if (build.to === "de9") return "to";
+    if (build.from === "de9") return "from";
   }
   return null; // no standard cable colors, use arbitrary
 }
@@ -40,9 +40,9 @@ function getPhysicalWireColor(connKey, pinId, build) {
     const sw = SHELL_WIRE_COLORS.rj12[pinId];
     return { color: sw.color, name: sw.name, hasStripe: false, lineColor: visibleLineColor(sw.color) };
   }
-  // Saved DB9 builds use Cable Wholesale grey shell colors
-  if (connKey === "db9" && build?.tag === "shell" && SHELL_WIRE_COLORS.db9_grey[pinId]) {
-    const sw = SHELL_WIRE_COLORS.db9_grey[pinId];
+  // Saved DE-9 builds use Cable Wholesale grey shell colors
+  if (connKey === "de9" && build?.tag === "shell" && SHELL_WIRE_COLORS.de9_grey[pinId]) {
+    const sw = SHELL_WIRE_COLORS.de9_grey[pinId];
     return { color: sw.color, name: sw.name, hasStripe: false, lineColor: visibleLineColor(sw.color) };
   }
   // Standard cable wire colors for all other connectors
@@ -76,7 +76,7 @@ function resolveWireColor(w, build, fallbackColor, cableSide) {
 }
 
 // Extract just the signal/purpose from a wiring description.
-// "DB9 pin 1 → RJ45 pin 1 (Wht/Org) — DATA +" → "DATA +"
+// "DE-9 pin 1 → RJ45 pin 1 (Wht/Org) — DATA +" → "DATA +"
 // "Ground to Ground" → "Ground"
 // "Hot (+) (pin 2) to Tip" → "Hot (+)"
 function extractSignal(desc) {

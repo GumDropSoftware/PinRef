@@ -31,8 +31,8 @@ export default function DT12Connector({ conn, side = "face", highlightPins = [],
       <div style={{ marginTop: 8, textAlign: "left" }}>
         <div style={{ display: "grid", gridTemplateColumns: "28px 1fr 1fr 1fr", gap: 0, fontSize: 11, fontFamily: "monospace" }}>
           <div style={{ color: T.textDim, padding: "4px 4px", fontWeight: 700, borderBottom: `2px solid ${T.border}` }}>Ch</div>
-          <div style={{ color: "#ef4444", padding: "4px 4px", fontWeight: 700, textAlign: "center", borderBottom: `2px solid ${T.border}` }}>Hi(+)</div>
-          <div style={{ color: "#888", padding: "4px 4px", fontWeight: 700, textAlign: "center", borderBottom: `2px solid ${T.border}` }}>Lo({"\u2212"})</div>
+          <div style={{ color: "#ef4444", padding: "4px 4px", fontWeight: 700, textAlign: "center", borderBottom: `2px solid ${T.border}` }}>Hot(+)</div>
+          <div style={{ color: "#888", padding: "4px 4px", fontWeight: 700, textAlign: "center", borderBottom: `2px solid ${T.border}` }}>Cold({"\u2212"})</div>
           <div style={{ color: "#22c55e", padding: "4px 4px", fontWeight: 700, textAlign: "center", borderBottom: `2px solid ${T.border}` }}>Gnd</div>
           {channels.map(({ ch, hi, lo, gnd }) => {
             const rowActive = hlSet.has(hi?.id) || hlSet.has(lo?.id) || hlSet.has(gnd?.id);
@@ -58,7 +58,7 @@ export default function DT12Connector({ conn, side = "face", highlightPins = [],
             );
           })}
         </div>
-        <div style={{ fontSize: 9, color: T.textDim, marginTop: 4 }}>Pin 22 = spare (unused)</div>
+        <div style={{ fontSize: 9, color: T.textDim, marginTop: 4 }}>Pin 37 = spare (unused). Source: Clark Wire DT12 pinout.</div>
       </div>
     </div>
   );

@@ -2,11 +2,12 @@ import { T } from "@/lib/theme";
 import PinCircle from "./PinCircle";
 
 export default function SpeakonConnector({ conn, side = "face", highlightPins = [], pinColors = {}, size = 160, label, viewLabel }) {
-  const sideText = viewLabel || (side === "solder" ? "SOLDER SIDE" : "FACE VIEW");
-  // Speakon has 4 pins in a square pattern with a latch notch
+  const sideText = viewLabel;
+  // Speakon NL4: pins in a diamond around the central keyway per Neutrik.
+  // 1+ top, 1− left, 2+ bottom, 2− right. Solder side mirrors horizontally.
   const positions = side === "solder"
-    ? [{ x: 70, y: 30 }, { x: 30, y: 30 }, { x: 30, y: 70 }, { x: 70, y: 70 }]
-    : [{ x: 30, y: 30 }, { x: 70, y: 30 }, { x: 70, y: 70 }, { x: 30, y: 70 }];
+    ? [{ x: 50, y: 28 }, { x: 72, y: 50 }, { x: 50, y: 72 }, { x: 28, y: 50 }]
+    : [{ x: 50, y: 28 }, { x: 28, y: 50 }, { x: 50, y: 72 }, { x: 72, y: 50 }];
 
   return (
     <div style={{ textAlign: "center" }}>
@@ -16,12 +17,8 @@ export default function SpeakonConnector({ conn, side = "face", highlightPins = 
         <rect x={8} y={8} width={84} height={84} rx={18} fill={T.surface2} stroke={T.border} strokeWidth={2} />
         {/* Latch notch at top */}
         <rect x={40} y={6} width={20} height={8} rx={3} fill={T.bg} stroke={T.border} strokeWidth={1} />
-        {/* Divider cross */}
-        <line x1={50} y1={18} x2={50} y2={82} stroke={T.border} strokeWidth={0.8} opacity={0.4} />
-        <line x1={18} y1={50} x2={82} y2={50} stroke={T.border} strokeWidth={0.8} opacity={0.4} />
-        {/* Channel labels */}
-        <text x={30} y={52} textAnchor="middle" fill={T.textDim} fontSize={6} fontFamily="monospace" opacity={0.5}>Ch1</text>
-        <text x={70} y={52} textAnchor="middle" fill={T.textDim} fontSize={6} fontFamily="monospace" opacity={0.5}>Ch2</text>
+        {/* Center post / keyway */}
+        <circle cx={50} cy={50} r={5} fill={T.bg} stroke={T.border} strokeWidth={0.8} opacity={0.6} />
         {/* Pins */}
         {conn.pins.map((pin, i) => {
           const pos = positions[i];
@@ -37,7 +34,7 @@ export default function SpeakonConnector({ conn, side = "face", highlightPins = 
             />
           );
         })}
-        <text x={50} y={96} textAnchor="middle" fill={T.textDim} fontSize={7} fontFamily="monospace">{sideText}</text>
+        {sideText && <text x={50} y={96} textAnchor="middle" fill={T.textDim} fontSize={7} fontFamily="monospace">{sideText}</text>}
       </svg>
       <div style={{ fontSize: 11, color: T.text, fontWeight: 600, marginTop: 2 }}>{conn.name}</div>
     </div>

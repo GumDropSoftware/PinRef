@@ -47,8 +47,7 @@ export const SIGNAL_INFO = {
     maxRun: { balanced: "100 ft", unbalanced: "25 ft" },
     notes: "Context determines wiring: balanced mono (Tip=Hot, Ring=Cold, Sleeve=Gnd) on pro line-level gear vs stereo unbalanced (Tip=L, Ring=R, Sleeve=Gnd) on headphones. Same physical connector; read the silkscreen.",
     sources: [
-      { label: "Rane Note 110 \u2014 Sound System Interconnection", url: "https://www.ranecommercial.com/legacy/note110.html" },
-      { label: "Sweetwater \u2014 Tip Ring Sleeve (TRS)", url: "https://www.sweetwater.com/insync/tip-ring-sleeve-trs/" },
+      { label: "Rane Note 110 \u2014 Sound System Interconnection (pinout Figure 1a)", url: "https://www.ranecommercial.com/legacy/note110.html" },
     ],
   },
   ts: {
@@ -101,11 +100,11 @@ export const SIGNAL_INFO = {
       { label: "Triaxial cable \u2014 Wikipedia", url: "https://en.wikipedia.org/wiki/Triaxial_cable" },
     ],
   },
-  db9: {
+  de9: {
     signals: ["RS-232 Serial", "RS-422 Serial (Sony 9-pin)", "Tally/GPI"],
     impedance: "Varies",
     maxRun: { "rs-232": "50 ft", "rs-422": "4000 ft" },
-    notes: "RS-232 (EIA-574) on DB9 is single-ended, short-range. Sony 9-pin / SMPTE 207M uses DB9 for RS-422 broadcast control (VTR, router, switcher). DTE pinout: Pin 2=RxD, 3=TxD, 5=GND, 7=RTS, 8=CTS.",
+    notes: "The 9-pin D-sub is technically a DE-9 (E-shell), though it is often mislabeled as \"DB-9\". RS-232 (EIA-574) on DE-9 is single-ended, short-range. Sony 9-pin / SMPTE 207M uses DE-9 for RS-422 broadcast control (VTR, router, switcher). DTE pinout: Pin 1=DCD, 2=RxD, 3=TxD, 4=DTR, 5=GND, 6=DSR, 7=RTS, 8=CTS, 9=RI.",
     sources: [
       { label: "RS-232 \u2014 Wikipedia", url: "https://en.wikipedia.org/wiki/RS-232" },
       { label: "TI SNLA039 \u2014 Popular Connector Pin Assignments", url: "https://www.ti.com/lit/an/snla039/snla039.pdf" },
@@ -180,7 +179,7 @@ export const SIGNAL_INFO = {
 
 const connectorOrder = [
   "xlr3", "xlr5", "xlr4", "trs", "ts", "mini_trs", "mini_trrs", "rca",
-  "speakon", "rj45", "rj12", "bnc", "triax", "dt12", "db9", "db25", "powercon",
+  "speakon", "rj45", "rj12", "bnc", "triax", "dt12", "de9", "db25", "powercon",
 ];
 
 // Build the matrix from existing BUILDS data at runtime

@@ -2,7 +2,7 @@ import { T } from "@/lib/theme";
 import PinCircle from "./PinCircle";
 
 export default function PowerCONConnector({ conn, side = "face", highlightPins = [], pinColors = {}, size = 160, label, viewLabel }) {
-  const sideText = viewLabel || (side === "solder" ? "SOLDER SIDE" : "FACE VIEW");
+  const sideText = viewLabel;
   // 3 pins in triangle — Line and Neutral up top, Ground at bottom
   const positions = side === "solder"
     ? [{ x: 65, y: 35 }, { x: 35, y: 35 }, { x: 50, y: 68 }]
@@ -31,7 +31,7 @@ export default function PowerCONConnector({ conn, side = "face", highlightPins =
             />
           );
         })}
-        <text x={50} y={96} textAnchor="middle" fill={T.textDim} fontSize={7} fontFamily="monospace">{sideText}</text>
+        {sideText && <text x={50} y={96} textAnchor="middle" fill={T.textDim} fontSize={7} fontFamily="monospace">{sideText}</text>}
       </svg>
       <div style={{ fontSize: 11, color: T.text, fontWeight: 600, marginTop: 2 }}>{conn.name}</div>
     </div>

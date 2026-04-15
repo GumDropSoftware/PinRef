@@ -3,7 +3,7 @@ import { T } from "@/lib/theme";
 export default function TSConnector({ conn, side = "face", highlightPins = [], pinColors = {}, size = 160, label, viewLabel }) {
   const w = 160;
   const h = 70;
-  const sideText = viewLabel || (side === "solder" ? "SOLDER SIDE" : "SIDE VIEW");
+  const sideText = viewLabel;
 
   const getColor = (pinId) => {
     const pc = pinColors[pinId];
@@ -29,7 +29,7 @@ export default function TSConnector({ conn, side = "face", highlightPins = [], p
         <text x={118} y={37} textAnchor="middle" fill="#fff" fontSize={8} fontFamily="monospace">T</text>
         {/* Divider */}
         <line x1={99} y1={22} x2={99} y2={48} stroke={T.bg} strokeWidth={2} />
-        <text x={80} y={62} textAnchor="middle" fill={T.textDim} fontSize={7} fontFamily="monospace">{sideText}</text>
+        {sideText && <text x={80} y={62} textAnchor="middle" fill={T.textDim} fontSize={7} fontFamily="monospace">{sideText}</text>}
       </svg>
       <div style={{ fontSize: 11, color: T.text, fontWeight: 600, marginTop: 2 }}>{conn.name}</div>
     </div>
