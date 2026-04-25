@@ -142,6 +142,12 @@ export default function WiringDiagram({ build }) {
 
   const fromHighlight = allWiring.map(w => w.fromPin).filter(p => p !== "shell");
   const toHighlight = allWiring.map(w => w.toPin).filter(p => p !== "shell");
+  // Shell-pin highlighting: any wire targeting "shell" lights up the connector's
+  // tab/shell graphic. Pick the first such wire's resolved color to drive the visual.
+  const fromShellWireIdx = allWiring.findIndex(w => w.fromPin === "shell");
+  const toShellWireIdx = allWiring.findIndex(w => w.toPin === "shell");
+  const fromShellHighlighted = fromShellWireIdx >= 0;
+  const toShellHighlighted = toShellWireIdx >= 0;
 
   // Resolve wire colors: the "cable side" drives pin colors on BOTH connectors.
   // When the user sorts by a specific connector, that end becomes the color reference.
@@ -296,10 +302,10 @@ export default function WiringDiagram({ build }) {
               {channelCount > 1 && multiSide === "from" ? (
                 <div style={{ textAlign: "center" }}>
                   <div style={{ fontSize: 11, color: T.textDim, marginBottom: 4, fontFamily: "monospace" }}>{channelCount}&times; {fromConn.short}</div>
-                  <ConnectorDiagram connKey={build.from} side={fromSide} highlightPins={fromHighlight} pinColors={fromPinColors} viewLabel={side === "solder" ? "SOLDER SIDE" : "FACE VIEW"} />
+                  <ConnectorDiagram connKey={build.from} side={fromSide} highlightPins={fromHighlight} pinColors={fromPinColors} viewLabel={side === "solder" ? "SOLDER SIDE" : "FACE VIEW"} shellHighlighted={fromShellHighlighted} shellColor={fromShellWireIdx >= 0 ? wireColors[fromShellWireIdx]?.lineColor : null} />
                 </div>
               ) : (
-                <ConnectorDiagram connKey={build.from} side={fromSide} highlightPins={fromHighlight} pinColors={fromPinColors} label={fromLabel} viewLabel={side === "solder" ? "SOLDER SIDE" : "FACE VIEW"} />
+                <ConnectorDiagram connKey={build.from} side={fromSide} highlightPins={fromHighlight} pinColors={fromPinColors} label={fromLabel} viewLabel={side === "solder" ? "SOLDER SIDE" : "FACE VIEW"} shellHighlighted={fromShellHighlighted} shellColor={fromShellWireIdx >= 0 ? wireColors[fromShellWireIdx]?.lineColor : null} />
               )}
             </div>
             <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: 100, padding: "0 2px" }}>
@@ -348,10 +354,10 @@ export default function WiringDiagram({ build }) {
             {channelCount > 1 && multiSide === "to" ? (
               <div style={{ textAlign: "center" }}>
                 <div style={{ fontSize: 11, color: T.textDim, marginBottom: 4, fontFamily: "monospace" }}>{channelCount}&times; {toConn.short}</div>
-                <ConnectorDiagram connKey={build.to} side={toSide} highlightPins={toHighlight} pinColors={toPinColors} viewLabel={side === "solder" ? "SOLDER SIDE" : "FACE VIEW"} />
+                <ConnectorDiagram connKey={build.to} side={toSide} highlightPins={toHighlight} pinColors={toPinColors} viewLabel={side === "solder" ? "SOLDER SIDE" : "FACE VIEW"} shellHighlighted={toShellHighlighted} shellColor={toShellWireIdx >= 0 ? wireColors[toShellWireIdx]?.lineColor : null} />
               </div>
             ) : (
-              <ConnectorDiagram connKey={build.to} side={toSide} highlightPins={toHighlight} pinColors={toPinColors} label={toLabel} viewLabel={side === "solder" ? "SOLDER SIDE" : "FACE VIEW"} />
+              <ConnectorDiagram connKey={build.to} side={toSide} highlightPins={toHighlight} pinColors={toPinColors} label={toLabel} viewLabel={side === "solder" ? "SOLDER SIDE" : "FACE VIEW"} shellHighlighted={toShellHighlighted} shellColor={toShellWireIdx >= 0 ? wireColors[toShellWireIdx]?.lineColor : null} />
             )}
           </div>
 

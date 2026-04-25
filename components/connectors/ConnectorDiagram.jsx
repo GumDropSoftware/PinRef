@@ -12,10 +12,10 @@ import CoaxConnector from "./CoaxConnector";
 import SpeakonConnector from "./SpeakonConnector";
 import PowerCONConnector from "./PowerCONConnector";
 
-export default function ConnectorDiagram({ connKey, side = "face", highlightPins = [], pinColors = {}, size, label, viewLabel }) {
+export default function ConnectorDiagram({ connKey, side = "face", highlightPins = [], pinColors = {}, size, label, viewLabel, shellHighlighted = false, shellColor = null }) {
   const conn = CONNECTORS[connKey];
   if (!conn) return null;
-  const props = { conn, side, highlightPins, pinColors, size, label, viewLabel };
+  const props = { conn, side, highlightPins, pinColors, size, label, viewLabel, shellHighlighted, shellColor };
   switch (conn.type) {
     case "circular": return <CircularConnector {...props} />;
     case "dt12": return <DT12Connector {...props} />;
