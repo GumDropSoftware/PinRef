@@ -10,10 +10,15 @@ export const CONNECTORS = {
     group: "audio",
     faceGender: "female",
     pins: [
-      { id: 1, label: "1", name: "Ground / Shield" },
+      { id: 1, label: "1", name: "Signal Ground" },
       { id: 2, label: "2", name: "Signal + (Hot)" },
       { id: 3, label: "3", name: "Signal \u2212 (Cold)" },
     ],
+    // Cable-shield drain wire (where used) terminates on the connector's metal shell/tab,
+    // NOT on a numbered pin. In simpler/cheaper cable construction the shield is bonded
+    // to pin 1 inside the connector — that should be modeled as an explicit pin1↔shell
+    // jumper at the build level, not by conflating shield into pin 1's label.
+    shell: { id: "shell", label: "T", name: "Shell / Tab \u2014 Cable Shield Drain" },
     // Female face view per physical inspection: Pin 2 top-left on female
     // (Pin 2 top-right on male; female is the mirror).
     facePositions: [
@@ -35,12 +40,20 @@ export const CONNECTORS = {
     group: "audio",
     faceGender: "female",
     pins: [
-      { id: 1, label: "1", name: "Ground / Shield" },
+      { id: 1, label: "1", name: "Mic Ground" },
       { id: 2, label: "2", name: "Mic Signal (Hot)" },
       { id: 3, label: "3", name: "Earphone Return (Ground)" },
       { id: 4, label: "4", name: "Left Earphone (Hot)" },
       { id: 5, label: "5", name: "Right Earphone (Hot)" },
     ],
+    // Cable shield (where present as a discrete conductor — typical in higher-quality
+    // production headset cables like the Telex PH-88R5) terminates on the connector
+    // shell/tab, NOT on pin 1. Pin 1 is the dedicated mic-capsule return ("mic signal
+    // low" in RTS docs, "Mic Screen" in Clear-Com docs). In cheaper 2-conductor+shield
+    // cable construction the shield braid pulls double-duty as pin 1's wire — model
+    // that as an explicit pin1↔shell jumper at the build level, not by conflating
+    // shield into pin 1's label.
+    shell: { id: "shell", label: "T", name: "Shell / Tab \u2014 Cable Shield Drain" },
     // Female face view per Clear-Com XLR-5F diagram (verified against a physical male:
     // Pin 5 is top-right on male → Pin 5 top-left on female face, mirror).
     facePositions: [
@@ -65,11 +78,16 @@ export const CONNECTORS = {
     group: "audio",
     faceGender: "female",
     pins: [
-      { id: 1, label: "1", name: "Mic Ground / Shield" },
+      { id: 1, label: "1", name: "Mic Ground" },
       { id: 2, label: "2", name: "Mic Signal (Hot)" },
       { id: 3, label: "3", name: "Earphone Return (Ground)" },
       { id: 4, label: "4", name: "Earphone Signal (Hot)" },
     ],
+    // Cable shield (where present as a discrete conductor) terminates on the connector
+    // shell/tab, NOT on pin 1. Pin 1 is the dedicated mic-capsule return. In cheaper
+    // 2-conductor+shield cable construction the shield braid pulls double-duty as pin
+    // 1's wire — model that as an explicit pin1↔shell jumper at the build level.
+    shell: { id: "shell", label: "T", name: "Shell / Tab \u2014 Cable Shield Drain" },
     // Female face view per Clear-Com XLR-4M diagram (rotated to notch-top).
     // Male face: pins go 1→2→3→4 counter-clockwise starting upper-left. Female is mirrored.
     facePositions: [
