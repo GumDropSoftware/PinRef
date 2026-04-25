@@ -150,18 +150,18 @@ One row per `from → to` entry in `builds.js`. Each build is valid only if both
 
 | # | Build | Convention source | Status |
 |---|---|---|---|
-| 1 | xlr3 → xlr3 (Mic Cable Straight-Through) | AES14-1992; ETC SMPTE LTC | ⚠ |
-| 2 | xlr3 → xlr5 (Intercom / Audio) | Clear-Com V-Series | ⚠ |
-| 3 | xlr3 → trs (1/4" Balanced) | Rane Note 110; Sweetwater TRS | ⚠ |
-| 4 | xlr3 → rj45 (Audio over Cat5) | StudioHub+ | ⚠ |
+| 1 | xlr3 → xlr3 (Mic Cable Straight-Through) | AES14-1992; ETC SMPTE LTC | ✅ 2026-04-14 |
+| 2 | xlr3 → xlr5 (Intercom / Audio) | Clear-Com V-Series; Clear-Com Solution Finder | ✅ 2026-04-14 |
+| 3 | xlr3 → trs (1/4" Balanced) | Rane Note 110 Figure 1a | ✅ 2026-04-21 |
+| 4 | xlr3 → rj45 (Audio over Cat5) | StudioHub+ Adapter Pinout Guide | ✅ 2026-04-21 |
 | 5 | xlr3 → db25 (Tascam/AES59 Snake) | Tascam; Aviom; AES59; Sweetwater | ⚠ |
 | 6 | xlr3 → xlr4 (Headset Earphone, partial) | Clear-Com V-Series | ⚠ |
 | 7 | xlr3 → bnc (NOT compatible) | SMPTE ST 259/292 (Wikipedia) | ⚠ |
 | 8 | xlr3 → triax (NOT compatible) | Wikipedia Triaxial | ⚠ |
 | 9 | xlr3 → dt12 (Channel Breakout) | Clark Wire; Whirlwind | ⚠ (DT12 ✅; XLR3 pending) |
-| 10 | xlr3 → mini_trs (Balanced to Headphone) | Rane Note 110 | ⚠ |
+| 10 | xlr3 → mini_trs (Balanced to Headphone) | Rane Note 110 Figure 1a (convention extended to 3.5mm) | ✅ 2026-04-21 |
 | 11 | xlr3 → ts (Balanced to Unbalanced) | Rane Note 151; Benchmark | ⚠ |
-| 12 | xlr3 → rca (Pro to Consumer, partial) | Rane Note 110; Benchmark | ⚠ |
+| 12 | xlr3 → rca (Pro to Consumer, partial) | Rane Note 110; Benchmark | ⚠ (prev ✅ reverted 2026-04-21 — source not shown on-screen) |
 
 ### XLR5-originating (7)
 
@@ -186,11 +186,11 @@ One row per `from → to` entry in `builds.js`. Each build is valid only if both
 
 | # | Build | Convention source | Status |
 |---|---|---|---|
-| 22 | trs → trs (Patch Cable) | Rane Note 110 | ⚠ |
-| 23 | trs → rj45 (Balanced over Cat5) | StudioHub+ | ⚠ |
-| 24 | trs → xlr3 (Balanced Audio) | Rane Note 110 | ⚠ |
+| 22 | trs → trs (Patch Cable) | Rane Note 110 | ⚠ (prev ✅ reverted 2026-04-21 — source not re-shown for this row) |
+| 23 | trs → rj45 (Balanced over Cat5) | StudioHub+ | ⚠ (prev ✅ reverted 2026-04-21 — source not re-shown for this row) |
+| 24 | trs → xlr3 (Balanced Audio) | Rane Note 110 | ⚠ (prev ✅ reverted 2026-04-21 — source not re-shown for this row) |
 | 25 | trs → xlr4 (Monitor Feed, partial) | Clear-Com V-Series | ⚠ |
-| 71 | trs → rca (Balanced to Consumer, partial) | Rane Note 110; Benchmark | ⚠ |
+| 71 | trs → rca (Balanced to Consumer, partial) | Rane Note 110; Benchmark | ⚠ (prev ✅ reverted 2026-04-21 — product page not a pinout spec) |
 
 ### RJ45-originating (7)
 
@@ -199,9 +199,9 @@ One row per `from → to` entry in `builds.js`. Each build is valid only if both
 | 26 | rj45 → rj45 (T568B Straight-Through) | TIA-568-B (TrueCable) | ⚠ |
 | 27 | rj45 → de9 (Cisco/Yost Console) | Cisco PinoutGuide; Yost | ⚠ |
 | 28 | rj45 → db25 (Serial Adapter, field_hack) | Yost; TI SNLA039 | ⚠ |
-| 29 | rj45 → xlr3 (Audio over Cat5) | StudioHub+ | ⚠ |
+| 29 | rj45 → xlr3 (Audio over Cat5) | StudioHub+ | ⚠ (prev ✅ reverted 2026-04-21 — source not re-shown for this row) |
 | 30 | rj45 → xlr5 (Intercom over Cat5) | Clear-Com V-Series | ⚠ |
-| 31 | rj45 → trs (Balanced over Cat5) | StudioHub+ | ⚠ |
+| 31 | rj45 → trs (Balanced over Cat5) | StudioHub+ | ⚠ (prev ✅ reverted 2026-04-21 — source not re-shown for this row) |
 | 32 | rj45 → xlr4 (Headset over Cat5, partial) | Clear-Com V-Series | ⚠ |
 | 33 | rj45 → bnc (NOT SDI-over-Cat5) | Belden; SMPTE ST 2110 | ⚠ |
 
@@ -259,21 +259,21 @@ One row per `from → to` entry in `builds.js`. Each build is valid only if both
 
 | # | Build | Convention source | Status |
 |---|---|---|---|
-| 53 | ts → ts (Patch Cable) | Rane Note 110 | ⚠ |
-| 54 | ts → xlr3 (Unbalanced Audio) | Rane Note 110 | ⚠ |
-| 55 | ts → rj45 (Unbalanced over Cat5 StudioHub+) | StudioHub+ | ⚠ |
-| 56 | ts → mini_trs (1/4" to 3.5mm) | Rane Note 110 | ⚠ |
+| 53 | ts → ts (Patch Cable) | Rane Note 110 | ⚠ (prev ✅ reverted 2026-04-21 — source not shown for this row) |
+| 54 | ts → xlr3 (Unbalanced Audio) | Rane Note 151; Benchmark | ⚠ (prev ✅ reverted 2026-04-21 — source not shown; pin-3 handling also under review — see backlog) |
+| 55 | ts → rj45 (Unbalanced over Cat5 StudioHub+) | StudioHub+ | ⚠ (prev ✅ reverted 2026-04-21 — source not re-shown for this row) |
+| 56 | ts → mini_trs (1/4" to 3.5mm) | Rane Note 110 | ⚠ (prev ✅ reverted 2026-04-21 — source not shown for this row) |
 
 ### Mini-TRS-originating (6)
 
 | # | Build | Convention source | Status |
 |---|---|---|---|
-| 57 | mini_trs → mini_trs (Straight-Through) | Rane Note 110 | ⚠ |
-| 58 | mini_trs → xlr3 (IFB/Phone Feed) | Rane Note 110 | ⚠ |
+| 57 | mini_trs → mini_trs (Straight-Through) | Rane Note 110 | ⚠ (prev ✅ reverted 2026-04-21 — source not shown for this row) |
+| 58 | mini_trs → xlr3 (IFB/Phone Feed) | Rane Note 110 | ⚠ (prev ✅ reverted 2026-04-21 — source not shown for this row) |
 | 59 | mini_trs → xlr5 (Intercom Listen-Only) | Clear-Com V-Series | ⚠ |
 | 60 | mini_trs → xlr4 (Consumer Phones to Intercom, partial) | Clear-Com V-Series | ⚠ |
-| 61 | mini_trs → rj45 (Stereo over Cat5 StudioHub+) | StudioHub+ | ⚠ |
-| 62 | mini_trs → ts (Headphone to 1/4") | Rane Note 110 | ⚠ |
+| 61 | mini_trs → rj45 (Stereo over Cat5 StudioHub+) | StudioHub+ Adapter Pinout Guide (ADAPT-MINIUNBAL) | ✅ 2026-04-21 (fixed: was grounding on 2/6; official is 4 only, 2/6 n/c) |
+| 62 | mini_trs → ts (Headphone to 1/4") | Rane Note 110 | ⚠ (prev ✅ reverted 2026-04-21 — source not shown for this row) |
 
 ### Mini-TRRS-originating (4)
 
@@ -289,9 +289,9 @@ One row per `from → to` entry in `builds.js`. Each build is valid only if both
 | # | Build | Convention source | Status |
 |---|---|---|---|
 | 67 | rca → rca (Straight-Through) | Belden 1694A | ⚠ |
-| 68 | rca → xlr3 (Consumer to Pro) | Rane Note 110; Benchmark | ⚠ |
-| 69 | rca → ts (Consumer to 1/4") | Rane Note 110 | ⚠ |
-| 70 | rca → trs (Consumer to Balanced) | Rane Note 110 | ⚠ |
+| 68 | rca → xlr3 (Consumer to Pro) | Rane Note 110; Benchmark | ⚠ (prev ✅ reverted 2026-04-21 — product page not a pinout spec; pin-3 handling under review — see backlog) |
+| 69 | rca → ts (Consumer to 1/4") | Rane Note 110 | ⚠ (prev ✅ reverted 2026-04-21 — source not shown for this row) |
+| 70 | rca → trs (Consumer to Balanced) | Rane Note 110 | ⚠ (prev ✅ reverted 2026-04-21 — source not shown for this row) |
 
 ### PowerCON-originating (1)
 
@@ -311,6 +311,7 @@ One row per `from → to` entry in `builds.js`. Each build is valid only if both
 
 - ✅ **All 17 connectors verified in Part A.** Connector-level `sources` populated on every connector; each pinout cites its authority on the detail page.
 - ✅ **LMG internal builds (7)** \u2014 XLR5→DB25 intercom snake, Adam KP Black/Yellow, Serial Data Grey, TSI↔Kalypso (3 variants), Cronus. These are proprietary named builds documented in LMG's internal shop notes / cable-shell inventory. Each build's `sources` field marks them `"LMG internal \u2014 \u2026"`. No external verification required; they are field-verified at LMG.
+- ⚠ **Pin-3 convention for unbalanced↔balanced adapters needs a proper pinout-standards source.** Across #11, #12, #54, #68, #70, #71 the data disagrees on whether to float or tie the unused cold pin, and the disagreement appears to split by source-side vs destination-side. Benchmark's product-page text (cited by #12, #68, #71) describes their adapter as source-side-float, but a product listing isn't a published pinout standard. To resolve properly: load Rane Note 151 (grounding/shielding), Rane Note 110 Figure 4 (cable connector table), or a similar authoritative pinout reference; verify each row against it visibly side-by-side with the preview. Flagged 2026-04-21.
 
 ---
 

@@ -18,7 +18,7 @@ const STANDARD_BUILDS = [
   },
   {
     from: "xlr3", to: "xlr5", status: "standard", title: "XLR3 to XLR5 \u2014 Intercom / Audio",
-    use: "Send one or both balanced channels into an XLR5 intercom connector. One cable = mic send only; two cables = full send + earpiece return.",
+    use: "Adapt XLR3 mic cable(s) into an XLR5 intercom connector. One cable = unbalanced mic send only; two cables = mic send + stereo earphone return.",
     multiChannel: {
       max: 2,
       multiSide: "from",
@@ -26,29 +26,30 @@ const STANDARD_BUILDS = [
       perChannel: [
         {
           wiring: [
-            { fromPin: 2, toPin: 2, desc: "XLR3 pin 2 (Hot +) to XLR5 pin 2 (Mic Signal)" },
-            { fromPin: 3, toPin: 3, desc: "XLR3 pin 3 (Cold) to XLR5 pin 3 (Earphone Return/Ground)" },
-            { fromPin: 1, toPin: 1, desc: "XLR3 pin 1 (Ground) to XLR5 pin 1 (Ground)" },
+            { fromPin: 2, toPin: 2, desc: "XLR3 pin 2 (Hot +) to XLR5 pin 2 (Mic Signal) \u2014 intercom mic is unbalanced" },
+            { fromPin: 3, toPin: 3, desc: "XLR3 pin 3 (Cold) to XLR5 pin 3 (Earphone Return / Ground) \u2014 ties cold to ground at the XLR5 end" },
+            { fromPin: 1, toPin: 1, desc: "XLR3 pin 1 (Shield) to XLR5 pin 1 (Mic Screen / Ground)" },
           ],
         },
         {
           wiring: [
-            { fromPin: 2, toPin: 4, desc: "XLR3 pin 2 (Hot +) to XLR5 pin 4 (Left Earphone +)" },
-            { fromPin: 3, toPin: 5, desc: "XLR3 pin 3 (Cold/Ring conductor) to XLR5 pin 5 (Right Earphone +)" },
-            { fromPin: 1, toPin: 1, desc: "XLR3 pin 1 (Ground) to XLR5 pin 1 (Ground)" },
+            { fromPin: 2, toPin: 4, desc: "XLR3 pin 2 to XLR5 pin 4 (Left Earphone +) \u2014 unbalanced L signal" },
+            { fromPin: 3, toPin: 5, desc: "XLR3 pin 3 to XLR5 pin 5 (Right Earphone +) \u2014 unbalanced R signal" },
+            { fromPin: 1, toPin: 1, desc: "XLR3 pin 1 (Shield) to XLR5 pin 1 (Mic Screen / Ground) \u2014 common return for both earphone signals" },
           ],
         },
       ],
     },
     wiring: [
-      { fromPin: 1, toPin: 1, desc: "Ground to Ground" },
-      { fromPin: 2, toPin: 2, desc: "Hot (+) to Hot (+)" },
-      { fromPin: 3, toPin: 3, desc: "Cold (\u2212) to Cold (\u2212)" },
+      { fromPin: 1, toPin: 1, desc: "XLR3 pin 1 (Shield) to XLR5 pin 1 (Mic Screen / Ground)" },
+      { fromPin: 2, toPin: 2, desc: "XLR3 pin 2 (Hot +) to XLR5 pin 2 (Mic Signal) \u2014 intercom mic is unbalanced" },
+      { fromPin: 3, toPin: 3, desc: "XLR3 pin 3 (Cold) to XLR5 pin 3 (Earphone Return / Ground) \u2014 ties cold to ground at the XLR5 end" },
     ],
     deadEnds: [{ connector: "to", pin: 4, desc: "Pin 4 \u2014 unused (add 2nd XLR3 for earpiece return)" }, { connector: "to", pin: 5, desc: "Pin 5 \u2014 unused (add 2nd XLR3 for earpiece return)" }],
-    notes: "Use 1 cable for send-only. Add a 2nd XLR3 for the earpiece return to fully wire the XLR5 intercom connector.",
+    notes: "Use 1 cable for mic send only. Add a 2nd XLR3 for the stereo earpiece return to fully wire the XLR5 intercom connector. The return cable uses XLR3 unbalanced: pins 2/3 as independent L/R signals sharing pin 1 ground \u2014 keep the return cable short to avoid crosstalk.",
     sources: [
       { label: "Clear-Com V-Series Headset Connectors", url: "https://www.clearcom.com/DownloadCenter/manuals/V-Series_Iris_Online_Manual/Content/Common%20Topics/Headset%20connectors.htm" },
+      { label: "Clear-Com Miscellaneous Pin-Outs (Solution Finder)", url: "https://clear-com.atlassian.net/wiki/spaces/SF/pages/511475872/Miscellaneous+Pin-Outs" },
     ],
   },
   {
@@ -1160,11 +1161,16 @@ const STANDARD_BUILDS = [
     wiring: [
       { fromPin: 1, toPin: 1, desc: "Tip (Left Audio) to RJ45 pin 1 (Wht/Org)" },
       { fromPin: 2, toPin: 3, desc: "Ring (Right Audio) to RJ45 pin 3 (Wht/Grn)" },
-      { fromPin: 3, toPin: 2, desc: "Sleeve (Ground) to RJ45 pin 2 (Orange)" },
-      { fromPin: 3, toPin: 6, desc: "Sleeve (Ground) to RJ45 pin 6 (Green)" },
+      { fromPin: 3, toPin: 4, desc: "Sleeve (Ground) to RJ45 pin 4 (Blue) \u2014 DC GND rail on StudioHub+ panels" },
     ],
-    deadEnds: [{ connector: "to", pin: 4, desc: "RJ45 pins 4, 5, 7, 8 \u2014 unused (reserved for DC power in active StudioHub+ panels)" }],
-    notes: "StudioHub+ ADAPT-MINIUNBAL convention: left on pair 1/2, right on pair 3/6, ground shared on pins 2 and 6 to keep signal+return on the same twisted pair. Pins 7/8 carry \u00b115V DC on powered StudioHub+ panels \u2014 do not short to audio ground.",
+    deadEnds: [
+      { connector: "to", pin: 2, desc: "RJ45 pin 2 \u2014 n/c per StudioHub+ ADAPT-MINIUNBAL" },
+      { connector: "to", pin: 5, desc: "RJ45 pin 5 \u2014 unused" },
+      { connector: "to", pin: 6, desc: "RJ45 pin 6 \u2014 n/c per StudioHub+ ADAPT-MINIUNBAL" },
+      { connector: "to", pin: 7, desc: "RJ45 pin 7 \u2014 reserved for \u221215V DC on active StudioHub+ panels" },
+      { connector: "to", pin: 8, desc: "RJ45 pin 8 \u2014 reserved for +15V DC on active StudioHub+ panels" },
+    ],
+    notes: "StudioHub+ ADAPT-MINIUNBAL convention: Left/Tip on pin 1 (Wht/Org), Right/Ring on pin 3 (Wht/Grn), ground on pin 4 (Blue = DC GND rail). Pins 2 and 6 are n/c per the official StudioHub+ Adapter Pinout Guide. Pins 7/8 carry \u00b115V DC on powered StudioHub+ panels \u2014 do not short to audio ground.",
     sources: [
       { label: "StudioHub+ Adapter Pinout Guide (official)", url: "https://studiohub.com/wp-content/uploads/2019/10/AAPinoutandAdapterGuide.pdf" },
     ],

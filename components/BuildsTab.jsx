@@ -25,6 +25,15 @@ export default function BuildsTab({ initialBuild, initialConnector, onClearIniti
       if (!opts.has(other)) opts.set(other, []);
       opts.get(other).push(b);
     });
+    // Dedupe mirror pairs: if a connector pair has both a forward (from === first)
+    // and a reverse (to === first) build, keep only the forward ones. The detail
+    // page renders the forward direction anyway, so reverse mirrors are redundant.
+    for (const [other, builds] of opts) {
+      const forward = builds.filter((b) => b.from === first);
+      if (forward.length > 0 && forward.length < builds.length) {
+        opts.set(other, forward);
+      }
+    }
     return Array.from(opts.entries());
   }, [first, matchingBuilds]);
 
