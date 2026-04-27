@@ -167,13 +167,13 @@ One row per `from → to` entry in `builds.js`. Each build is valid only if both
 
 | # | Build | Convention source | Status |
 |---|---|---|---|
-| 13 | xlr5 → xlr5 (Straight-Through) | Clear-Com V-Series; USITT DMX512-A | ⚠ |
-| 14 | xlr5 → xlr4 (Beltpack to Headset) | Clear-Com; RTS BP-325 | ⚠ |
-| 15 | xlr5 → rj45 (Intercom over Cat5) | Clear-Com V-Series | ⚠ |
+| 13 | xlr5 → xlr5 (Straight-Through) | Clear-Com V-Series XLR-5F headset connector | ✅ 2026-04-26 |
+| 14 | xlr5 → xlr4 (Beltpack to Headset) | Clear-Com V-Series XLR-5F + XLR-4M tables | ✅ 2026-04-26 |
+| 15 | xlr5 → rj45 (Intercom over Cat5) | StudioHub+ XLR3 convention extended to XLR5; Clear-Com V-Series for pin functions | ✅ 2026-04-26 (no native XLR5-over-Cat5 standard exists; documented as extension in build notes) |
 | 16 | xlr5 → db25 (Intercom Snake, field_hack) | LMG internal (custom intercom snake) | ⚠ |
-| 17 | xlr5 → xlr3 (Intercom Breakout, partial) | Clear-Com V-Series | ⚠ |
-| 18 | xlr5 → mini_trs (Intercom Earpiece) | Clear-Com V-Series | ⚠ |
-| 19 | xlr5 → mini_trrs (Intercom to Consumer) | AOSP; Clear-Com | ⚠ |
+| 17 | xlr5 → xlr3 (Intercom Breakout, partial) | Clear-Com V-Series for pin functions; convention is a custom field-rig (no published standard) | ✅ 2026-04-26 |
+| 18 | xlr5 → mini_trs (Intercom Earpiece) | Clear-Com V-Series XLR-5F (strict: Sleeve uses pin 3 Earphone Return) | ✅ 2026-04-26 (fixed: was using pin 1 as ground; now uses pin 3 per spec) |
+| 19 | xlr5 → mini_trrs (Intercom to Consumer) | AOSP CTIA (LRGM); Clear-Com V-Series XLR-5F | ✅ 2026-04-26 |
 
 ### DT12-originating (2)
 

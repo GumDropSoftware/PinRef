@@ -256,11 +256,11 @@ const STANDARD_BUILDS = [
     from: "xlr5", to: "xlr5", status: "standard", title: "XLR5 Straight-Through",
     use: "Clear-Com / RTS intercom extension, stereo audio, or DMX512 extension",
     wiring: [
-      { fromPin: 1, toPin: 1, desc: "Ground to Ground" },
-      { fromPin: 2, toPin: 2, desc: "Pin 2 to Pin 2" },
-      { fromPin: 3, toPin: 3, desc: "Pin 3 to Pin 3" },
-      { fromPin: 4, toPin: 4, desc: "Pin 4 to Pin 4" },
-      { fromPin: 5, toPin: 5, desc: "Pin 5 to Pin 5" },
+      { fromPin: 1, toPin: 1, desc: "Mic Ground to Mic Ground" },
+      { fromPin: 2, toPin: 2, desc: "Mic Signal to Mic Signal" },
+      { fromPin: 3, toPin: 3, desc: "Earphone Return to Earphone Return" },
+      { fromPin: 4, toPin: 4, desc: "Left Earphone to Left Earphone" },
+      { fromPin: 5, toPin: 5, desc: "Right Earphone to Right Earphone" },
     ],
     sources: [
       { label: "Clear-Com V-Series Headset Connectors", url: "https://www.clearcom.com/DownloadCenter/manuals/V-Series_Iris_Online_Manual/Content/Common%20Topics/Headset%20connectors.htm" },
@@ -284,35 +284,37 @@ const STANDARD_BUILDS = [
   },
   {
     from: "xlr5", to: "rj45", status: "standard", title: "XLR5 to RJ45 \u2014 Intercom over Cat5",
-    use: "Clear-Com intercom over structured cabling. Up to 1 channel (uses 5 of 8 wires).",
+    use: "Clear-Com / RTS intercom headset extension over Cat5. Single channel uses 5 of 8 wires; pairing follows StudioHub+ XLR3 convention extended to cover XLR5's two additional ear signals.",
     multiChannel: {
       max: 1,
       perChannel: [
         {
           wiring: [
-            { fromPin: 1, toPin: 4, desc: "Ground (pin 1) to RJ45 pin 4 (Blue)" },
-            { fromPin: 2, toPin: 1, desc: "Pin 2 to RJ45 pin 1 (Wht/Org)" },
-            { fromPin: 3, toPin: 2, desc: "Pin 3 to RJ45 pin 2 (Orange)" },
-            { fromPin: 4, toPin: 3, desc: "Pin 4 to RJ45 pin 3 (Wht/Grn)" },
-            { fromPin: 5, toPin: 6, desc: "Pin 5 to RJ45 pin 6 (Green)" },
+            { fromPin: 1, toPin: 4, desc: "Mic Ground (pin 1) to RJ45 pin 4 (Blue)" },
+            { fromPin: 2, toPin: 1, desc: "Mic Signal (pin 2) to RJ45 pin 1 (Wht/Org)" },
+            { fromPin: 3, toPin: 2, desc: "Earphone Return (pin 3) to RJ45 pin 2 (Orange)" },
+            { fromPin: 4, toPin: 3, desc: "Left Earphone (pin 4) to RJ45 pin 3 (Wht/Grn)" },
+            { fromPin: 5, toPin: 6, desc: "Right Earphone (pin 5) to RJ45 pin 6 (Green)" },
           ],
         },
       ],
     },
     wiring: [
-      { fromPin: 1, toPin: 4, desc: "Ground (pin 1) to RJ45 pin 4 (Blue)" },
-      { fromPin: 2, toPin: 1, desc: "Pin 2 to RJ45 pin 1 (Wht/Org)" },
-      { fromPin: 3, toPin: 2, desc: "Pin 3 to RJ45 pin 2 (Orange)" },
-      { fromPin: 4, toPin: 3, desc: "Pin 4 to RJ45 pin 3 (Wht/Grn)" },
-      { fromPin: 5, toPin: 6, desc: "Pin 5 to RJ45 pin 6 (Green)" },
+      { fromPin: 1, toPin: 4, desc: "Mic Ground (pin 1) to RJ45 pin 4 (Blue)" },
+      { fromPin: 2, toPin: 1, desc: "Mic Signal (pin 2) to RJ45 pin 1 (Wht/Org)" },
+      { fromPin: 3, toPin: 2, desc: "Earphone Return (pin 3) to RJ45 pin 2 (Orange)" },
+      { fromPin: 4, toPin: 3, desc: "Left Earphone (pin 4) to RJ45 pin 3 (Wht/Grn)" },
+      { fromPin: 5, toPin: 6, desc: "Right Earphone (pin 5) to RJ45 pin 6 (Green)" },
     ],
     deadEnds: [
       { connector: "to", pin: 5, desc: "RJ45 pin 5 \u2014 unused" },
       { connector: "to", pin: 7, desc: "RJ45 pin 7 \u2014 unused" },
       { connector: "to", pin: 8, desc: "RJ45 pin 8 \u2014 unused" },
     ],
+    notes: "XLR5 is not natively part of StudioHub+. This wiring extends the StudioHub+ XLR3 convention (verified for build #4): mic-ground on Blue, mic-signal+ear-return on the Wht/Org pair, then maps XLR5's two additional ear signals onto pair 2 (Wht/Grn + Green). The receive-side breakout uses the inverse mapping. Pair 1 is shared between mic-signal and ear-return rather than mic-signal and mic-ground, so common-mode rejection on the mic line isn't ideal \u2014 use shielded Cat5 for any run beyond a few feet.",
     sources: [
-      { label: "Clear-Com V-Series Headset Connectors", url: "https://www.clearcom.com/DownloadCenter/manuals/V-Series_Iris_Online_Manual/Content/Common%20Topics/Headset%20connectors.htm" },
+      { label: "StudioHub+ Adapter Pinout Guide (XLR3 convention extended to XLR5)", url: "https://studiohub.com/wp-content/uploads/2019/10/AAPinoutandAdapterGuide.pdf" },
+      { label: "Clear-Com V-Series Headset Connectors (XLR-5F pin functions)", url: "https://www.clearcom.com/DownloadCenter/manuals/V-Series_Iris_Online_Manual/Content/Common%20Topics/Headset%20connectors.htm" },
     ],
   },
   {
@@ -356,17 +358,17 @@ const STANDARD_BUILDS = [
       ],
     },
     wiring: [
-      { fromPin: 1, toPin: 1, desc: "Ground to Ground" },
+      { fromPin: 1, toPin: 1, desc: "Mic Ground to Ground" },
       { fromPin: 2, toPin: 2, desc: "Mic Signal (pin 2) to Hot (+)" },
-      { fromPin: 3, toPin: 3, desc: "Earphone Return/Ground (pin 3) to Cold" },
+      { fromPin: 3, toPin: 3, desc: "Earphone Return (pin 3) to Cold" },
     ],
     deadEnds: [
       { connector: "from", pin: 4, desc: "XLR5 pin 4 (Left Earphone) \u2014 unused (add 2nd XLR3 for earphone)" },
       { connector: "from", pin: 5, desc: "XLR5 pin 5 (Right Earphone) \u2014 unused (add 2nd XLR3 for earphone)" },
     ],
-    notes: "Use 1 cable for mic send only. Add a 2nd XLR3 on pins 4/5 for earphone return \u2014 all 5 pins used, nothing wasted.",
+    notes: "Use 1 cable for mic send only. Add a 2nd XLR3 on pins 4/5 for earphone return \u2014 all 5 pins used, nothing wasted. NOTE: this is a custom field-rig pattern, NOT a published Clear-Com / RTS standard. The XLR3 connectors are used as 3-conductor pass-throughs, not as balanced audio cables in the conventional sense \u2014 pin 3 carries the ear-return rather than a true cold/inverted signal. Treat it as a tap solution, not a balanced extension.",
     sources: [
-      { label: "Clear-Com V-Series Headset Connectors", url: "https://www.clearcom.com/DownloadCenter/manuals/V-Series_Iris_Online_Manual/Content/Common%20Topics/Headset%20connectors.htm" },
+      { label: "Clear-Com V-Series Headset Connectors (XLR-5F pin functions)", url: "https://www.clearcom.com/DownloadCenter/manuals/V-Series_Iris_Online_Manual/Content/Common%20Topics/Headset%20connectors.htm" },
     ],
   },
   {
@@ -375,13 +377,13 @@ const STANDARD_BUILDS = [
     wiring: [
       { fromPin: 4, toPin: 1, desc: "XLR5 pin 4 (Left Earphone +) to Tip" },
       { fromPin: 5, toPin: 2, desc: "XLR5 pin 5 (Right Earphone +) to Ring" },
-      { fromPin: 1, toPin: 3, desc: "XLR5 pin 1 (Ground) to Sleeve" },
+      { fromPin: 3, toPin: 3, desc: "XLR5 pin 3 (Earphone Return) to Sleeve" },
     ],
     deadEnds: [
-      { connector: "from", pin: 2, desc: "Pin 2 (Mic Signal) \u2014 unused, no mic circuit on TRS" },
-      { connector: "from", pin: 3, desc: "Pin 3 (Earphone Return) \u2014 unused, ground already carried on pin 1" },
+      { connector: "from", pin: 1, desc: "XLR5 pin 1 (Mic Ground) \u2014 unused, no mic circuit on TRS" },
+      { connector: "from", pin: 2, desc: "XLR5 pin 2 (Mic Signal) \u2014 unused, no mic circuit on TRS" },
     ],
-    notes: "Listen-only. No talkback. For 2-way use a TRRS headset.",
+    notes: "Listen-only. No talkback. For 2-way use a TRRS headset. Sleeve uses XLR5 pin 3 (Earphone Return), per Clear-Com V-Series spec \u2014 that's the dedicated return for the ear amplifiers. Pin 1 (Mic Ground) is left floating since there's no mic circuit on a 3.5mm TRS.",
     sources: [
       { label: "Clear-Com V-Series Headset Connectors", url: "https://www.clearcom.com/DownloadCenter/manuals/V-Series_Iris_Online_Manual/Content/Common%20Topics/Headset%20connectors.htm" },
     ],
@@ -393,10 +395,10 @@ const STANDARD_BUILDS = [
       { fromPin: 4, toPin: 1, desc: "XLR5 pin 4 (Left Earphone +) to Tip (Left Audio)" },
       { fromPin: 5, toPin: 2, desc: "XLR5 pin 5 (Right Earphone +) to Ring 1 (Right Audio)" },
       { fromPin: 2, toPin: 4, desc: "XLR5 pin 2 (Mic Signal) to Sleeve (Mic CTIA)" },
-      { fromPin: 1, toPin: 3, desc: "XLR5 pin 1 (Ground) to Ring 2 (Ground CTIA)" },
+      { fromPin: 1, toPin: 3, desc: "XLR5 pin 1 (Mic Ground) to Ring 2 (Ground CTIA)" },
       { fromPin: 3, toPin: 3, desc: "XLR5 pin 3 (Earphone Return) to Ring 2 (Ground CTIA)" },
     ],
-    notes: "CTIA (Apple/Android) wiring: mic is on Sleeve, ground is on Ring 2. Tie both XLR5 pin 1 and pin 3 to TRRS Ring 2 at the TRRS end. If mic and earphone are swapped when tested, the headset uses OMTP \u2014 reverse Ring 2 and Sleeve.",
+    notes: "CTIA (Apple/Android) wiring: mic on Sleeve, ground on Ring 2. TRRS only has one ground pin so both XLR5 returns (pin 1 Mic Ground and pin 3 Earphone Return) must converge on Ring 2 \u2014 bond them at the TRRS end. If mic and earphone are swapped when tested, the headset uses OMTP \u2014 reverse Ring 2 and Sleeve.",
     sources: [
       { label: "Android AOSP 3.5mm Headset Jack Spec (LRGM)", url: "https://source.android.com/docs/core/interaction/accessories/headset/plug-headset-spec" },
       { label: "Clear-Com V-Series Headset Connectors", url: "https://www.clearcom.com/DownloadCenter/manuals/V-Series_Iris_Online_Manual/Content/Common%20Topics/Headset%20connectors.htm" },
