@@ -154,13 +154,13 @@ One row per `from → to` entry in `builds.js`. Each build is valid only if both
 | 2 | xlr3 → xlr5 (Intercom / Audio) | Clear-Com V-Series; Clear-Com Solution Finder | ✅ 2026-04-14 |
 | 3 | xlr3 → trs (1/4" Balanced) | Rane Note 110 Figure 1a | ✅ 2026-04-21 |
 | 4 | xlr3 → rj45 (Audio over Cat5) | StudioHub+ Adapter Pinout Guide | ✅ 2026-04-21 |
-| 5 | xlr3 → db25 (Tascam/AES59 Snake) | Tascam; Aviom; AES59; Sweetwater | ⚠ |
-| 6 | xlr3 → xlr4 (Headset Earphone, partial) | Clear-Com V-Series | ⚠ |
-| 7 | xlr3 → bnc (NOT compatible) | SMPTE ST 259/292 (Wikipedia) | ⚠ |
-| 8 | xlr3 → triax (NOT compatible) | Wikipedia Triaxial | ⚠ |
-| 9 | xlr3 → dt12 (Channel Breakout) | Clark Wire; Whirlwind | ⚠ (DT12 ✅; XLR3 pending) |
+| 5 | xlr3 → db25 (Tascam/AES59 Snake) | TASCAM DB-25 Pinout Standard (official) — channels run right-to-left, Ch1=24/12/25 H/C/G | ✅ 2026-04-27 |
+| 6 | xlr3 → xlr4 (Headset Earphone, partial) | Clear-Com V-Series XLR-4M; Rane Note 151 (source-side cold float) | ✅ 2026-04-27 (fixed: was tying Cold to Earphone Return; now floats per Rane 151. Ground routes to XLR4 pin 3 Earphone Return, not pin 1 Mic Ground) |
+| 7 | xlr3 → bnc (NOT compatible) | SMPTE ST 259/292 (impedance + signal-type mismatch — 110Ω balanced audio vs 75Ω video) | ✅ 2026-04-27 |
+| 8 | xlr3 → triax (NOT compatible) | Wikipedia Triaxial (multiplexed camera control + video + DC, no passive adaptation possible) | ✅ 2026-04-27 |
+| 9 | xlr3 → dt12 (Channel Breakout) | Clark Wire DT12 Multipin Audio Pinout (all 12 channels H/C/G match) | ✅ 2026-04-27 |
 | 10 | xlr3 → mini_trs (Balanced to Headphone) | Rane Note 110 Figure 1a (convention extended to 3.5mm) | ✅ 2026-04-21 |
-| 11 | xlr3 → ts (Balanced to Unbalanced) | Rane Note 151; Benchmark | ⚠ |
+| 11 | xlr3 → ts (Balanced to Unbalanced) | Rane Note 151 Figure 5 col 3 (source-side cold float for transformerless balanced outputs) | ✅ 2026-04-27 |
 | 12 | xlr3 → rca (Pro to Consumer, partial) | Rane Note 110; Benchmark | ⚠ (prev ✅ reverted 2026-04-21 — source not shown on-screen) |
 
 ### XLR5-originating (7)
@@ -170,7 +170,7 @@ One row per `from → to` entry in `builds.js`. Each build is valid only if both
 | 13 | xlr5 → xlr5 (Straight-Through) | Clear-Com V-Series XLR-5F headset connector | ✅ 2026-04-26 |
 | 14 | xlr5 → xlr4 (Beltpack to Headset) | Clear-Com V-Series XLR-5F + XLR-4M tables | ✅ 2026-04-26 |
 | 15 | xlr5 → rj45 (Intercom over Cat5) | StudioHub+ XLR3 convention extended to XLR5; Clear-Com V-Series for pin functions | ✅ 2026-04-26 (no native XLR5-over-Cat5 standard exists; documented as extension in build notes) |
-| 16 | xlr5 → db25 (Intercom Snake, field_hack) | LMG internal (custom intercom snake) | ⚠ |
+| 16 | xlr5 → db25 (Intercom Snake, field_hack) | Internal Build for custom use | ✅ 2026-04-27 |
 | 17 | xlr5 → xlr3 (Intercom Breakout, partial) | Clear-Com V-Series for pin functions; convention is a custom field-rig (no published standard) | ✅ 2026-04-26 |
 | 18 | xlr5 → mini_trs (Intercom Earpiece) | Clear-Com V-Series XLR-5F (strict: Sleeve uses pin 3 Earphone Return) | ✅ 2026-04-26 (fixed: was using pin 1 as ground; now uses pin 3 per spec) |
 | 19 | xlr5 → mini_trrs (Intercom to Consumer) | AOSP CTIA (LRGM); Clear-Com V-Series XLR-5F | ✅ 2026-04-26 |
@@ -179,8 +179,8 @@ One row per `from → to` entry in `builds.js`. Each build is valid only if both
 
 | # | Build | Convention source | Status |
 |---|---|---|---|
-| 20 | dt12 → dt12 (Straight-Through Extension) | Clark Wire; Whirlwind | ⚠ (DT12 ✅; straight-through trivially correct — review convention wording) |
-| 21 | dt12 → db25 (8 Ch AES59/Tascam) | Tascam; Clark Wire; AES59 | ⚠ (DT12 ✅; DB25 pending) |
+| 20 | dt12 → dt12 (Straight-Through Extension) | Clark Wire DT12 Multipin Audio Pinout (37-pin straight-through, all pins 1:1) | ✅ 2026-04-27 |
+| 21 | dt12 → db25 (8 Ch AES59/Tascam) | Clark Wire DT12 + Tascam DB-25 standards (cross-mapped per channel, all 24 wires verified) | ✅ 2026-04-27 |
 
 ### TRS-originating (4)
 
@@ -189,46 +189,46 @@ One row per `from → to` entry in `builds.js`. Each build is valid only if both
 | 22 | trs → trs (Patch Cable) | Rane Note 110 | ⚠ (prev ✅ reverted 2026-04-21 — source not re-shown for this row) |
 | 23 | trs → rj45 (Balanced over Cat5) | StudioHub+ | ⚠ (prev ✅ reverted 2026-04-21 — source not re-shown for this row) |
 | 24 | trs → xlr3 (Balanced Audio) | Rane Note 110 | ⚠ (prev ✅ reverted 2026-04-21 — source not re-shown for this row) |
-| 25 | trs → xlr4 (Monitor Feed, partial) | Clear-Com V-Series | ⚠ |
+| 25 | trs → xlr4 (Monitor Feed, partial) | Clear-Com V-Series XLR-4M (strict: Sleeve uses pin 3 only) | ✅ 2026-04-27 (fixed: was bonding Sleeve to pins 1+3; now pin 3 only per spec) |
 | 71 | trs → rca (Balanced to Consumer, partial) | Rane Note 110; Benchmark | ⚠ (prev ✅ reverted 2026-04-21 — product page not a pinout spec) |
 
 ### RJ45-originating (7)
 
 | # | Build | Convention source | Status |
 |---|---|---|---|
-| 26 | rj45 → rj45 (T568B Straight-Through) | TIA-568-B (TrueCable) | ⚠ |
-| 27 | rj45 → de9 (Cisco/Yost Console) | Cisco PinoutGuide; Yost | ⚠ |
-| 28 | rj45 → db25 (Serial Adapter, field_hack) | Yost; TI SNLA039 | ⚠ |
+| 26 | rj45 → rj45 (T568B Straight-Through) | TIA/EIA-568-B (8-pin straight-through, both ends T568B) | ✅ 2026-04-27 |
+| 27 | rj45 → de9 (Cisco/Yost Console) | Yost RJ45 Serial Wiring Standard + Cisco rolled-and-adapted single-cable variant | ✅ 2026-04-27 |
+| 28 | rj45 → db25 (Minimal Serial Adapter) | Yost RJ45 standard + TI SNLA039 (RS-232 DB25); 3-wire minimal RS-232 is documented practice, not a hack | ✅ 2026-04-27 (status changed from field_hack → standard; warning about handshake retained in notes) |
 | 29 | rj45 → xlr3 (Audio over Cat5) | StudioHub+ | ⚠ (prev ✅ reverted 2026-04-21 — source not re-shown for this row) |
-| 30 | rj45 → xlr5 (Intercom over Cat5) | Clear-Com V-Series | ⚠ |
+| 30 | rj45 → xlr5 (Intercom over Cat5) | StudioHub+ XLR3 convention extended to XLR5; Clear-Com V-Series for pin functions | ✅ 2026-04-27 (mirror of #15; same resolution) |
 | 31 | rj45 → trs (Balanced over Cat5) | StudioHub+ | ⚠ (prev ✅ reverted 2026-04-21 — source not re-shown for this row) |
-| 32 | rj45 → xlr4 (Headset over Cat5, partial) | Clear-Com V-Series | ⚠ |
-| 33 | rj45 → bnc (NOT SDI-over-Cat5) | Belden; SMPTE ST 2110 | ⚠ |
+| 32 | rj45 → xlr4 (Headset over Cat5, partial) | StudioHub+ XLR3 convention extended to XLR4; Clear-Com V-Series for pin functions | ✅ 2026-04-27 (mirror of #47) |
+| 33 | rj45 → bnc (NOT SDI-over-Cat5) | Belden + SMPTE ST 2110 (Cat5 ≠ 75Ω coax; SDI requires baluns/transceivers, not passive adapters) | ✅ 2026-04-27 |
 
 ### BNC / Triax-originating (5)
 
 | # | Build | Convention source | Status |
 |---|---|---|---|
-| 34 | bnc → bnc (SDI/Genlock/LTC) | Belden 12G-SDI; Canare | ⚠ |
-| 35 | bnc → triax (SDI on Triax, partial) | Canford guide; Wikipedia | ⚠ |
-| 36 | bnc → rj45 (NOT SDI-over-Cat5) | Belden; SMPTE ST 2110 | ⚠ |
-| 37 | triax → bnc (Triax-as-Coax receive, partial) | Canford guide | ⚠ |
-| 38 | triax → triax (Extension) | Canford guide; Wikipedia | ⚠ |
+| 34 | bnc → bnc (SDI/Genlock/LTC) | Belden 12G-SDI + Canare 12G-SDI (75Ω center+shell straight-through, universal) | ✅ 2026-04-27 |
+| 35 | bnc → triax (SDI on Triax, partial) | Canford LEMO/Triax guide + Wikipedia Triaxial (center+outer-shield as 75Ω coax, inner shield unused) | ✅ 2026-04-27 |
+| 36 | bnc → rj45 (NOT SDI-over-Cat5) | Belden + SMPTE ST 2110 (75Ω vs 100Ω + GHz vs MHz bandwidth — passively impossible; needs active baluns or IP video) | ✅ 2026-04-27 |
+| 37 | triax → bnc (Triax-as-Coax receive, partial) | Canford LEMO/Triax guide (mirror of #35) | ✅ 2026-04-27 |
+| 38 | triax → triax (Extension) | Canford LEMO/Triax guide + Wikipedia Triaxial (3-conductor straight-through) | ✅ 2026-04-27 |
 
 ### DE-9-originating (11)
 
 | # | Build | Convention source | Status |
 |---|---|---|---|
-| 39 | de9 → de9 (Straight-Through DCE/DTE) | Wikipedia RS-232; TI SNLA039 | ⚠ |
-| 40 | de9 → de9 (Null Modem, Full Handshake) | Wikipedia Null Modem; Lammert Bies | ⚠ |
-| 41 | de9 → de9 (Null Modem, 3-Wire Scoreboard) | Daktronics; NewBlue | ⚠ |
+| 39 | de9 → de9 (Straight-Through DCE/DTE) | Wikipedia RS-232 + TI SNLA039 (9-pin straight-through) | ✅ 2026-04-27 |
+| 40 | de9 → de9 (Null Modem, Full Handshake) | Wikipedia Null Modem + Lammert Bies (TxD↔RxD, RTS↔CTS, DTR↔DSR all crossed, GND straight) | ✅ 2026-04-28 |
+| 41 | de9 → de9 (Null Modem, 3-Wire Scoreboard) | Wikipedia Null Modem (3-wire / loopback handshaking variant) + Lammert Bies; Daktronics/NewBlue cited as application context | ✅ 2026-05-01 |
 | 42 | de9 → db25 (EIA-574 to EIA-232) | TI SNLA039; RS-232 Wikipedia | ⚠ |
-| 73 | de9 → rj45 (Adam KP Black) | LMG internal (Cable Wholesale black shell) | ⚠ |
-| 74 | de9 → rj45 (Adam KP Yellow CAM/IFB) | LMG internal (Cable Wholesale yellow shell) | ⚠ |
-| 75 | de9 → rj45 (Serial Data Grey RS-232/422) | LMG internal (Cable Wholesale grey shell) | ⚠ |
-| 76 | de9 → rj45 (RS-422 Null Crossover TSI↔Kalypso) | LMG internal (TSI-1000 / Kalypso) | ⚠ |
-| 77 | de9 → rj45 (RS-232 Adapter TSI↔Kalypso) | LMG internal (TSI-1000 / Kalypso) | ⚠ |
-| 78 | de9 → rj45 (RS-232 Null Crossover TSI↔Kalypso) | LMG internal (TSI-1000 / Kalypso) | ⚠ |
+| 73 | de9 → rj45 (Adam KP Black) | Internal Build for custom use | ✅ 2026-04-27 |
+| 74 | de9 → rj45 (Adam KP Yellow CAM/IFB) | Internal Build for custom use | ✅ 2026-04-27 |
+| 75 | de9 → rj45 (Serial Data Grey RS-232/422) | Internal Build for custom use | ✅ 2026-04-27 |
+| 76 | de9 → rj45 (RS-422 Null Crossover TSI↔Kalypso) | Internal Build for custom use | ✅ 2026-04-27 |
+| 77 | de9 → rj45 (RS-232 Adapter TSI↔Kalypso) | Internal Build for custom use | ✅ 2026-04-27 |
+| 78 | de9 → rj45 (RS-232 Null Crossover TSI↔Kalypso) | Internal Build for custom use | ✅ 2026-04-27 |
 
 ### DB25-originating (2)
 
@@ -241,26 +241,26 @@ One row per `from → to` entry in `builds.js`. Each build is valid only if both
 
 | # | Build | Convention source | Status |
 |---|---|---|---|
-| 45 | xlr4 → xlr4 (Headset Extension) | Clear-Com; RTS BP-325 | ⚠ |
-| 46 | xlr4 → trs (Earphone Feed, partial) | Clear-Com V-Series | ⚠ |
-| 47 | xlr4 → rj45 (Headset over Cat5, partial) | Clear-Com V-Series | ⚠ |
-| 48 | xlr4 → xlr5 (Headset to Intercom Panel) | Clear-Com; RTS BP-325 | ⚠ |
-| 49 | xlr4 → xlr3 (Headset Mic to Balanced, partial) | Clear-Com V-Series | ⚠ |
+| 45 | xlr4 → xlr4 (Headset Extension) | Clear-Com V-Series XLR-4M | ✅ 2026-04-27 |
+| 46 | xlr4 → trs (Earphone Feed, partial) | Clear-Com V-Series XLR-4M (strict: Sleeve uses pin 3 only) | ✅ 2026-04-27 (fixed: was bonding pins 1+3 to Sleeve; now pin 3 only per spec) |
+| 47 | xlr4 → rj45 (Headset over Cat5, partial) | StudioHub+ XLR3 convention extended to XLR4; Clear-Com V-Series for pin functions | ✅ 2026-04-27 (same resolution as #15) |
+| 48 | xlr4 → xlr5 (Headset to Intercom Panel) | Clear-Com V-Series XLR-4M + XLR-5F (mirror of #14) | ✅ 2026-04-27 |
+| 49 | xlr4 → xlr3 (Headset Mic to Balanced, partial) | Clear-Com V-Series XLR-4M; Rane Note 151 Figure 5e (pin-3 tied at destination) | ✅ 2026-04-27 (fixed: added explicit pin1↔pin3 jumper at destination XLR3 per Rane Fig 5e) |
 
 ### Speakon-originating (3)
 
 | # | Build | Convention source | Status |
 |---|---|---|---|
-| 50 | speakon → speakon (Straight-Through) | Neutrik Wiring; NL4FX | ⚠ |
-| 51 | speakon → xlr3 (Passive Speaker Adapter) | Neutrik Wiring; Neutrik NA4FC-M | ⚠ |
-| 52 | speakon → trs (1/4", field_hack) | Neutrik Wiring | ⚠ |
+| 50 | speakon → speakon (Straight-Through) | Neutrik Speakon Wiring Suggestion (Bi-Amp row + 4-conductor cable) | ✅ 2026-04-27 |
+| 51 | speakon → xlr3 (Passive Speaker Adapter) | Neutrik FAQ (only NL4 1+/1− active); standard XLR pin-1=ground convention | ✅ 2026-04-27 (Neutrik confirms NL4 active pins; specific NL4→XLR mapping follows standard XLR convention but isn't explicitly published) |
+| 52 | speakon → trs (1/4", field_hack) | Neutrik FAQ (only NL4 1+/1− active); universal 1/4" speaker convention (Tip=+, Sleeve=−); Hosa NA4LJX commercial equivalent | ✅ 2026-04-27 |
 
 ### TS-originating (4)
 
 | # | Build | Convention source | Status |
 |---|---|---|---|
 | 53 | ts → ts (Patch Cable) | Rane Note 110 | ⚠ (prev ✅ reverted 2026-04-21 — source not shown for this row) |
-| 54 | ts → xlr3 (Unbalanced Audio) | Rane Note 151; Benchmark | ⚠ (prev ✅ reverted 2026-04-21 — source not shown; pin-3 handling also under review — see backlog) |
+| 54 | ts → xlr3 (Unbalanced Audio) | Rane Note 151 Figure 5e; Rane Note 110 | ✅ 2026-04-27 (fixed: pin 3 was floating, now tied to ground at XLR3 destination per Rane 151 Fig 5e — matches #49/#68/#70 convention) |
 | 55 | ts → rj45 (Unbalanced over Cat5 StudioHub+) | StudioHub+ | ⚠ (prev ✅ reverted 2026-04-21 — source not re-shown for this row) |
 | 56 | ts → mini_trs (1/4" to 3.5mm) | Rane Note 110 | ⚠ (prev ✅ reverted 2026-04-21 — source not shown for this row) |
 
@@ -297,21 +297,24 @@ One row per `from → to` entry in `builds.js`. Each build is valid only if both
 
 | # | Build | Convention source | Status |
 |---|---|---|---|
-| 72 | powercon → powercon (Daisy-Chain) | Neutrik BDA 452; NAC3FCA | ⚠ |
+| 72 | powercon → powercon (Daisy-Chain) | Neutrik BDA 452 (NAC3FCA blue=IN, NAC3FCB grey=OUT, L/N/PE wiring, IEC 61984 no-hot-plug) | ✅ 2026-04-27 |
 
 ### RJ12-originating (1)
 
 | # | Build | Convention source | Status |
 |---|---|---|---|
-| 79 | rj12 → rj45 (Cronus) | LMG internal (Cronus timing/tally adapter) | ⚠ |
+| 79 | rj12 → rj45 (Cronus) | Internal Build for custom use | ✅ 2026-04-27 |
 
 ---
 
 ## Known-issue backlog
 
 - ✅ **All 17 connectors verified in Part A.** Connector-level `sources` populated on every connector; each pinout cites its authority on the detail page.
-- ✅ **LMG internal builds (7)** \u2014 XLR5→DB25 intercom snake, Adam KP Black/Yellow, Serial Data Grey, TSI↔Kalypso (3 variants), Cronus. These are proprietary named builds documented in LMG's internal shop notes / cable-shell inventory. Each build's `sources` field marks them `"LMG internal \u2014 \u2026"`. No external verification required; they are field-verified at LMG.
-- ⚠ **Pin-3 convention for unbalanced↔balanced adapters needs a proper pinout-standards source.** Across #11, #12, #54, #68, #70, #71 the data disagrees on whether to float or tie the unused cold pin, and the disagreement appears to split by source-side vs destination-side. Benchmark's product-page text (cited by #12, #68, #71) describes their adapter as source-side-float, but a product listing isn't a published pinout standard. To resolve properly: load Rane Note 151 (grounding/shielding), Rane Note 110 Figure 4 (cable connector table), or a similar authoritative pinout reference; verify each row against it visibly side-by-side with the preview. Flagged 2026-04-21.
+- ✅ **Internal-Build (custom use) rows (8) all marked ✅ 2026-04-27** — #16 xlr5→db25 intercom snake, #73-78 de9→rj45 (Adam KP Black/Yellow, Serial Data Grey, TSI↔Kalypso ×3), #79 rj12→rj45 Cronus. These are proprietary in-house builds; each `sources` field is now generically labeled `"Internal Build for custom use"`. No external standards verification required — field-verified by the operator who owns the rig.
+- ✅ **Pin-3 convention resolved 2026-04-27** against Rane Note 151 Figure 5 (visibly verified in chat). The chart shows 16 interconnect scenarios; the relevant cells:
+  - **Source-side unused pin 3** (balanced output → unbalanced input — column 3, rows i-l): float pin 3 at source. Matches #11, #12, #71. ✓
+  - **Destination-side unused pin 3** (unbalanced output → balanced input — column 2, row e, "off-the-shelf cable" version): tie pin 3 to chassis ground at destination. Matches #68, #70, and the new fix to #49. ✓
+  - **#54 fixed 2026-04-27** — was floating pin 3, now ties pin 3 to ground at the XLR3 destination per Rane 151 Fig 5e. Convention is now consistent across #49, #54, #68, #70.
 
 ---
 

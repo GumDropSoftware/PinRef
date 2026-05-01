@@ -148,14 +148,18 @@ const STANDARD_BUILDS = [
     from: "xlr3", to: "xlr4", status: "partial", title: "XLR3 to XLR4 \u2014 Balanced Feed to Headset Earphone",
     use: "Drive an XLR4 intercom headset earphone from a balanced XLR3 source. Listen-only \u2014 mic (XLR4 pin 2) is unused.",
     wiring: [
-      { fromPin: 1, toPin: 1, desc: "Ground to Mic Ground (pin 1)" },
-      { fromPin: 2, toPin: 4, desc: "Hot (+) to Earphone Signal (pin 4)" },
-      { fromPin: 3, toPin: 3, desc: "Cold (\u2212) to Earphone Return (pin 3)" },
+      { fromPin: 1, toPin: 3, desc: "Ground (XLR3 pin 1) to Earphone Return (XLR4 pin 3)" },
+      { fromPin: 2, toPin: 4, desc: "Hot (+) to Earphone Signal (XLR4 pin 4)" },
     ],
-    deadEnds: [{ connector: "to", pin: 2, desc: "XLR4 pin 2 (Mic Signal) \u2014 unused, listen-only feed" }],
-    notes: "Balanced audio drives the earphone unbalanced. Cold (XLR3 pin 3) ties to earphone return/ground at the XLR4 end.",
+    deadEnds: [
+      { connector: "from", pin: 3, desc: "XLR3 pin 3 (Cold) \u2014 leave floating; safer for transformerless active outputs per Rane Note 151" },
+      { connector: "to", pin: 1, desc: "XLR4 pin 1 (Mic Ground) \u2014 unused, no mic circuit on this listen-only feed" },
+      { connector: "to", pin: 2, desc: "XLR4 pin 2 (Mic Signal) \u2014 unused, listen-only feed" },
+    ],
+    notes: "Single-ended drive: XLR3 Hot drives the earphone signal, Ground ties to the earphone-return node at the XLR4 end. Output level is ~6 dB lower than a true balanced drive because Cold is floated. Per Rane Note 151, do NOT tie Cold to the earphone return \u2014 that node is chassis-grounded inside Clear-Com / RTS panels and would short a transformerless active XLR3 output stage. Listen-only \u2014 mic side is unused.",
     sources: [
-      { label: "Clear-Com V-Series Headset Connectors", url: "https://www.clearcom.com/DownloadCenter/manuals/V-Series_Iris_Online_Manual/Content/Common%20Topics/Headset%20connectors.htm" },
+      { label: "Clear-Com V-Series Headset Connectors (XLR-4M pin functions)", url: "https://www.clearcom.com/DownloadCenter/manuals/V-Series_Iris_Online_Manual/Content/Common%20Topics/Headset%20connectors.htm" },
+      { label: "Rane Note 151 \u2014 Grounding & Shielding (don't short cold to ground)", url: "https://www.ranecommercial.com/legacy/note151.html" },
     ],
   },
   {
@@ -329,7 +333,7 @@ const STANDARD_BUILDS = [
     ],
     notes: "\u26a0\ufe0f Non-standard \u2014 label clearly on both ends. Maps one intercom channel to pins 1-5 of a DB25. Do NOT confuse with Tascam/AES59 analog audio DB25, which uses channels on pins 24/12/25 descending \u2014 accidentally plugging this into a Tascam snake would miswire audio.",
     sources: [
-      { label: "LMG internal \u2014 custom intercom snake (no published standard)", url: null },
+      { label: "Internal Build for custom use", url: null },
     ],
   },
 
@@ -524,15 +528,15 @@ const STANDARD_BUILDS = [
     from: "trs", to: "xlr4", status: "partial", title: "TRS to XLR4 \u2014 Monitor Feed to Headset Earphone",
     use: "Send a 1/4\u201d TRS mono or stereo program feed to an XLR4 intercom headset earphone. Listen-only \u2014 mic circuit unused.",
     wiring: [
-      { fromPin: 3, toPin: 1, desc: "Sleeve to Mic Ground (pin 1)" },
-      { fromPin: 3, toPin: 3, desc: "Sleeve to Earphone Return (pin 3)" },
       { fromPin: 1, toPin: 4, desc: "Tip to Earphone Signal (pin 4)" },
+      { fromPin: 3, toPin: 3, desc: "Sleeve to Earphone Return (pin 3)" },
     ],
     deadEnds: [
       { connector: "from", pin: 2, desc: "TRS Ring \u2014 XLR4 earphone is mono, right channel dropped" },
+      { connector: "to", pin: 1, desc: "XLR4 pin 1 (Mic Ground) \u2014 unused, no mic circuit on this listen-only feed" },
       { connector: "to", pin: 2, desc: "XLR4 pin 2 (Mic Signal) \u2014 unused, listen-only" },
     ],
-    notes: "Mono listen feed only. Tie TRS Sleeve to both XLR4 pin 1 and pin 3 at the XLR4 end.",
+    notes: "Mono listen feed only. Sleeve uses XLR4 pin 3 (Earphone Return) per Clear-Com V-Series spec \u2014 that's the dedicated return for the headphone amplifier. Pin 1 (Mic Ground) is left floating since there's no mic circuit on this feed.",
     sources: [
       { label: "Clear-Com V-Series Headset Connectors", url: "https://www.clearcom.com/DownloadCenter/manuals/V-Series_Iris_Online_Manual/Content/Common%20Topics/Headset%20connectors.htm" },
     ],
@@ -569,7 +573,7 @@ const STANDARD_BUILDS = [
     ],
   },
   {
-    from: "rj45", to: "db25", status: "field_hack", title: "RJ45 to DB25 \u2014 Minimal Serial Adapter",
+    from: "rj45", to: "db25", status: "standard", title: "RJ45 to DB25 \u2014 Minimal Serial Adapter",
     use: "Field-built Cat5 to DB25 serial adapter for legacy RS-232 DB25 equipment. 3-wire minimal (Tx/Rx/GND).",
     wiring: [
       { fromPin: 3, toPin: 3, desc: "RJ45 pin 3 (TxD) to DB25 pin 3 (TxD)" },
@@ -610,18 +614,19 @@ const STANDARD_BUILDS = [
   },
   {
     from: "rj45", to: "xlr5", status: "standard", title: "RJ45 to XLR5 \u2014 Intercom over Cat5",
-    use: "Receiving end of a Clear-Com intercom run over Cat5.",
+    use: "Receiving end of a Clear-Com / RTS intercom headset run over Cat5. Mirror of XLR5\u2192RJ45 (#15) \u2014 pair with that build at the source end.",
     wiring: [
-      { fromPin: 4, toPin: 1, desc: "RJ45 pin 4 (Blue) to Ground (pin 1)" },
-      { fromPin: 1, toPin: 2, desc: "RJ45 pin 1 (Wht/Org) to Pin 2" },
-      { fromPin: 2, toPin: 3, desc: "RJ45 pin 2 (Orange) to Pin 3" },
-      { fromPin: 3, toPin: 4, desc: "RJ45 pin 3 (Wht/Grn) to Pin 4" },
-      { fromPin: 6, toPin: 5, desc: "RJ45 pin 6 (Green) to Pin 5" },
+      { fromPin: 4, toPin: 1, desc: "RJ45 pin 4 (Blue) to Mic Ground (XLR5 pin 1)" },
+      { fromPin: 1, toPin: 2, desc: "RJ45 pin 1 (Wht/Org) to Mic Signal (XLR5 pin 2)" },
+      { fromPin: 2, toPin: 3, desc: "RJ45 pin 2 (Orange) to Earphone Return (XLR5 pin 3)" },
+      { fromPin: 3, toPin: 4, desc: "RJ45 pin 3 (Wht/Grn) to Left Earphone (XLR5 pin 4)" },
+      { fromPin: 6, toPin: 5, desc: "RJ45 pin 6 (Green) to Right Earphone (XLR5 pin 5)" },
     ],
-    deadEnds: [{ connector: "from", pin: 5, desc: "RJ45 pins 5,7,8 \u2014 unused" }],
-    notes: "Pair with XLR5\u2192RJ45 at the source. Single Clear-Com channel.",
+    deadEnds: [{ connector: "from", pin: 5, desc: "RJ45 pins 5, 7, 8 \u2014 unused" }],
+    notes: "Receive end of an XLR5-over-Cat5 intercom run. Pair with #15 (XLR5\u2192RJ45) at the source end \u2014 both ends use the same mapping. Same caveat as #15: this isn't a native StudioHub+ build; the convention extends StudioHub+'s XLR3 mapping by adding the two ear signals onto pair 2. Use shielded Cat5 for any longer run.",
     sources: [
-      { label: "Clear-Com V-Series Headset Connectors", url: "https://www.clearcom.com/DownloadCenter/manuals/V-Series_Iris_Online_Manual/Content/Common%20Topics/Headset%20connectors.htm" },
+      { label: "StudioHub+ Adapter Pinout Guide (XLR3 convention extended to XLR5)", url: "https://studiohub.com/wp-content/uploads/2019/10/AAPinoutandAdapterGuide.pdf" },
+      { label: "Clear-Com V-Series Headset Connectors (XLR-5F pin functions)", url: "https://www.clearcom.com/DownloadCenter/manuals/V-Series_Iris_Online_Manual/Content/Common%20Topics/Headset%20connectors.htm" },
     ],
   },
   {
@@ -668,10 +673,11 @@ const STANDARD_BUILDS = [
       { fromPin: 2, toPin: 3, desc: "RJ45 pin 2 (Orange) to Earphone Return (pin 3)" },
       { fromPin: 3, toPin: 4, desc: "RJ45 pin 3 (Wht/Grn) to Earphone Signal (pin 4)" },
     ],
-    deadEnds: [{ connector: "from", pin: 5, desc: "RJ45 pins 5,6,7,8 \u2014 unused" }],
-    notes: "Mic and earphone signals are unbalanced over Cat5. Keep runs under 100 ft for reliable mic level.",
+    deadEnds: [{ connector: "from", pin: 5, desc: "RJ45 pins 5, 6, 7, 8 \u2014 unused" }],
+    notes: "Receive end of an XLR4-over-Cat5 intercom run. Pair with #47 (XLR4\u2192RJ45) at the source end \u2014 both ends use the same mapping. Same caveat as #15/#47: this isn't a native StudioHub+ build; the convention extends StudioHub+'s XLR3 mapping. Pair 1 ends up sharing mic-signal with ear-return rather than mic-signal with mic-ground, so common-mode rejection isn't ideal \u2014 keep runs under 100 ft and use shielded Cat5.",
     sources: [
-      { label: "Clear-Com V-Series Headset Connectors", url: "https://www.clearcom.com/DownloadCenter/manuals/V-Series_Iris_Online_Manual/Content/Common%20Topics/Headset%20connectors.htm" },
+      { label: "StudioHub+ Adapter Pinout Guide (XLR3 convention extended to XLR4)", url: "https://studiohub.com/wp-content/uploads/2019/10/AAPinoutandAdapterGuide.pdf" },
+      { label: "Clear-Com V-Series Headset Connectors (XLR-4M pin functions)", url: "https://www.clearcom.com/DownloadCenter/manuals/V-Series_Iris_Online_Manual/Content/Common%20Topics/Headset%20connectors.htm" },
     ],
   },
   {
@@ -795,10 +801,12 @@ const STANDARD_BUILDS = [
       { connector: "from", pin: 4, desc: "DTR/DSR/RTS/CTS \u2014 not used (one-way data)" },
       { connector: "to", pin: 4, desc: "DTR/DSR/RTS/CTS \u2014 not used (one-way data)" },
     ],
-    notes: "If the PC refuses to open the port, loop DTR\u2194DSR (pins 4\u21946) and RTS\u2194CTS (pins 7\u21948) LOCALLY inside each shell to fake handshake, or use the full-handshake variant instead.",
+    notes: "If the PC refuses to open the port, loop DTR\u2194DSR (pins 4\u21946) and RTS\u2194CTS (pins 7\u21948) LOCALLY inside each shell to fake handshake (Wikipedia calls this 'loopback handshaking'), or use the full-handshake variant instead.",
     sources: [
-      { label: "Daktronics Loopback Test (pins 2\u00263)", url: "https://www.daktronics.com/en-us/support/kb/DD2127080" },
-      { label: "Connect serial data from Daktronics \u2014 NewBlue", url: "https://newbluefx.zendesk.com/hc/en-us/articles/15498307081243-Connect-serial-data-from-Daktronics-All-Sport-5000" },
+      { label: "Wikipedia Null Modem \u2014 3-wire / Loopback Handshaking variant", url: "https://en.wikipedia.org/wiki/Null_modem" },
+      { label: "RS-232 Null Modem Wiring \u2014 Lammert Bies", url: "https://www.lammertbies.nl/comm/info/rs-232-null-modem" },
+      { label: "Daktronics Loopback Test (application context)", url: "https://www.daktronics.com/en-us/support/kb/DD2127080" },
+      { label: "Connect serial data from Daktronics \u2014 NewBlue (application context)", url: "https://newbluefx.zendesk.com/hc/en-us/articles/15498307081243-Connect-serial-data-from-Daktronics-All-Sport-5000" },
     ],
   },
   {
@@ -892,15 +900,15 @@ const STANDARD_BUILDS = [
     from: "xlr4", to: "trs", status: "partial", title: "XLR4 to TRS \u2014 Earphone Feed Out",
     use: "Take the earphone monitor feed from an XLR4 beltpack jack and output as a 1/4\u201d TRS mono feed \u2014 for an in-ear rig, wedge, or recording.",
     wiring: [
-      { fromPin: 1, toPin: 3, desc: "Mic Ground (pin 1) to Sleeve" },
       { fromPin: 3, toPin: 3, desc: "Earphone Return (pin 3) to Sleeve" },
       { fromPin: 4, toPin: 1, desc: "Earphone Signal (pin 4) to Tip" },
     ],
     deadEnds: [
+      { connector: "from", pin: 1, desc: "XLR4 pin 1 (Mic Ground) \u2014 unused, no mic circuit on TRS output" },
       { connector: "from", pin: 2, desc: "XLR4 pin 2 (Mic Signal) \u2014 unused, output-only" },
       { connector: "to", pin: 2, desc: "TRS Ring \u2014 unused, output is mono" },
     ],
-    notes: "Tie XLR4 pins 1 and 3 together at the TRS Sleeve. Mono output only.",
+    notes: "Sleeve uses XLR4 pin 3 (Earphone Return) per Clear-Com V-Series spec \u2014 that's the dedicated return for the headphone amplifier. Pin 1 (Mic Ground) is left floating since there's no mic circuit on the TRS output. Mono output only.",
     sources: [
       { label: "Clear-Com V-Series Headset Connectors", url: "https://www.clearcom.com/DownloadCenter/manuals/V-Series_Iris_Online_Manual/Content/Common%20Topics/Headset%20connectors.htm" },
     ],
@@ -915,9 +923,10 @@ const STANDARD_BUILDS = [
       { fromPin: 4, toPin: 3, desc: "Earphone Signal (pin 4) to RJ45 pin 3 (Wht/Grn)" },
     ],
     deadEnds: [{ connector: "to", pin: 5, desc: "RJ45 pins 5,6,7,8 \u2014 unused" }],
-    notes: "Mic and earphone signals are unbalanced over Cat5. Keep runs under 100 ft for reliable mic level.",
+    notes: "Mic and earphone signals are unbalanced over Cat5. Keep runs under 100 ft for reliable mic level. XLR4 is not natively part of StudioHub+ \u2014 this wiring extends the StudioHub+ XLR3 convention: mic-ground on Blue (pair 3), mic-signal+ear-return on the Wht/Org pair, ear-signal on pair 2's Wht/Grn. Same caveat as #15: pair 1 ends up sharing mic-signal with ear-return rather than mic-signal with mic-ground, so common-mode rejection isn't ideal \u2014 use shielded Cat5 for any longer run.",
     sources: [
-      { label: "Clear-Com V-Series Headset Connectors", url: "https://www.clearcom.com/DownloadCenter/manuals/V-Series_Iris_Online_Manual/Content/Common%20Topics/Headset%20connectors.htm" },
+      { label: "StudioHub+ Adapter Pinout Guide (XLR3 convention extended to XLR4)", url: "https://studiohub.com/wp-content/uploads/2019/10/AAPinoutandAdapterGuide.pdf" },
+      { label: "Clear-Com V-Series Headset Connectors (XLR-4M pin functions)", url: "https://www.clearcom.com/DownloadCenter/manuals/V-Series_Iris_Online_Manual/Content/Common%20Topics/Headset%20connectors.htm" },
     ],
   },
   {
@@ -942,15 +951,16 @@ const STANDARD_BUILDS = [
     wiring: [
       { fromPin: 1, toPin: 1, desc: "Mic Ground (pin 1) to Ground" },
       { fromPin: 2, toPin: 2, desc: "Mic Signal (pin 2) to Hot +" },
+      { fromPin: 1, toPin: 3, desc: "Mic Ground also tied to XLR3 pin 3 (Cold) \u2014 unbalanced termination at destination per Rane Note 151 Fig 5e" },
     ],
     deadEnds: [
       { connector: "from", pin: 3, desc: "XLR4 pin 3 (Earphone Return) \u2014 unused" },
       { connector: "from", pin: 4, desc: "XLR4 pin 4 (Earphone Signal) \u2014 unused, mic-only output" },
-      { connector: "to", pin: 3, desc: "XLR3 pin 3 (Cold \u2212) \u2014 leave open or bridge to pin 1 for unbalanced mic" },
     ],
-    notes: "XLR4 mic is unbalanced \u2014 leave XLR3 pin 3 open or bridge to pin 1. Earphone signal is not tapped here.",
+    notes: "XLR4 mic is unbalanced. Per Rane Note 151 Figure 5 (column 2, row e \u2014 Unbalanced Output \u2192 Balanced Input, off-the-shelf-cable wiring), tie the destination XLR3 pin 3 (Cold) to pin 1 (Ground) at the XLR3 connector. This gives the balanced input's diff-amp a proper ground reference. Earphone signal is not tapped here \u2014 mic-only.",
     sources: [
-      { label: "Clear-Com V-Series Headset Connectors", url: "https://www.clearcom.com/DownloadCenter/manuals/V-Series_Iris_Online_Manual/Content/Common%20Topics/Headset%20connectors.htm" },
+      { label: "Clear-Com V-Series Headset Connectors (XLR-4M pin functions)", url: "https://www.clearcom.com/DownloadCenter/manuals/V-Series_Iris_Online_Manual/Content/Common%20Topics/Headset%20connectors.htm" },
+      { label: "Rane Note 151 \u2014 Grounding & Shielding (Figure 5e: Unbalanced\u2192Balanced)", url: "https://www.ranecommercial.com/legacy/note151.html" },
     ],
   },
 
@@ -1000,10 +1010,10 @@ const STANDARD_BUILDS = [
       { connector: "from", pin: 4, desc: "NL4 2\u2212 \u2014 unused (add 2nd XLR3 for Ch2)" },
       { connector: "to", pin: 3, desc: "XLR3 pin 3 \u2014 No Connect (speaker signal is 2-wire, no cold/return)" },
     ],
-    notes: "\u26a0\ufe0f PASSIVE SPEAKER USE ONLY. Speaker-level signal is tens of volts at high current \u2014 NEVER plug this into a mic input, line input, or powered speaker's input jack. Will destroy the input stage. This follows Neutrik's factory NA4FC-M / NA4FX-F adapter wiring: XLR pin 1 carries speaker return (1\u2212), pin 3 is NC.",
+    notes: "\u26a0\ufe0f PASSIVE SPEAKER USE ONLY. Speaker-level signal is tens of volts at high current \u2014 NEVER plug this into a mic input, line input, or powered speaker's input jack. Will destroy the input stage. This follows Neutrik's factory NA4FC-M / NA4FX-F adapter wiring: only NL4 pins 1+ and 1\u2212 are active (Neutrik FAQ confirmed); XLR pin 3 is NC. The specific NL4\u2192XLR pin mapping (1+\u2192XLR2 hot, 1\u2212\u2192XLR1 ground) is not explicitly published in any Neutrik datasheet I could find \u2014 it follows the universal XLR convention of pin 1 = ground/return. If you have an NA4FC-M in hand, a continuity check confirms the exact mapping.",
     sources: [
-      { label: "Neutrik Speakon Wiring Suggestion (official)", url: "https://www.neutrik.com/media/8027/download/speakon-wiring-suggestion.pdf" },
-      { label: "Neutrik NA4FC-M (factory adapter)", url: "https://www.markertek.com/product/na4fc-m/neutrik-na4fc-m-speakon-to-3-pin-xlr-male-adapter" },
+      { label: "Neutrik Speakon Wiring Suggestion (official) \u2014 confirms 4-pin layout", url: "https://www.neutrik.com/media/8027/download/speakon-wiring-suggestion.pdf" },
+      { label: "Neutrik NA4FC-M (factory adapter) \u2014 FAQ: only NL4 1+/1\u2212 active", url: "https://www.markertek.com/product/na4fc-m/neutrik-na4fc-m-speakon-to-3-pin-xlr-male-adapter" },
     ],
   },
   {
@@ -1062,10 +1072,11 @@ const STANDARD_BUILDS = [
     wiring: [
       { fromPin: 1, toPin: 2, desc: "Tip to Hot (+) \u2014 Signal" },
       { fromPin: 2, toPin: 1, desc: "Sleeve to Ground" },
+      { fromPin: 2, toPin: 3, desc: "Sleeve also tied to XLR3 pin 3 (Cold) \u2014 unbalanced termination at destination per Rane Note 151 Fig 5e" },
     ],
-    deadEnds: [{ connector: "to", pin: 3, desc: "XLR pin 3 (Cold) \u2014 leave floating (safest for active destination inputs)" }],
-    notes: "For unbalanced-to-balanced conversion without ground loops, a passive DI box is preferred over a bare adapter. If wiring bare, leave pin 3 floating (safer for transformerless active inputs than grounding).",
+    notes: "Per Rane Note 151 Figure 5 (column 2, row e \u2014 Unbalanced Output \u2192 Balanced Input, off-the-shelf-cable wiring), tie destination XLR3 pin 3 (Cold) to pin 1 (Ground) at the XLR3 connector by jumpering both to the TS Sleeve. This gives the balanced input's diff-amp a proper ground reference. For long runs or low-impedance instrument pickups, a passive DI box is still preferred over a bare adapter to avoid ground loops.",
     sources: [
+      { label: "Rane Note 151 \u2014 Grounding & Shielding (Figure 5e: Unbalanced\u2192Balanced)", url: "https://www.ranecommercial.com/legacy/note151.html" },
       { label: "Rane Note 110 \u2014 Sound System Interconnection", url: "https://www.ranecommercial.com/legacy/note110.html" },
     ],
   },
@@ -1365,7 +1376,7 @@ const STANDARD_BUILDS = [
     ],
     notes: "Cable Wholesale black shell. Male DE-9. Wires cross in the middle \u2014 Yellow/Black swap, Green/Red swap.",
     sources: [
-      { label: "LMG internal \u2014 Cable Wholesale black shell (Adam KP)", url: null },
+      { label: "Internal Build for custom use", url: null },
     ],
   },
   {
@@ -1384,7 +1395,7 @@ const STANDARD_BUILDS = [
     ],
     notes: "Cable Wholesale yellow shell. Male DE-9. Same MTX wiring as Black but without DATA+/DATA\u2212 pair.",
     sources: [
-      { label: "LMG internal \u2014 Cable Wholesale yellow shell (Adam KP CAM/IFB)", url: null },
+      { label: "Internal Build for custom use", url: null },
     ],
   },
   {
@@ -1403,7 +1414,7 @@ const STANDARD_BUILDS = [
     ],
     notes: "Cable Wholesale grey shell. Uses only 4 wires for serial data.",
     sources: [
-      { label: "LMG internal \u2014 Cable Wholesale grey shell (serial data)", url: null },
+      { label: "Internal Build for custom use", url: null },
     ],
   },
   {
@@ -1422,7 +1433,7 @@ const STANDARD_BUILDS = [
     ],
     notes: "Tx/Rx pair is swapped compared to the straight grey adapter. Pins 2\u21943 on the RJ45 side.",
     sources: [
-      { label: "LMG internal \u2014 TSI-1000 / Kalypso integration", url: null },
+      { label: "Internal Build for custom use", url: null },
     ],
   },
   {
@@ -1440,7 +1451,7 @@ const STANDARD_BUILDS = [
     ],
     notes: "Only 3 wires \u2014 minimal RS-232 connection. Ground through connector shell or cable shield.",
     sources: [
-      { label: "LMG internal \u2014 TSI-1000 / Kalypso RS-232", url: null },
+      { label: "Internal Build for custom use", url: null },
     ],
   },
   {
@@ -1458,7 +1469,7 @@ const STANDARD_BUILDS = [
     ],
     notes: "Tx/Rx crossed compared to straight RS-232 adapter. Pins 4\u21945 swapped on RJ45 side.",
     sources: [
-      { label: "LMG internal \u2014 TSI-1000 / Kalypso RS-232 crossover", url: null },
+      { label: "Internal Build for custom use", url: null },
     ],
   },
   {
@@ -1479,7 +1490,7 @@ const STANDARD_BUILDS = [
     ],
     notes: "All 6 RJ12 pins used. Brown pair on RJ45 is unused.",
     sources: [
-      { label: "LMG internal \u2014 Cronus timing/tally adapter", url: null },
+      { label: "Internal Build for custom use", url: null },
     ],
   },
 ];
