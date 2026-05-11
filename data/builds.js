@@ -1139,13 +1139,13 @@ const STANDARD_BUILDS = [
     wiring: [
       { fromPin: 1, toPin: 4, desc: "Tip (Left +) to XLR5 pin 4 (Left Earphone +)" },
       { fromPin: 2, toPin: 5, desc: "Ring (Right +) to XLR5 pin 5 (Right Earphone +)" },
-      { fromPin: 3, toPin: 1, desc: "Sleeve (ground) to XLR5 pin 1 (Ground)" },
+      { fromPin: 3, toPin: 3, desc: "Sleeve (ground) to XLR5 pin 3 (Earphone Return)" },
     ],
     deadEnds: [
+      { connector: "to", pin: 1, desc: "Pin 1 (Mic Ground) \u2014 unused, no mic circuit on TRS" },
       { connector: "to", pin: 2, desc: "Pin 2 (Mic Signal) \u2014 unused, no mic on TRS" },
-      { connector: "to", pin: 3, desc: "Pin 3 (Earphone Return) \u2014 unused, ground already on pin 1" },
     ],
-    notes: "Listen-only \u2014 no talkback. For 2-way, use a TRRS headset or separate mic feed. Beltpack has female XLR5, so cable needs male XLR5.",
+    notes: "Listen-only \u2014 no talkback. Sleeve uses XLR5 pin 3 (Earphone Return) per Clear-Com V-Series spec \u2014 that's the dedicated return for the ear amplifiers. Pin 1 (Mic Ground) is left floating since there's no mic circuit. For 2-way, use a TRRS headset or separate mic feed. Beltpack has female XLR5, so cable needs male XLR5.",
     sources: [
       { label: "Clear-Com V-Series Headset Connectors", url: "https://www.clearcom.com/DownloadCenter/manuals/V-Series_Iris_Online_Manual/Content/Common%20Topics/Headset%20connectors.htm" },
     ],
@@ -1155,15 +1155,15 @@ const STANDARD_BUILDS = [
     from: "mini_trs", to: "xlr4", status: "partial", title: "3.5mm TRS to XLR4 \u2014 Consumer Headphones to Intercom",
     use: "Plug 3.5mm TRS headphones into an XLR4 intercom beltpack for listen-only monitoring. No mic \u2014 TRS has no mic circuit.",
     wiring: [
-      { fromPin: 3, toPin: 1, desc: "Sleeve to Mic Ground (pin 1)" },
       { fromPin: 3, toPin: 3, desc: "Sleeve to Earphone Return (pin 3)" },
       { fromPin: 1, toPin: 4, desc: "Tip (Left +) to Earphone Signal (pin 4)" },
     ],
     deadEnds: [
       { connector: "from", pin: 2, desc: "TRS Ring (Right +) \u2014 XLR4 earphone is mono, right channel dropped" },
+      { connector: "to", pin: 1, desc: "XLR4 pin 1 (Mic Ground) \u2014 unused, no mic circuit on this listen-only feed" },
       { connector: "to", pin: 2, desc: "XLR4 pin 2 (Mic Signal) \u2014 unused, no mic on TRS" },
     ],
-    notes: "Listen-only. Tie Sleeve to both XLR4 pins 1 and 3. No talkback \u2014 for 2-way use a TRRS headset.",
+    notes: "Listen-only. Sleeve uses XLR4 pin 3 (Earphone Return) per Clear-Com V-Series spec \u2014 that's the dedicated return for the headphone amplifier. Pin 1 (Mic Ground) is left floating since there's no mic circuit. No talkback \u2014 for 2-way use a TRRS headset.",
     sources: [
       { label: "Clear-Com V-Series Headset Connectors", url: "https://www.clearcom.com/DownloadCenter/manuals/V-Series_Iris_Online_Manual/Content/Common%20Topics/Headset%20connectors.htm" },
     ],

@@ -161,7 +161,7 @@ One row per `from → to` entry in `builds.js`. Each build is valid only if both
 | 9 | xlr3 → dt12 (Channel Breakout) | Clark Wire DT12 Multipin Audio Pinout (all 12 channels H/C/G match) | ✅ 2026-04-27 |
 | 10 | xlr3 → mini_trs (Balanced to Headphone) | Rane Note 110 Figure 1a (convention extended to 3.5mm) | ✅ 2026-04-21 |
 | 11 | xlr3 → ts (Balanced to Unbalanced) | Rane Note 151 Figure 5 col 3 (source-side cold float for transformerless balanced outputs) | ✅ 2026-04-27 |
-| 12 | xlr3 → rca (Pro to Consumer, partial) | Rane Note 110; Benchmark | ⚠ (prev ✅ reverted 2026-04-21 — source not shown on-screen) |
+| 12 | xlr3 → rca (Pro to Consumer, partial) | Rane Note 151 Figure 5 col 3 (source-side cold float for transformerless balanced outputs) | ✅ 2026-05-01 |
 
 ### XLR5-originating (7)
 
@@ -186,11 +186,11 @@ One row per `from → to` entry in `builds.js`. Each build is valid only if both
 
 | # | Build | Convention source | Status |
 |---|---|---|---|
-| 22 | trs → trs (Patch Cable) | Rane Note 110 | ⚠ (prev ✅ reverted 2026-04-21 — source not re-shown for this row) |
-| 23 | trs → rj45 (Balanced over Cat5) | StudioHub+ | ⚠ (prev ✅ reverted 2026-04-21 — source not re-shown for this row) |
-| 24 | trs → xlr3 (Balanced Audio) | Rane Note 110 | ⚠ (prev ✅ reverted 2026-04-21 — source not re-shown for this row) |
+| 22 | trs → trs (Patch Cable) | Rane Note 110 Figure 1a (both ends wired identically; T/R/S straight-through) | ✅ 2026-05-01 |
+| 23 | trs → rj45 (Balanced over Cat5) | StudioHub+ Adapter Pinout Guide (Balanced TRS-1/4": Tip→Pin-1, Ring→Pin-2, Sleeve→Pin-4) | ✅ 2026-05-01 |
+| 24 | trs → xlr3 (Balanced Audio) | Rane Note 110 Figure 1a (mirror of #3; Tip=pin 2, Ring=pin 3, Sleeve=pin 1) | ✅ 2026-05-01 |
 | 25 | trs → xlr4 (Monitor Feed, partial) | Clear-Com V-Series XLR-4M (strict: Sleeve uses pin 3 only) | ✅ 2026-04-27 (fixed: was bonding Sleeve to pins 1+3; now pin 3 only per spec) |
-| 71 | trs → rca (Balanced to Consumer, partial) | Rane Note 110; Benchmark | ⚠ (prev ✅ reverted 2026-04-21 — product page not a pinout spec) |
+| 71 | trs → rca (Balanced to Consumer, partial) | Rane Note 151 Figure 5 col 3 (source-side Ring float for transformerless balanced outputs) | ✅ 2026-05-01 |
 
 ### RJ45-originating (7)
 
@@ -199,9 +199,9 @@ One row per `from → to` entry in `builds.js`. Each build is valid only if both
 | 26 | rj45 → rj45 (T568B Straight-Through) | TIA/EIA-568-B (8-pin straight-through, both ends T568B) | ✅ 2026-04-27 |
 | 27 | rj45 → de9 (Cisco/Yost Console) | Yost RJ45 Serial Wiring Standard + Cisco rolled-and-adapted single-cable variant | ✅ 2026-04-27 |
 | 28 | rj45 → db25 (Minimal Serial Adapter) | Yost RJ45 standard + TI SNLA039 (RS-232 DB25); 3-wire minimal RS-232 is documented practice, not a hack | ✅ 2026-04-27 (status changed from field_hack → standard; warning about handshake retained in notes) |
-| 29 | rj45 → xlr3 (Audio over Cat5) | StudioHub+ | ⚠ (prev ✅ reverted 2026-04-21 — source not re-shown for this row) |
+| 29 | rj45 → xlr3 (Audio over Cat5) | StudioHub+ Adapter Pinout Guide (mirror of #4; Balanced XLR row) | ✅ 2026-05-01 |
 | 30 | rj45 → xlr5 (Intercom over Cat5) | StudioHub+ XLR3 convention extended to XLR5; Clear-Com V-Series for pin functions | ✅ 2026-04-27 (mirror of #15; same resolution) |
-| 31 | rj45 → trs (Balanced over Cat5) | StudioHub+ | ⚠ (prev ✅ reverted 2026-04-21 — source not re-shown for this row) |
+| 31 | rj45 → trs (Balanced over Cat5) | StudioHub+ Adapter Pinout Guide (mirror of #23; Balanced TRS row) | ✅ 2026-05-01 |
 | 32 | rj45 → xlr4 (Headset over Cat5, partial) | StudioHub+ XLR3 convention extended to XLR4; Clear-Com V-Series for pin functions | ✅ 2026-04-27 (mirror of #47) |
 | 33 | rj45 → bnc (NOT SDI-over-Cat5) | Belden + SMPTE ST 2110 (Cat5 ≠ 75Ω coax; SDI requires baluns/transceivers, not passive adapters) | ✅ 2026-04-27 |
 
@@ -222,7 +222,7 @@ One row per `from → to` entry in `builds.js`. Each build is valid only if both
 | 39 | de9 → de9 (Straight-Through DCE/DTE) | Wikipedia RS-232 + TI SNLA039 (9-pin straight-through) | ✅ 2026-04-27 |
 | 40 | de9 → de9 (Null Modem, Full Handshake) | Wikipedia Null Modem + Lammert Bies (TxD↔RxD, RTS↔CTS, DTR↔DSR all crossed, GND straight) | ✅ 2026-04-28 |
 | 41 | de9 → de9 (Null Modem, 3-Wire Scoreboard) | Wikipedia Null Modem (3-wire / loopback handshaking variant) + Lammert Bies; Daktronics/NewBlue cited as application context | ✅ 2026-05-01 |
-| 42 | de9 → db25 (EIA-574 to EIA-232) | TI SNLA039; RS-232 Wikipedia | ⚠ |
+| 42 | de9 → db25 (EIA-574 to EIA-232) | Wikipedia RS-232 (DB25 pinout) + Part A DE-9 (TIA-574); 9 signals map name-to-name | ✅ 2026-05-01 |
 | 73 | de9 → rj45 (Adam KP Black) | Internal Build for custom use | ✅ 2026-04-27 |
 | 74 | de9 → rj45 (Adam KP Yellow CAM/IFB) | Internal Build for custom use | ✅ 2026-04-27 |
 | 75 | de9 → rj45 (Serial Data Grey RS-232/422) | Internal Build for custom use | ✅ 2026-04-27 |
@@ -234,8 +234,8 @@ One row per `from → to` entry in `builds.js`. Each build is valid only if both
 
 | # | Build | Convention source | Status |
 |---|---|---|---|
-| 43 | db25 → db25 (Straight-Through) | Tascam AES59 | ⚠ |
-| 44 | db25 → xlr3 (Tascam/AES59 Breakout) | Tascam; Aviom; AES59 | ⚠ |
+| 43 | db25 → db25 (Straight-Through) | Tascam DB-25 Pinout PDF (25-pin straight-through) | ✅ 2026-05-01 |
+| 44 | db25 → xlr3 (Tascam/AES59 Breakout) | Tascam DB-25 Pinout (mirror of #5; same 8-channel mapping reversed) | ✅ 2026-05-01 |
 
 ### XLR4-originating (5)
 
@@ -259,39 +259,39 @@ One row per `from → to` entry in `builds.js`. Each build is valid only if both
 
 | # | Build | Convention source | Status |
 |---|---|---|---|
-| 53 | ts → ts (Patch Cable) | Rane Note 110 | ⚠ (prev ✅ reverted 2026-04-21 — source not shown for this row) |
+| 53 | ts → ts (Patch Cable) | Wikipedia Phone connector (Tip=signal, Sleeve=ground for unbalanced mono) | ✅ 2026-05-01 |
 | 54 | ts → xlr3 (Unbalanced Audio) | Rane Note 151 Figure 5e; Rane Note 110 | ✅ 2026-04-27 (fixed: pin 3 was floating, now tied to ground at XLR3 destination per Rane 151 Fig 5e — matches #49/#68/#70 convention) |
-| 55 | ts → rj45 (Unbalanced over Cat5 StudioHub+) | StudioHub+ | ⚠ (prev ✅ reverted 2026-04-21 — source not re-shown for this row) |
-| 56 | ts → mini_trs (1/4" to 3.5mm) | Rane Note 110 | ⚠ (prev ✅ reverted 2026-04-21 — source not shown for this row) |
+| 55 | ts → rj45 (Unbalanced over Cat5 StudioHub+) | StudioHub+ Adapter Pinout Guide (ADAPT-RCA: signal→Pin-1, Shield/G→Pin-2) | ✅ 2026-05-01 |
+| 56 | ts → mini_trs (1/4" to 3.5mm) | Wikipedia Phone connector (Tip=signal, Sleeve=ground, Ring=right ch — float Ring on mono→stereo socket to avoid amp short) | ✅ 2026-05-01 |
 
 ### Mini-TRS-originating (6)
 
 | # | Build | Convention source | Status |
 |---|---|---|---|
-| 57 | mini_trs → mini_trs (Straight-Through) | Rane Note 110 | ⚠ (prev ✅ reverted 2026-04-21 — source not shown for this row) |
-| 58 | mini_trs → xlr3 (IFB/Phone Feed) | Rane Note 110 | ⚠ (prev ✅ reverted 2026-04-21 — source not shown for this row) |
-| 59 | mini_trs → xlr5 (Intercom Listen-Only) | Clear-Com V-Series | ⚠ |
-| 60 | mini_trs → xlr4 (Consumer Phones to Intercom, partial) | Clear-Com V-Series | ⚠ |
+| 57 | mini_trs → mini_trs (Straight-Through) | Wikipedia Phone connector (3-pin straight-through; T/R/S map 1:1) | ✅ 2026-05-01 |
+| 58 | mini_trs → xlr3 (IFB/Phone Feed) | Rane Note 110 Figure 1a (mirror of #10; T/R/S → pin 2/3/1 convention) | ✅ 2026-05-01 |
+| 59 | mini_trs → xlr5 (Intercom Listen-Only) | Clear-Com V-Series XLR-5F (strict: Sleeve→pin 3 Earphone Return) | ✅ 2026-05-01 (fixed: was using pin 1 as ground; now uses pin 3 per spec — same fix as #18, preview confirmed) |
+| 60 | mini_trs → xlr4 (Consumer Phones to Intercom, partial) | Clear-Com V-Series XLR-4M (strict: Sleeve→pin 3 Earphone Return) | ✅ 2026-05-01 (fixed: was bonding Sleeve to both pins 1+3; now pin 3 only per spec — same fix as #25/#46, preview confirmed) |
 | 61 | mini_trs → rj45 (Stereo over Cat5 StudioHub+) | StudioHub+ Adapter Pinout Guide (ADAPT-MINIUNBAL) | ✅ 2026-04-21 (fixed: was grounding on 2/6; official is 4 only, 2/6 n/c) |
-| 62 | mini_trs → ts (Headphone to 1/4") | Rane Note 110 | ⚠ (prev ✅ reverted 2026-04-21 — source not shown for this row) |
+| 62 | mini_trs → ts (Headphone to 1/4") | Wikipedia Phone connector (mirror of #56; Ring floats — right ch dropped on mono destination) | ✅ 2026-05-01 |
 
 ### Mini-TRRS-originating (4)
 
 | # | Build | Convention source | Status |
 |---|---|---|---|
-| 63 | mini_trrs → mini_trrs (Straight-Through) | AOSP | ⚠ |
-| 64 | mini_trrs → xlr5 (Intercom 2-Way) | AOSP; Clear-Com | ⚠ |
-| 65 | mini_trrs → xlr4 (CTIA Headset to Intercom) | AOSP; Clear-Com | ⚠ |
-| 66 | mini_trrs → rj45 (Headset over Cat5, field_hack) | AOSP; OHIS | ⚠ |
+| 63 | mini_trrs → mini_trrs (Straight-Through) | AOSP CTIA LRGM (4-pin straight-through; host determines CTIA vs OMTP) | ✅ 2026-05-01 (preview confirmed) |
+| 64 | mini_trrs → xlr5 (Intercom 2-Way) | AOSP CTIA + Clear-Com V-Series XLR-5F (mirror of #19; Ring 2 bonds to both XLR5 pin 1 + pin 3 since TRRS has single ground) | ✅ 2026-05-01 (preview confirmed) |
+| 65 | mini_trrs → xlr4 (CTIA Headset to Intercom) | AOSP CTIA + Clear-Com V-Series XLR-4M (Ring 2 bonds to XLR4 pin 1 + pin 3; Ring 1 dead-end since XLR4 mono) | ✅ 2026-05-01 (preview confirmed) |
+| 66 | mini_trrs → rj45 (Headset over Cat5, field_hack) | AOSP CTIA + OHIS best-practice (each signal paired with ground on its twisted pair; no formal manufacturer spec exists) | ✅ 2026-05-01 (preview confirmed) |
 
 ### RCA-originating (4)
 
 | # | Build | Convention source | Status |
 |---|---|---|---|
-| 67 | rca → rca (Straight-Through) | Belden 1694A | ⚠ |
-| 68 | rca → xlr3 (Consumer to Pro) | Rane Note 110; Benchmark | ⚠ (prev ✅ reverted 2026-04-21 — product page not a pinout spec; pin-3 handling under review — see backlog) |
-| 69 | rca → ts (Consumer to 1/4") | Rane Note 110 | ⚠ (prev ✅ reverted 2026-04-21 — source not shown for this row) |
-| 70 | rca → trs (Consumer to Balanced) | Rane Note 110 | ⚠ (prev ✅ reverted 2026-04-21 — source not shown for this row) |
+| 67 | rca → rca (Straight-Through) | Belden 1694A (Center→Center, Shield→Shield; 75Ω coax required for video/S/PDIF use) | ✅ 2026-05-01 (preview confirmed) |
+| 68 | rca → xlr3 (Consumer to Pro) | Rane Note 151 Figure 5 col 2 row e (destination-side pin 3 tied to ground for active diff-amp input reference) | ✅ 2026-05-01 |
+| 69 | rca → ts (Consumer to 1/4") | Wikipedia Phone connector + Wikipedia RCA (trivial Center→Tip / Shell→Sleeve, both ends unbalanced mono) | ✅ 2026-05-01 |
+| 70 | rca → trs (Consumer to Balanced) | Rane Note 151 Figure 5 col 2 row e (destination-side Ring tied to Sleeve for diff-amp reference) | ✅ 2026-05-01 |
 
 ### PowerCON-originating (1)
 
