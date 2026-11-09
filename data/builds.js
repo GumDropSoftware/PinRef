@@ -141,7 +141,7 @@ const STANDARD_BUILDS = [
   },
   {
     from: "xlr3", to: "db25", status: "standard", title: "XLR3 to DB25 \u2014 Tascam/AES59 Audio Snake",
-    use: "One channel of a Tascam/AES59 analog audio snake breakout. 8 channels fit in a DB25. Channels run right-to-left across the connector \u2014 Ch1 is at the far end (pins 24/12/25), Ch8 is at the near end (pins 1/14/2).",
+    use: "One channel of a Tascam/AES59 analog audio snake breakout. 8 channels fit in a DB25. Ch1 is on pins 24/12/25 and Ch8 on pins 1/14/2 (see notes for which way that reads on the plug).",
     wiring: [
       { fromPin: 2, toPin: 24, desc: "Hot (XLR 2) to DB25 pin 24 (Ch1 Hot)" },
       { fromPin: 3, toPin: 12, desc: "Cold (XLR 3) to DB25 pin 12 (Ch1 Cold)" },
@@ -213,7 +213,7 @@ const STANDARD_BUILDS = [
     deadEnds: [
       { connector: "to", pin: 13, desc: "DB25 pin 13 \u2014 No Connect (only unused pin)" },
     ],
-    notes: "AES59-2012 / Tascam DA-88 standard. Yamaha uses a different (AES3 digital) DB25 pinout that is NOT compatible \u2014 always confirm which standard the gear at the other end follows. Counterintuitively, channels run right-to-left across the connector.",
+    notes: "AES59-2012 / Tascam DA-88 standard. Yamaha uses a different (AES3 digital) DB25 pinout that is NOT compatible \u2014 always confirm which standard the gear at the other end follows. Orientation: \u2018Ch1 at the far right\u2019 is true looking at the MATING FACE of the male plug (pin 1 top-left). Tascam's own drawing is the opposite hand (pin 13 top-left, channels 1\u20138 left to right) \u2014 that is the view you have of a male plug's SOLDER cups. Count pins by the moulded numbers, not by position.",
     sources: [
       { label: "TASCAM DB-25 Pinout Standard (official)", url: "https://www.tascam.eu/en/docs/DB-25_Pinout.pdf" },
       { label: "Aviom DB25 Pinout Information", url: "https://www.aviom.com/library/Technical-Resources/75_DB25-Pinout-Information.pdf" },
@@ -261,19 +261,29 @@ const STANDARD_BUILDS = [
     ],
   },
   {
-    from: "xlr3", to: "bnc", status: "not_possible", title: "XLR3 to BNC \u2014 Not Compatible",
-    use: "XLR carries balanced audio; BNC carries 75\u03a9 video / digital. Different impedance (110\u03a9 vs 75\u03a9), different signal type. Cannot be adapted with a passive cable.",
-    wiring: [],
+    from: "xlr3", to: "bnc", status: "partial", title: "XLR3 to BNC \u2014 LTC Timecode / Unbalanced Audio Only (not SDI, not AES3)",
+    use: "Passive XLR3-to-BNC for LTC TIMECODE or other audio-band unbalanced signals (recorder/slate XLR timecode out to a camera BNC timecode in, or BNC timecode out to a recorder XLR in). NOT for video/SDI (different signal) and NOT for AES3 digital audio (110 \u03a9 \u2192 75 \u03a9 needs a transformer balun, e.g. Neutrik NADITBNC).",
+    wiring: [
+      { fromPin: 2, toPin: 1, desc: "XLR pin 2 (Hot +) to BNC centre pin \u2014 LTC signal" },
+      { fromPin: 1, toPin: 2, desc: "XLR pin 1 (Ground) to BNC shell \u2014 ground" },
+    ],
+    deadEnds: [
+      { connector: "from", pin: 3, desc: "XLR pin 3 (Cold \u2212) \u2014 float when the XLR end is an active balanced OUTPUT (Rane 151); tie to pin 1 only when the XLR end is a balanced INPUT fed from the BNC" },
+    ],
+    notes: "LTC is an audio-band signal (~0.5\u20132 V p-p). BNC timecode ports are unbalanced \u2014 centre = signal, sleeve = ground (Sound Devices 970 manual) \u2014 so this is an ordinary balanced-to-unbalanced adapter: hot to centre, ground to shell. Pin 3 handling follows Rane 151: float it when the XLR is a balanced OUTPUT; tie it to pin 1 when the XLR goes INTO a balanced input. Some devices put unbalanced timecode on pin 3 instead of pin 2 \u2014 check the manual. Video/SDI cannot be adapted this way, and AES3 needs a 110/75 \u03a9 impedance transformer, not a wire adapter.",
     sources: [
-      { label: "SMPTE ST 259 / ST 292 (SDI)", url: "https://en.wikipedia.org/wiki/Serial_digital_interface" },
+      { label: "Sound Devices 970 User Guide p.60 \u2014 Connector Pin Assignments (BNC timecode: centre = signal, sleeve = ground, unbalanced; XLR4M DC in: 1 ground, 4 DC+)", url: "https://www.manualslib.com/manual/728422/Sound-Devices-970.html?page=60" },
+      { label: "Rane Note 151 \u2014 Grounding & Shielding (Fig. 5: float cold on active balanced outputs; tie cold to ground at a balanced input)", url: "https://www.ranecommercial.com/legacy/note151.html" },
     ],
   },
   {
     from: "xlr3", to: "triax", status: "not_possible", title: "XLR3 to Triax \u2014 Not Compatible",
     use: "Triax carries multiplexed camera control, video, and DC power. Completely different system from balanced audio \u2014 not adaptable with a passive cable.",
     wiring: [],
+    notes: "Triax also carries the camera power supply on the CENTRE conductor \u2014 Sony CCUs put up to 180 V DC on it \u2014 so even probing a live triax port with a mic cable is dangerous.",
     sources: [
       { label: "Triaxial cable \u2014 Wikipedia", url: "https://en.wikipedia.org/wiki/Triaxial_cable" },
+      { label: "Sony HXCU-100 Operating Instructions p.8 \u2014 \u2018DC180 V high-voltage power is supplied to the camera\u2019 over the triax", url: "https://www.manualslib.com/manual/969011/Sony-Hxcu-100.html?page=8" },
     ],
   },
   {
@@ -374,9 +384,9 @@ const STANDARD_BUILDS = [
       ],
     },
     deadEnds: [
-      { connector: "to", pin: 2, desc: "DT12 pins 2\u201336 unused (other channels); pin 37 is spare" },
+      { connector: "to", pin: 37, desc: "DT12 pin 37 \u2014 spare (the only pin not assigned to a channel)" },
     ],
-    notes: "Use the + button to add more XLR channels. Each XLR cable gets its own channel on the DT12. Pin layout follows the standard Whirlwind/Clark DT12 industry convention.",
+    notes: "Use the + button to add more XLR channels. Each XLR cable gets its own channel on the DT12. Pin layout follows the Clark Wire DT12 table. Clark itself warns that not every manufacturer follows it, and 37-pin FK-37 shells are also used for 16-channel snakes with other pinouts \u2014 confirm the far end before trusting a channel map. Pins 2\u201336 belong to channels 2\u201312 (they go live as you add channels); only pin 37 is spare.",
     sources: [
       { label: "Clark Wire DT12 Audio Multipin Pinout", url: "https://www.clarkwire.com/dt12-audio-multipin-pinout" },
       { label: "Whirlwind DT12 Series", url: "https://www.whirlwindusa.com/products/ac-power-dt-12-dt12-series-broadcast-multipin-connectors" },
@@ -498,18 +508,42 @@ const STANDARD_BUILDS = [
     ],
   },
   {
-    from: "xlr5", to: "db25", status: "field_hack", title: "XLR5 to DB25 \u2014 Intercom Snake Breakout",
-    use: "Field hack for multi-channel intercom breakouts on DB25. Non-standard \u2014 no published reference.",
+    from: "xlr5", to: "db25", status: "field_hack", title: "XLR5 to DB25 \u2014 Single Headset Channel over DB25 (Field Hack)",
+    use: "Field hack: carry ONE 5-pin intercom headset channel over a DB25 (pins 1\u20135). Non-standard \u2014 no published reference. Nothing is defined for pins 6\u201325; if you need more channels, write your own plan on both connectors.",
     wiring: [
-      { fromPin: 1, toPin: 1, desc: "Ground (XLR5 1) to DB25 pin 1" },
-      { fromPin: 2, toPin: 2, desc: "XLR5 pin 2 to DB25 pin 2" },
-      { fromPin: 3, toPin: 3, desc: "XLR5 pin 3 to DB25 pin 3" },
-      { fromPin: 4, toPin: 4, desc: "XLR5 pin 4 to DB25 pin 4" },
-      { fromPin: 5, toPin: 5, desc: "XLR5 pin 5 to DB25 pin 5" },
+      { fromPin: 1, toPin: 1, desc: "XLR5 pin 1 (Mic Ground) to DB25 pin 1" },
+      { fromPin: 2, toPin: 2, desc: "XLR5 pin 2 (Mic Signal) to DB25 pin 2" },
+      { fromPin: 3, toPin: 3, desc: "XLR5 pin 3 (Earphone Return) to DB25 pin 3 \u2014 keep separate from pin 1 (two different returns)" },
+      { fromPin: 4, toPin: 4, desc: "XLR5 pin 4 (Left Earphone) to DB25 pin 4" },
+      { fromPin: 5, toPin: 5, desc: "XLR5 pin 5 (Right Earphone) to DB25 pin 5" },
     ],
-    notes: "\u26a0\ufe0f Non-standard \u2014 label clearly on both ends. Maps one intercom channel to pins 1-5 of a DB25. Do NOT confuse with Tascam/AES59 analog audio DB25, which uses channels on pins 24/12/25 descending \u2014 accidentally plugging this into a Tascam snake would miswire audio.",
+    deadEnds: [
+      { connector: "to", pin: 6, desc: "DB25 pin 6 \u2014 unused in this single-channel hack" },
+      { connector: "to", pin: 7, desc: "DB25 pin 7 \u2014 unused in this single-channel hack" },
+      { connector: "to", pin: 8, desc: "DB25 pin 8 \u2014 unused in this single-channel hack" },
+      { connector: "to", pin: 9, desc: "DB25 pin 9 \u2014 unused in this single-channel hack" },
+      { connector: "to", pin: 10, desc: "DB25 pin 10 \u2014 unused in this single-channel hack" },
+      { connector: "to", pin: 11, desc: "DB25 pin 11 \u2014 unused in this single-channel hack" },
+      { connector: "to", pin: 12, desc: "DB25 pin 12 \u2014 unused in this single-channel hack" },
+      { connector: "to", pin: 13, desc: "DB25 pin 13 \u2014 unused in this single-channel hack" },
+      { connector: "to", pin: 14, desc: "DB25 pin 14 \u2014 unused in this single-channel hack" },
+      { connector: "to", pin: 15, desc: "DB25 pin 15 \u2014 unused in this single-channel hack" },
+      { connector: "to", pin: 16, desc: "DB25 pin 16 \u2014 unused in this single-channel hack" },
+      { connector: "to", pin: 17, desc: "DB25 pin 17 \u2014 unused in this single-channel hack" },
+      { connector: "to", pin: 18, desc: "DB25 pin 18 \u2014 unused in this single-channel hack" },
+      { connector: "to", pin: 19, desc: "DB25 pin 19 \u2014 unused in this single-channel hack" },
+      { connector: "to", pin: 20, desc: "DB25 pin 20 \u2014 unused in this single-channel hack" },
+      { connector: "to", pin: 21, desc: "DB25 pin 21 \u2014 unused in this single-channel hack" },
+      { connector: "to", pin: 22, desc: "DB25 pin 22 \u2014 unused in this single-channel hack" },
+      { connector: "to", pin: 23, desc: "DB25 pin 23 \u2014 unused in this single-channel hack" },
+      { connector: "to", pin: 24, desc: "DB25 pin 24 \u2014 unused in this single-channel hack" },
+      { connector: "to", pin: 25, desc: "DB25 pin 25 \u2014 unused in this single-channel hack" },
+    ],
+    notes: "\u26a0\ufe0f Non-standard \u2014 label clearly on both ends and state genders (female XLR5 toward the headset, male toward the beltpack). On a Tascam/AES59 DB25 these five pins are Ch8 Hot, Ch8 Gnd, Ch7 Cold, Ch6 Hot, Ch6 Gnd: plugged into a phantom-powered mic-input DB25 that puts +48 V across the headset mic (pins 1/2) and earphone (pin 4), and a beltpack's 8 V p-p headphone output onto a console input. Use a DB25 of the opposite gender from the house audio snakes so it physically cannot mate. The XLR5 also fits DMX512 and the DB25 fits RS-232 ports.",
     sources: [
       { label: "Internal Build for custom use", url: null },
+      { label: "TASCAM DB-25 Pinout Standard (official PDF)", url: "https://tascam.eu/downloads/DB25_Pinout_Standard.pdf" },
+      { label: "RTS BP-325 User Manual \u2014 Specifications p.13 (XLR-3-31 line, XLR-4-31 / XLR-5-31 headset pinouts, headphone amp 50\u2013600 \u03a9, 8 V p-p; p.7: dynamic-mic headsets only)", url: "https://www.manualslib.com/manual/3540984/Rts-Bp325.html?page=13" },
     ],
   },
   {
@@ -659,6 +693,7 @@ const STANDARD_BUILDS = [
       { fromPin: 36, toPin: 36, desc: "Pin 36 to Pin 36" },
       { fromPin: 37, toPin: 37, desc: "Pin 37 to Pin 37" },
     ],
+    notes: "Pin map per Clark Wire's DT12 table (Whirlwind's page publishes no table). Not every FK-37 snake is DT12-wired \u2014 confirm both ends.",
     sources: [
       { label: "Clark Wire DT12 Audio Multipin Pinout", url: "https://www.clarkwire.com/dt12-audio-multipin-pinout" },
       { label: "Whirlwind DT12 Series", url: "https://www.whirlwindusa.com/products/ac-power-dt-12-dt12-series-broadcast-multipin-connectors" },
@@ -698,7 +733,7 @@ const STANDARD_BUILDS = [
       { connector: "to", pin: 13, desc: "DB25 pin 13 \u2014 No Connect (only unused pin on DB25)" },
       { connector: "from", pin: 22, desc: "DT12 pins 22, 25\u201328, 30\u201336 (Channels 9\u201312) \u2014 do not fit on a single DB25; break out separately. Pin 37 is spare." },
     ],
-    notes: "AES59-2012 / Tascam DA-88 standard. DB25 carries 8 channels; DT12 carries 12 \u2014 channels 9\u201312 need a separate breakout. Yamaha DB25 is different (AES3 digital); never cross without a crossover cable.",
+    notes: "AES59-2012 / Tascam DA-88 standard. DB25 carries 8 channels; DT12 carries 12 \u2014 channels 9\u201312 need a separate breakout. Yamaha's DB25 is a different, AES3 digital pinout \u2014 a Tascam analog snake must never be plugged into it (phantom and analog audio into a digital card). Tascam-to-Yamaha needs a purpose-built conversion snake, not a \u2018crossover\u2019; the flip rule (12/24/25 \u2194 6/18/19) is only for Tascam-format AES/EBU device-to-device cables.",
     sources: [
       { label: "TASCAM DB-25 Pinout Standard (official)", url: "https://www.tascam.eu/en/docs/DB-25_Pinout.pdf" },
       { label: "Clark Wire DT12 Audio Multipin Pinout", url: "https://www.clarkwire.com/dt12-audio-multipin-pinout" },
@@ -988,7 +1023,7 @@ const STANDARD_BUILDS = [
     from: "rj45", to: "bnc", status: "not_possible", title: "RJ45 to BNC \u2014 NOT a Real SDI-over-Cat5 Path",
     use: "\u26a0\ufe0f This is NOT a working SDI-over-Cat5 cable. A raw pin-to-pin bodge between BNC and RJ45 almost never works even at short distances.",
     wiring: [],
-    notes: "SDI is 75\u03a9 single-ended and runs at 1.5\u201312 GHz. Cat5/5e/6 is 100\u03a9 balanced. Tying RJ45 pins together to mate a single-ended signal to a balanced cable violates impedance AND defeats the twisted pair's common-mode rejection. The signal will almost never lock even at 1 m. For real SDI over Cat5, use an ACTIVE extender with a 75\u03a9/100\u03a9 balun and equalizer (MuxLab, AAS, Foresight). For long runs, use SDI-to-fiber. For IP transport, use SMPTE ST 2022-6 or ST 2110.",
+    notes: "SDI is 75\u03a9 single-ended and runs at 1.5\u201312 Gb/s. Cat5/5e/6 is 100\u03a9 balanced. Tying RJ45 pins together to mate a single-ended signal to a balanced cable violates impedance AND defeats the twisted pair's common-mode rejection. The signal will almost never lock even at 1 m. For real SDI over Cat5, use an ACTIVE extender with a 75\u03a9/100\u03a9 balun and equalizer (MuxLab, AAS, Foresight). For long runs, use SDI-to-fiber. For IP transport, use SMPTE ST 2022-6 or ST 2110. Passive 75/100 \u03a9 SDI baluns exist for short runs and passive composite-video baluns are the CCTV norm \u2014 the point is that a wire-only bodge is not one.",
     sources: [
       { label: "Belden \u2014 Key to Video Cable Performance", url: "https://www.belden.com/blog/key-to-video-cable-performance" },
       { label: "SMPTE ST 2110", url: "https://www.smpte.org/standards/st2110" },
@@ -1001,7 +1036,7 @@ const STANDARD_BUILDS = [
       { fromPin: 1, toPin: 1, desc: "Center conductor to Center conductor (Signal)" },
       { fromPin: 2, toPin: 2, desc: "Shell to Shell (Shield / Ground)" },
     ],
-    notes: "75\u03a9 cable is mandatory. Belden 1694A (RG-6) covers SD/HD/3G-SDI \u2014 NOT 12G-rated. For 12G-SDI use Belden 4694R, 4794R, or Canare L-5.5CUHD. 50\u03a9 BNC connectors look identical to 75\u03a9 but cause reflections. Analog sync (blackburst, tri-level) runs much longer than SDI on the same cable since it's baseband, not gigahertz.",
+    notes: "75\u03a9 cable is mandatory. Belden 1694A (RG-6) covers SD/HD/3G-SDI \u2014 NOT 12G-rated. For 12G-SDI use Belden 4694R, 4794R, or Canare L-5.5CUHD. 50\u03a9 BNC connectors look identical to 75\u03a9 but cause reflections. Analog sync (blackburst, tri-level) runs much longer than SDI on the same cable since it's baseband, not gigahertz. Some BNC ports carry DC on the centre pin (wireless-mic antenna distribution bias, PoC CCTV) \u2014 never patch those into an SDI/genlock input. A 50 \u03a9 BNC male can physically damage a 75 \u03a9 female (larger centre pin), not just cause reflections.",
     sources: [
       { label: "Belden 12G-SDI Cable Portfolio", url: "https://www.belden.com/products/cable/broadcast-cable/sdi-video-coax-cable/12g-sdi" },
       { label: "Canare 12G-SDI Solutions", url: "https://www.canare.com/12gsdi4ksolutions" },
@@ -1009,25 +1044,25 @@ const STANDARD_BUILDS = [
   },
   {
     from: "bnc", to: "triax", status: "partial", title: "BNC to Triax \u2014 SDI on Triax Cable",
-    use: "Run SDI through broadcast triax cable when you have triax in the ground and need to pull SDI. Uses center + outer shield only; inner shield is unused.",
+    use: "Run SDI through dead broadcast triax when you have triax in the ground and need to pull SDI. Centre to centre; BNC shell to the INNER shield (the 75 \u03a9 return) with the outer shield bonded to it.",
     wiring: [
-      { fromPin: 1, toPin: 1, desc: "BNC center to Triax center (Signal)" },
-      { fromPin: 2, toPin: 3, desc: "BNC shell to Triax outer shield (Ground)" },
+      { fromPin: 1, toPin: 1, desc: "BNC centre to Triax centre (signal)" },
+      { fromPin: 2, toPin: 2, desc: "BNC shell to Triax INNER shield \u2014 the 75 \u03a9 return (centre + inner shield form the coax)" },
+      { fromPin: 2, toPin: 3, desc: "BNC shell ALSO to Triax OUTER shield \u2014 bonded so nothing floats (one shell lug fans out to both shields)" },
     ],
-    deadEnds: [
-      { connector: "to", pin: 2, desc: "Triax inner shield \u2014 unused (normally carries DC return in a camera system)" },
-    ],
-    notes: "Only works with 75\u03a9 broadcast triax (Belden 9232/1857A, Canare LV-77S, Clark Wire TV series). 50\u03a9 and 90\u03a9 instrumentation triax also exists \u2014 verify cable type before trusting SDI through it. For camera control, use proper triax-rated camera control units, not this passthrough.",
+    deadEnds: [],
+    notes: "\u26a0\ufe0f DANGER \u2014 camera triax carries the CCU power supply on the CENTRE conductor (Sony: 180 V DC) with the inner shield as its return. Before using a triax run as SDI coax, physically disconnect BOTH ends from any CCU, base station or camera and meter centre-to-shields for 0 V. NEVER plug this adapter into a CCU or camera triax port. Why the inner shield: the 75 \u03a9 transmission line in a triax is centre-to-INNER-shield; the outer shield is a separate screen/earth. Earlier PinRef revisions used the outer shield as the return and floated the inner one, which is not a 75 \u03a9 path and will not lock HD/3G/12G SDI reliably. Bonding both shields is fine on a dead run and forbidden on a camera cable (Sony: a cable with inner and outer sheaths shorted is a shock hazard on a CCU) \u2014 which is another reason this adapter must never meet a CCU. Only 75 \u03a9 broadcast triax (Belden 9232/1857A, Canare L-5CFTX; LV-77S is a coax, not a triax); 50/90 \u03a9 instrumentation triax exists. Short runs; verify lock on the receiver.",
     sources: [
-      { label: "Canford LEMO/Triax/HDTV Fibre Guide", url: "https://www.canford.co.uk/ProductResources/resources/Reference/Lemo%20and%20Fischer%20Triax%20and%20HDTV%20Fibre%20connectors%20guide%20IBC%20lr%20Connector%20Guide.pdf" },
-      { label: "Triaxial cable \u2014 Wikipedia", url: "https://en.wikipedia.org/wiki/Triaxial_cable" },
+      { label: "Triaxial cable \u2014 Wikipedia (core = power + signal, inner screen = power return, outer sheath = protective earth)", url: "https://en.wikipedia.org/wiki/Triaxial_cable" },
+      { label: "Sony HXCU-100 Operating Instructions p.8 \u2014 \u2018DC180 V high-voltage power is supplied to the camera\u2019 over the triax", url: "https://www.manualslib.com/manual/969011/Sony-Hxcu-100.html?page=8" },
+      { label: "Canare \u2014 75 ohm Triaxial Cables (LV-77S is listed only under 75 \u03a9 coax)", url: "https://www.canare.co.jp/en/products/cables/index.php?tid=4_012" },
     ],
   },
   {
     from: "bnc", to: "rj45", status: "not_possible", title: "BNC to RJ45 \u2014 NOT a Real SDI-over-Cat5 Path",
     use: "\u26a0\ufe0f Do not build this. A raw pin-to-pin BNC\u2013Cat5 bodge is not a functional SDI path at any useful distance.",
     wiring: [],
-    notes: "75\u03a9 single-ended SDI cannot be passed cleanly down 100\u03a9 twisted pair without impedance matching and equalization. Tying pairs together at both ends defeats the cable's EMI geometry. For SDI over Cat cable use a proper active extender with balun/EQ (MuxLab, AAS, Foresight); for long distance use SDI\u2013fiber; for IP transport use SMPTE ST 2022-6 or ST 2110.",
+    notes: "75\u03a9 single-ended SDI cannot be passed cleanly down 100\u03a9 twisted pair without impedance matching and equalization. Tying pairs together at both ends defeats the cable's EMI geometry. For SDI over Cat cable use a proper active extender with balun/EQ (MuxLab, AAS, Foresight); for long distance use SDI\u2013fiber; for IP transport use SMPTE ST 2022-6 or ST 2110. Passive 75/100 \u03a9 SDI baluns exist for short runs; what does not exist is a wire-only adapter that works.",
     sources: [
       { label: "Belden \u2014 Key to Video Cable Performance", url: "https://www.belden.com/blog/key-to-video-cable-performance" },
       { label: "SMPTE ST 2110", url: "https://www.smpte.org/standards/st2110" },
@@ -1036,31 +1071,34 @@ const STANDARD_BUILDS = [
   // Triax
   {
     from: "triax", to: "bnc", status: "partial", title: "Triax to BNC \u2014 Receive Side of Triax-as-Coax",
-    use: "Receive end when using broadcast triax cable as a coax path for SDI. Center + outer shield only.",
+    use: "Receive end when using dead broadcast triax as a coax path for SDI. Centre to centre; inner shield (75 \u03a9 return) and outer shield both to the BNC shell. Mirror of BNC \u2192 Triax.",
     wiring: [
-      { fromPin: 1, toPin: 1, desc: "Center to BNC center (Signal)" },
-      { fromPin: 3, toPin: 2, desc: "Outer shield to BNC shell (Ground)" },
+      { fromPin: 1, toPin: 1, desc: "Triax centre to BNC centre (signal)" },
+      { fromPin: 2, toPin: 2, desc: "Triax INNER shield to BNC shell \u2014 the 75 \u03a9 return" },
+      { fromPin: 3, toPin: 2, desc: "Triax OUTER shield ALSO to BNC shell \u2014 bonded (both shields land on the one shell lug)" },
     ],
-    deadEnds: [
-      { connector: "from", pin: 2, desc: "Triax inner shield \u2014 unused" },
-    ],
-    notes: "Only works with 75\u03a9 broadcast triax (Belden 9232/1857A, Canare LV-77S, Clark Wire TV series). 50\u03a9/90\u03a9 instrumentation triax exists and will not pass SDI cleanly. Not for camera control systems.",
+    deadEnds: [],
+    notes: "\u26a0\ufe0f DANGER \u2014 camera triax carries the CCU power supply on the CENTRE conductor (Sony: 180 V DC) with the inner shield as its return. Before using a triax run as SDI coax, physically disconnect BOTH ends from any CCU, base station or camera and meter centre-to-shields for 0 V. NEVER plug this adapter into a CCU or camera triax port. This is the end a tech plugs into the wall plate or patch \u2014 if that run is live from a CCU, 180 V DC lands on the SDI input. Inner shield is the 75 \u03a9 return; outer shield bonded so nothing floats (earlier PinRef revisions did the opposite). Only 75 \u03a9 broadcast triax (Belden 9232/1857A, Canare L-5CFTX \u2014 LV-77S is a coax). Keep identical to the corrected BNC \u2192 Triax build.",
     sources: [
-      { label: "Canford LEMO/Triax/HDTV Fibre Guide", url: "https://www.canford.co.uk/ProductResources/resources/Reference/Lemo%20and%20Fischer%20Triax%20and%20HDTV%20Fibre%20connectors%20guide%20IBC%20lr%20Connector%20Guide.pdf" },
+      { label: "Triaxial cable \u2014 Wikipedia (core = power + signal, inner screen = power return, outer sheath = protective earth)", url: "https://en.wikipedia.org/wiki/Triaxial_cable" },
+      { label: "Sony HXCU-100 Operating Instructions p.8 \u2014 \u2018DC180 V high-voltage power is supplied to the camera\u2019 over the triax", url: "https://www.manualslib.com/manual/969011/Sony-Hxcu-100.html?page=8" },
+      { label: "Canare \u2014 75 ohm Triaxial Cables (LV-77S is listed only under 75 \u03a9 coax)", url: "https://www.canare.co.jp/en/products/cables/index.php?tid=4_012" },
     ],
   },
   // DE-9 combos
   {
     from: "triax", to: "triax", status: "standard", title: "Triax Extension Cable",
-    use: "Camera control / return video extension. All three conductors straight through. Use 75\u03a9 broadcast triax (Belden 9232/1857A, Canare LV-77S).",
+    use: "Camera-to-CCU extension. All three conductors straight through. Use 75 \u03a9 broadcast triax (Belden 9232/1857A, Canare L-5CFTX).",
     wiring: [
-      { fromPin: 1, toPin: 1, desc: "Center to Center (Multiplexed video/data)" },
-      { fromPin: 2, toPin: 2, desc: "Inner shield to Inner shield (DC power return)" },
-      { fromPin: 3, toPin: 3, desc: "Outer shield to Outer shield (DC power / Ground)" },
+      { fromPin: 1, toPin: 1, desc: "Centre to Centre \u2014 multiplexed video/data AND the camera DC supply (Sony: 180 V DC)" },
+      { fromPin: 2, toPin: 2, desc: "Inner shield to Inner shield \u2014 signal/DC return" },
+      { fromPin: 3, toPin: 3, desc: "Outer shield to Outer shield \u2014 protective earth / housing" },
     ],
+    notes: "Straight 1\u21921, 2\u21922, 3\u21923 is the only correct extension. The CCU puts its camera supply on the CENTRE conductor (probe voltage first, then up to 180 V DC on Sony systems) with the inner shield as return; the outer shield is protective earth only. Power the CCU off before connecting or disconnecting, keep connectors dry and clean, and verify the inner and outer shields are isolated before the cable goes on a CCU \u2014 a pinched or wet connector that shorts the sheaths is a shock hazard and trips or damages the CCU. LV-77S is a 75 \u03a9 coax, not a triax.",
     sources: [
-      { label: "Canford LEMO/Triax/HDTV Fibre Guide", url: "https://www.canford.co.uk/ProductResources/resources/Reference/Lemo%20and%20Fischer%20Triax%20and%20HDTV%20Fibre%20connectors%20guide%20IBC%20lr%20Connector%20Guide.pdf" },
-      { label: "Triaxial cable \u2014 Wikipedia", url: "https://en.wikipedia.org/wiki/Triaxial_cable" },
+      { label: "Triaxial cable \u2014 Wikipedia (core = power + signal, inner screen = power return, outer sheath = protective earth)", url: "https://en.wikipedia.org/wiki/Triaxial_cable" },
+      { label: "Sony HXCU-100 Operating Instructions p.8 \u2014 \u2018DC180 V high-voltage power is supplied to the camera\u2019 over the triax", url: "https://www.manualslib.com/manual/969011/Sony-Hxcu-100.html?page=8" },
+      { label: "Canare \u2014 75 ohm Triaxial Cables (LV-77S is listed only under 75 \u03a9 coax)", url: "https://www.canare.co.jp/en/products/cables/index.php?tid=4_012" },
     ],
   },
   {
@@ -1142,7 +1180,7 @@ const STANDARD_BUILDS = [
   },
   {
     from: "db25", to: "db25", status: "standard", title: "DB25 Straight-Through",
-    use: "Audio snake extension (Tascam/AES59 analog or Yamaha AES digital) or serial cable. All 25 pins pass through unchanged.",
+    use: "In-line EXTENSION of a DB25 audio snake (male one end, female the other) \u2014 Tascam/AES59 analog, Tascam or Yamaha AES/EBU. All 25 pins pass through unchanged.",
     wiring: [
       { fromPin: 1, toPin: 1, desc: "Pin 1 to Pin 1" },
       { fromPin: 2, toPin: 2, desc: "Pin 2 to Pin 2" },
@@ -1170,14 +1208,16 @@ const STANDARD_BUILDS = [
       { fromPin: 24, toPin: 24, desc: "Pin 24 to Pin 24" },
       { fromPin: 25, toPin: 25, desc: "Pin 25 to Pin 25" },
     ],
+    notes: "Straight-through is correct for an extension and for Tascam ANALOG device-to-device. A device-to-device AES/EBU DB25 cable (Tascam format) must be FLIPPED so that pins 12, 24 and 25 land on 6, 18 and 19 at the other end (IN meets OUT) \u2014 a straight male-to-male between two AES devices ties outputs to outputs and passes nothing. Tascam analog and Yamaha AES use the same shell: a straight cable is the one thing that lets a phantom-powered analog mic pre meet a digital card, so label snakes by format. Not for RS-232 (DTE-to-DTE needs a null modem) \u2014 keep audio DB25s away from serial and parallel ports.",
     sources: [
       { label: "TASCAM DB-25 Pinout (AES59)", url: "https://www.tascam.eu/en/docs/DB-25_Pinout.pdf" },
+      { label: "TASCAM DB-25 Pinout Standard (official PDF)", url: "https://tascam.eu/downloads/DB25_Pinout_Standard.pdf" },
     ],
   },
   // XLR4 combos
   {
     from: "db25", to: "xlr3", status: "standard", title: "DB25 to XLR3 \u2014 Tascam/AES59 Audio Breakout",
-    use: "Receiving end of a Tascam/AES59 8-channel DB25 snake as balanced XLR3 outputs. Channels run right-to-left on the DB25 \u2014 Ch1 is at the far end (pins 24/12/25).",
+    use: "Receiving end of a Tascam/AES59 8-channel DB25 snake as balanced XLR3 outputs. Ch1 is on pins 24/12/25 (see notes for orientation).",
     wiring: [
       { fromPin: 24, toPin: 2, desc: "DB25 pin 24 (Ch1 Hot) to XLR Hot +" },
       { fromPin: 12, toPin: 3, desc: "DB25 pin 12 (Ch1 Cold) to XLR Cold \u2212" },
@@ -1249,11 +1289,12 @@ const STANDARD_BUILDS = [
     deadEnds: [
       { connector: "from", pin: 13, desc: "DB25 pin 13 \u2014 No Connect (only unused pin)" },
     ],
-    notes: "AES59-2012 / Tascam DA-88 standard. Yamaha DB25 (AES3 digital) is NOT compatible \u2014 verify which standard the snake follows. Pair with XLR3\u2192DB25 at the source.",
+    notes: "AES59-2012 / Tascam DA-88 standard. Yamaha DB25 (AES3 digital) is NOT compatible \u2014 verify which standard the snake follows. Pair with XLR3\u2192DB25 at the source. Orientation: \u2018Ch1 at the far right\u2019 is true looking at the MATING FACE of the male plug (pin 1 top-left). Tascam's own drawing is the opposite hand (pin 13 top-left, channels 1\u20138 left to right) \u2014 that is the view you have of a male plug's SOLDER cups. Count pins by the moulded numbers, not by position. Phantom: console phantom on these XLR3s travels up every pair into the source device's line outputs \u2014 keep 48 V OFF on inputs fed from a line-level snake. The XLR3 tails are outputs, so by convention they are MALE (the app draws the female face).",
     sources: [
       { label: "TASCAM DB-25 Pinout Standard (official)", url: "https://www.tascam.eu/en/docs/DB-25_Pinout.pdf" },
       { label: "Aviom DB25 Pinout Information", url: "https://www.aviom.com/library/Technical-Resources/75_DB25-Pinout-Information.pdf" },
       { label: "AES59-2012 Standard", url: "https://www.aes.org/publications/standards/search.cfm?docID=92" },
+      { label: "Yamaha \u2014 Phantom Power (never apply phantom to anything other than condenser microphones)", url: "https://hub.yamaha.com/proaudio/livesound/tools-of-the-trade-mixer-and-phantom-power/" },
     ],
   },
   {
