@@ -220,7 +220,7 @@ export default function WiringDiagram({ build }) {
         <div style={{ display: "flex", gap: 8, alignItems: "flex-start", marginBottom: 10, padding: "8px 10px", borderRadius: 8, background: T.yellow + "1a", border: `1px solid ${T.yellow}80` }}>
           <span style={{ fontSize: 16, lineHeight: 1 }}>{"\u26A0"}</span>
           <div style={{ fontSize: 11, color: T.yellow, fontFamily: "monospace", lineHeight: 1.4 }}>
-            <strong>UNVERIFIED {"\u2014"} check every pin with a meter before connecting powered gear.</strong>
+            <strong>UNVERIFIED {"\u2014"} no opened source confirms this build yet. Do not trust it with powered gear.</strong>
             {build.audit?.note ? ` ${build.audit.note}` : " This build has not passed all five independent checks (documentation, power, circuit, field practice, red team) against an opened source."}
           </div>
         </div>
