@@ -91,8 +91,11 @@ const STANDARD_BUILDS = [
       { fromPin: 2, toPin: 1, desc: "Hot (+) (pin 2) to Tip" },
       { fromPin: 3, toPin: 2, desc: "Cold (\u2212) (pin 3) to Ring" },
     ],
+    notes: "Phantom caution: if the XLR3 end goes into a mic input with 48 V on, that DC (via 6.8 k\u03a9) is pushed into the device on the other end \u2014 keep phantom OFF on that channel. An XLR3 end that fits a Clear-Com / RTS party-line jack will meet +30 V DC on pin 2 \u2014 never plug this into an intercom LINE / loop-through connector. A TRS end plugged into a mono TS jack grounds the Ring, i.e. XLR pin 3 \u2014 the cold leg of an active output.",
     sources: [
       { label: "Rane Note 110 \u2014 Sound System Interconnection (pinout Figure 1a)", url: "https://www.ranecommercial.com/legacy/note110.html" },
+      { label: "Yamaha \u2014 Phantom Power (never apply phantom to anything other than condenser microphones)", url: "https://hub.yamaha.com/proaudio/livesound/tools-of-the-trade-mixer-and-phantom-power/" },
+      { label: "Rane Note 151 \u2014 Grounding & Shielding (Fig. 5: float cold on active balanced outputs; tie cold to ground at a balanced input)", url: "https://www.ranecommercial.com/legacy/note151.html" },
     ],
   },
   {
@@ -379,7 +382,7 @@ const STANDARD_BUILDS = [
   },
   {
     from: "xlr3", to: "mini_trs", status: "partial", title: "XLR3 to 3.5mm TRS \u2014 Mono Feed to a Stereo Input (Both Channels)",
-    use: "Balanced XLR3 output into a 3.5mm STEREO (unbalanced) input \u2014 phone, laptop, consumer recorder, IFB/IEM transmitter aux in, camera. The one mono signal lands on both Left and Right.",
+    use: "Balanced XLR3 output into a 3.5mm STEREO (unbalanced) input \u2014 consumer recorder LINE IN, IFB/IEM transmitter aux in, camera (LINE setting). NOT a phone or laptop headset jack \u2014 those are outputs. The one mono signal lands on both Left and Right.",
     wiring: [
       { fromPin: 2, toPin: 1, desc: "Hot (+) to Tip (Left)" },
       { fromPin: 2, toPin: 2, desc: "Hot (+) ALSO to Ring (Right) \u2014 same signal to both channels" },
@@ -388,11 +391,12 @@ const STANDARD_BUILDS = [
     deadEnds: [
       { connector: "from", pin: 3, desc: "XLR pin 3 (Cold \u2212) \u2014 leave floating (Rane Note 151: never short an active balanced output\u2019s cold leg to ground)" },
     ],
-    notes: "A 3.5mm jack on consumer gear is a stereo UNBALANCED input: Tip = Left, Ring = Right, Sleeve = ground. The old PinRef wiring put Hot on Tip and Cold on Ring, which feeds the Right channel an inverted copy of the Left \u2014 the two channels are out of phase, there is no centre image, and a mono sum of the recording cancels to nothing. Feeding one source to two high-impedance INPUTS in parallel is fine (it is two OUTPUTS you must never tie together). Only if the device really has a balanced 3.5mm input (rare; check the manual) wire it T=Hot, R=Cold, S=Ground instead. Expect a ~12 dB level mismatch into consumer gear (+4 dBu vs \u221210 dBV) \u2014 turn the source down or pad.",
+    notes: "A 3.5mm jack on consumer gear is a stereo UNBALANCED input: Tip = Left, Ring = Right, Sleeve = ground. The old PinRef wiring put Hot on Tip and Cold on Ring, which feeds the Right channel an inverted copy of the Left \u2014 the two channels are out of phase, there is no centre image, and a mono sum of the recording cancels to nothing. Feeding one source to two high-impedance INPUTS in parallel is fine (it is two OUTPUTS you must never tie together). Only if the device really has a balanced 3.5mm input (rare; check the manual) wire it T=Hot, R=Cold, S=Ground instead. Level: expect 6\u201312 dB too hot into consumer gear depending on the output topology (a differential output used single-ended loses 6 dB; an impedance-balanced output loses nothing) \u2014 turn the source down or pad. A camera's 3.5 mm MIC input is mic level with plug-in power DC on Tip/Ring: use the camera's LINE setting or a \u221240 dB pad. Never plug the 3.5 mm end into a headphone/headset jack: Tip and Ring are jumpered here and would short the device's L and R output amplifiers together. The female XLR3 also fits a party-line cable \u2014 30 V DC on pin 2 would land on both Tip and Ring.",
     sources: [
       { label: "Rane Note 151 \u2014 Grounding & Shielding (Fig. 5: float cold on active balanced outputs; tie cold to ground at a balanced input fed unbalanced)", url: "https://www.ranecommercial.com/legacy/note151.html" },
       { label: "Rane Note 109 \u2014 Why Not Wye? (never tie two outputs together; sum L+R with resistors)", url: "https://www.ranecommercial.com/legacy/note109.html" },
       { label: "Rane Note 110 \u2014 Sound System Interconnection", url: "https://www.ranecommercial.com/legacy/note110.html" },
+      { label: "Android AOSP 3.5mm Headset Jack Spec (CTIA LRGM; Tip/Ring are headphone OUTPUTS, mic on Sleeve)", url: "https://source.android.com/docs/core/interaction/accessories/headset/plug-headset-spec" },
     ],
   },
   {
@@ -405,7 +409,7 @@ const STANDARD_BUILDS = [
     deadEnds: [
       { connector: "from", pin: 3, desc: "XLR pin 3 (Cold \u2212) \u2014 leave floating (safest for active outputs)" },
     ],
-    notes: "Balanced to unbalanced conversion. Pin 3 handling depends on the source output topology: FLOAT pin 3 for transformerless active/servo-balanced outputs (grounding can short an inverting op-amp). TIE pin 3 to pin 1 only for transformer-balanced outputs (provides DC reference). When in doubt, leave floating \u2014 it's the safer default.",
+    notes: "Balanced to unbalanced conversion. Pin 3 handling depends on the source output topology: FLOAT pin 3 for transformerless active/servo-balanced outputs (grounding can short an inverting op-amp). TIE pin 3 to pin 1 only for transformer-balanced outputs (provides DC reference). When in doubt, leave floating \u2014 it's the safer default. Rane groups transformer AND cross-coupled (servo-balanced) output stages together: both want pin 3 tied to pin 1 when feeding an unbalanced input, or you lose signal (transformer) or 6 dB (cross-coupled). Only plain op-amp differential outputs need pin 3 floated. When the output type is unknown, float first, then try the tie if the level is low.",
     sources: [
       { label: "Rane Note 151 \u2014 Grounding &amp; Shielding", url: "https://www.ranecommercial.com/legacy/note151.html" },
       { label: "Benchmark XLR-to-RCA Adapter Cable Application Note", url: "https://benchmarkmedia.com/products/benchmark-xlrfm-to-rca-adapter-cable-pin-3-floating" },
@@ -422,10 +426,11 @@ const STANDARD_BUILDS = [
     deadEnds: [
       { connector: "from", pin: 3, desc: "XLR pin 3 (Cold \u2212) \u2014 leave floating (safer for active outputs)" },
     ],
-    notes: "\u26a0\ufe0f Level mismatch ~12 dB (pro +4 dBu = 1.23 V vs consumer \u221210 dBV = 0.316 V). Pro peaks can exceed consumer input clip by 15+ dB. Consumer RCA inputs usually have NO gain control \u2014 use an inline pad (\u221212 dB / \u221220 dB), a passive DI (Radial ProAV), or a dedicated level converter. Pin 3 should float for transformerless active outputs \u2014 grounding it can short an inverting op-amp stage.",
+    notes: "\u26a0\ufe0f Level mismatch ~12 dB (pro +4 dBu = 1.23 V vs consumer \u221210 dBV = 0.316 V). Pro peaks can exceed consumer input clip by 15+ dB. Consumer RCA inputs usually have NO gain control \u2014 use an inline pad (\u221212 dB / \u221220 dB), a passive DI (Radial ProAV), or a dedicated level converter. Pin 3 should float for transformerless active outputs \u2014 grounding it can short an inverting op-amp stage. Rane groups transformer AND cross-coupled (servo-balanced) output stages together: both want pin 3 tied to pin 1 when feeding an unbalanced input, or you lose signal (transformer) or 6 dB (cross-coupled). Only plain op-amp differential outputs need pin 3 floated. When the output type is unknown, float first, then try the tie if the level is low. An XLR3 end that fits a Clear-Com / RTS party-line jack will meet +30 V DC on pin 2 \u2014 never plug this into an intercom LINE / loop-through connector.",
     sources: [
       { label: "Rane Note 110 \u2014 Sound System Interconnection", url: "https://www.ranecommercial.com/legacy/note110.html" },
       { label: "Benchmark \u2014 Balanced vs. Unbalanced", url: "https://benchmarkmedia.com/blogs/application_notes/balanced-vs-unbalanced-analog-interfaces" },
+      { label: "Rane Note 151 \u2014 Grounding & Shielding (Fig. 5: float cold on active balanced outputs; tie cold to ground at a balanced input)", url: "https://www.ranecommercial.com/legacy/note151.html" },
     ],
   },
   {
@@ -764,8 +769,11 @@ const STANDARD_BUILDS = [
       { fromPin: 2, toPin: 3, desc: "Ring to Cold (\u2212)" },
       { fromPin: 3, toPin: 1, desc: "Sleeve to Ground" },
     ],
+    notes: "Phantom caution: if the XLR3 end goes into a mic input with 48 V on, that DC (via 6.8 k\u03a9) is pushed into the device on the other end \u2014 keep phantom OFF on that channel. An XLR3 end that fits a Clear-Com / RTS party-line jack will meet +30 V DC on pin 2 \u2014 never plug this into an intercom LINE / loop-through connector. The male XLR3 also fits the RTS BP-325 LINE INPUT / LINE LOOP (XLR-3-31/-32) jacks, which carry +30 V DC on pin 2 unless the loop is re-jumpered as a program input.",
     sources: [
       { label: "Rane Note 110 \u2014 Sound System Interconnection", url: "https://www.ranecommercial.com/legacy/note110.html" },
+      { label: "Yamaha \u2014 Phantom Power (never apply phantom to anything other than condenser microphones)", url: "https://hub.yamaha.com/proaudio/livesound/tools-of-the-trade-mixer-and-phantom-power/" },
+      { label: "RTS BP-325 User Manual \u2014 Specifications p.13 (XLR-3-31 line, XLR-4-31 / XLR-5-31 headset pinouts, headphone amp 50\u2013600 \u03a9, 8 V p-p; p.7: dynamic-mic headsets only)", url: "https://www.manualslib.com/manual/3540984/Rts-Bp325.html?page=13" },
     ],
   },
   // RJ45 combos
@@ -781,9 +789,11 @@ const STANDARD_BUILDS = [
       { connector: "to", pin: 1, desc: "XLR4 pin 1 (Mic Ground) \u2014 unused, no mic circuit on this listen-only feed" },
       { connector: "to", pin: 2, desc: "XLR4 pin 2 (Mic Signal) \u2014 unused, listen-only" },
     ],
-    notes: "Mono listen feed only. Sleeve uses XLR4 pin 3 (Earphone Return) per Clear-Com V-Series spec \u2014 that's the dedicated return for the headphone amplifier. Pin 1 (Mic Ground) is left floating since there's no mic circuit on this feed.",
+    notes: "Mono listen feed only. Sleeve uses XLR4 pin 3 (Earphone Return) per Clear-Com V-Series spec \u2014 that's the dedicated return for the headphone amplifier. Pin 1 (Mic Ground) is left floating since there's no mic circuit on this feed. Level: a comms earphone is a 200\u2013400 \u03a9 passive transducer. Feed it ONLY from a headphone amplifier or an output with a level control the listener can reach \u2014 never a raw +4 dBu line/program send (105\u2013110 dB SPL at the ear, no volume control in the path). Start at minimum. Gender: a Clear-Com headset has a female XLR4, so this cable's XLR4 is MALE; the app draws the female face, so the insert you solder is mirrored. A FEMALE XLR4 built by mistake fits a Clear-Com beltpack and would drive the mixer output into the pack's headphone amplifier output.",
     sources: [
       { label: "Clear-Com V-Series Headset Connectors", url: "https://www.clearcom.com/DownloadCenter/manuals/V-Series_Iris_Online_Manual/Content/Common%20Topics/Headset%20connectors.htm" },
+      { label: "RTS BP-325 User Manual \u2014 Specifications p.13 (XLR-3-31 line, XLR-4-31 / XLR-5-31 headset pinouts, headphone amp 50\u2013600 \u03a9, 8 V p-p; p.7: dynamic-mic headsets only)", url: "https://www.manualslib.com/manual/3540984/Rts-Bp325.html?page=13" },
+      { label: "Clear-Com Solution Finder \u2014 4-pin to 5-pin headset adaptor (mic input is unbalanced, pin 1 = signal ground; never short pins 4 and 5)", url: "https://clear-com.atlassian.net/wiki/spaces/SF/pages/158841161/How+can+I+make+an+adaptor+from+a+4+pin+to+a+5+pin+headset" },
     ],
   },
   {
@@ -1248,9 +1258,13 @@ const STANDARD_BUILDS = [
       { connector: "from", pin: 2, desc: "XLR4 pin 2 (Mic Signal) \u2014 unused, output-only" },
       { connector: "to", pin: 2, desc: "TRS Ring \u2014 unused, output is mono" },
     ],
-    notes: "Sleeve uses XLR4 pin 3 (Earphone Return) per Clear-Com V-Series spec \u2014 that's the dedicated return for the headphone amplifier. Pin 1 (Mic Ground) is left floating since there's no mic circuit on the TRS output. Mono output only.",
+    notes: "Sleeve uses XLR4 pin 3 (Earphone Return) per Clear-Com V-Series spec \u2014 that's the dedicated return for the headphone amplifier. Pin 1 (Mic Ground) is left floating since there's no mic circuit on the TRS output. Mono output only. DC hazard: Clear-Com RS-700-series packs put ~15 V DC on headset pin 4 (Spkr+/DC+) relative to pin 1 \u2014 and pin 3 may sit at the same potential as pin 1 inside the pack. Meter pin 4\u2192pin 3 with the pack powered before connecting this to any DC-coupled line input, wedge or recorder, and use a DC-blocking capacitor or an isolation transformer (passive DI) in the path. Level: the pack output is a headphone amp (~8 V p-p) \u2014 pad into a line input. Ring is left floating; into a balanced TRS input tie Ring to Sleeve at the destination (Rane 151 Fig. 5e). The female XLR4 also fits any male XLR4 12 V power INPUT panel on cameras/monitors \u2014 only plug this into a headset jack.",
     sources: [
       { label: "Clear-Com V-Series Headset Connectors", url: "https://www.clearcom.com/DownloadCenter/manuals/V-Series_Iris_Online_Manual/Content/Common%20Topics/Headset%20connectors.htm" },
+      { label: "Clear-Com RS-701 Quick Reference \u2014 headset connector: 1 Mic\u2212/DC\u2212, 2 Mic+, 3 Spkr\u2212, 4 Spkr+/DC+ (15 V nom, 20 mA); DIP 1 Dynamic/Electret", url: "https://www.manualsdir.com/manuals/332633/clear-com-rs-701.html" },
+      { label: "RTS BP-325 User Manual \u2014 Specifications p.13 (XLR-3-31 line, XLR-4-31 / XLR-5-31 headset pinouts, headphone amp 50\u2013600 \u03a9, 8 V p-p; p.7: dynamic-mic headsets only)", url: "https://www.manualslib.com/manual/3540984/Rts-Bp325.html?page=13" },
+      { label: "Rane Note 151 \u2014 Grounding & Shielding (Fig. 5: float cold on active balanced outputs; tie cold to ground at a balanced input)", url: "https://www.ranecommercial.com/legacy/note151.html" },
+      { label: "XLR connector \u2014 Wikipedia (four-pin DC power: pin 1 ground, pin 4 +12 V)", url: "https://en.wikipedia.org/wiki/XLR_connector" },
     ],
   },
   {
@@ -1405,19 +1419,20 @@ const STANDARD_BUILDS = [
       { fromPin: 1, toPin: 1, desc: "Tip to Tip \u2014 Signal" },
       { fromPin: 2, toPin: 2, desc: "Sleeve to Sleeve \u2014 Ground" },
     ],
+    notes: "1/4\" TS is also the SPEAKER connector on guitar/bass heads and cabinets. Never use an instrument/patch cable between a head and a cab \u2014 speaker current overheats it and its shield is not a speaker conductor; use a speaker cable.",
     sources: [
       { label: "Rane Note 110 \u2014 Sound System Interconnection", url: "https://www.ranecommercial.com/legacy/note110.html" },
     ],
   },
   {
     from: "ts", to: "xlr3", status: "standard", title: "TS to XLR3 \u2014 Unbalanced Audio",
-    use: "Guitar/keyboard to mixer XLR input. Use a proper DI box for long runs or low-impedance instrument pickup.",
+    use: "Guitar/keyboard to mixer XLR input. Use a proper DI box for long runs or HIGH-impedance passive instrument pickups.",
     wiring: [
       { fromPin: 1, toPin: 2, desc: "Tip to Hot (+) \u2014 Signal" },
       { fromPin: 2, toPin: 1, desc: "Sleeve to Ground" },
       { fromPin: 2, toPin: 3, desc: "Sleeve also tied to XLR3 pin 3 (Cold) \u2014 unbalanced termination at destination per Rane Note 151 Fig 5e" },
     ],
-    notes: "Per Rane Note 151 Figure 5 (column 2, row e \u2014 Unbalanced Output \u2192 Balanced Input, off-the-shelf-cable wiring), tie destination XLR3 pin 3 (Cold) to pin 1 (Ground) at the XLR3 connector by jumpering both to the TS Sleeve. This gives the balanced input's diff-amp a proper ground reference. For long runs or low-impedance instrument pickups, a passive DI box is still preferred over a bare adapter to avoid ground loops. Turn 48 V phantom OFF on that input: with pin 3 grounded, phantom pushes DC through pin 2 into the instrument or keyboard output.",
+    notes: "Per Rane Note 151 Figure 5 (column 2, row e \u2014 Unbalanced Output \u2192 Balanced Input, off-the-shelf-cable wiring), tie destination XLR3 pin 3 (Cold) to pin 1 (Ground) at the XLR3 connector by jumpering both to the TS Sleeve. This gives the balanced input's diff-amp a proper ground reference. For long runs or high-impedance passive pickups, a DI box is still preferred over a bare adapter to avoid ground loops. Turn 48 V phantom OFF on that input: with pin 3 grounded, phantom pushes DC through pin 2 into the instrument or keyboard output. The male XLR3 end that fits a Clear-Com / RTS party-line jack will meet +30 V DC on pin 2 \u2014 never plug this into an intercom LINE / loop-through connector.",
     sources: [
       { label: "Rane Note 151 \u2014 Grounding & Shielding (Figure 5e: Unbalanced\u2192Balanced)", url: "https://www.ranecommercial.com/legacy/note151.html" },
       { label: "Rane Note 110 \u2014 Sound System Interconnection", url: "https://www.ranecommercial.com/legacy/note110.html" },
@@ -1440,8 +1455,8 @@ const STANDARD_BUILDS = [
   },
   // ─── 3.5mm TRS BUILDS ──────────────────────────────────────────────────────
   {
-    from: "ts", to: "mini_trs", status: "standard", title: "TS to 3.5mm \u2014 1/4\" Mono to Headphone",
-    use: "Adapting a 1/4\" mono output to a 3.5mm input (laptop, phone, portable recorder).",
+    from: "ts", to: "mini_trs", status: "standard", title: "TS to 3.5mm \u2014 1/4\" Mono Out to a 3.5mm Stereo Input (Left Only)",
+    use: "Adapting a 1/4\" mono OUTPUT to a 3.5mm stereo LINE/AUX INPUT (recorder, camera, IEM transmitter). Not for a phone or laptop headset jack \u2014 those are outputs.",
     wiring: [
       { fromPin: 1, toPin: 1, desc: "Tip to Tip \u2014 Signal" },
       { fromPin: 2, toPin: 3, desc: "Sleeve to Sleeve \u2014 Ground" },
@@ -1449,9 +1464,11 @@ const STANDARD_BUILDS = [
     deadEnds: [
       { connector: "to", pin: 2, desc: "3.5mm Ring \u2014 leave floating (do not tie to Tip)" },
     ],
-    notes: "\u26a0\ufe0f Leave Ring floating. Only the Left channel will play into a stereo source \u2014 this is safe. Do NOT hard-tie Ring to Tip \u2014 if this adapter is ever plugged into a stereo source, it shorts the right-channel amplifier output to the left output, which can damage op-amp stages. For dual-ear playback from a true mono source, use a proper Y-split with series summing resistors (Rolls SUM, Hosa stereo breakout).",
+    notes: "\u26a0\ufe0f Leave Ring floating. Only the Left channel will play into a stereo source \u2014 this is safe. Do NOT hard-tie Ring to Tip \u2014 if this adapter is ever plugged into a stereo source, it shorts the right-channel amplifier output to the left output, which can damage op-amp stages. For dual-ear playback from a true mono source, use a proper Y-split with series summing resistors (Rolls SUM, Hosa stereo breakout). Commodity 1/4\"-to-3.5 mm adapters strap Tip and Ring so a mono source feeds both channels; that is fine into two INPUTS (two high-impedance loads on one output). PinRef leaves Ring open so this same adapter can never short two headphone-amp OUTPUTS together if it is reversed and plugged into a stereo source. Pick one behaviour and label the adapter.",
     sources: [
       { label: "Rane Note 110 \u2014 Sound System Interconnection", url: "https://www.ranecommercial.com/legacy/note110.html" },
+      { label: "Rane Note 109 \u2014 Why Not Wye? (never tie two outputs together)", url: "https://www.ranecommercial.com/legacy/note109.html" },
+      { label: "Android AOSP 3.5mm Headset Jack Spec (CTIA LRGM; Tip/Ring are headphone OUTPUTS, mic on Sleeve)", url: "https://source.android.com/docs/core/interaction/accessories/headset/plug-headset-spec" },
     ],
   },
   {
@@ -1477,11 +1494,12 @@ const STANDARD_BUILDS = [
     deadEnds: [
       { connector: "from", pin: 2, desc: "Ring (Right) \u2014 leave floating. Do NOT tie it to Tip (that shorts the two headphone-amp outputs together)" },
     ],
-    notes: "A balanced input amplifies the DIFFERENCE between pins 2 and 3. The old PinRef wiring put Left on pin 2 and Right on pin 3, so anything panned centre (voices, the whole IFB programme) cancelled out and only the stereo difference got through. Tying Ring to Tip is not the fix either \u2014 that shorts the device\u2019s two output amplifiers together (Rane Note 109). To get a true L+R mono, use a resistive summing cable or box (Rane Note 109 Fig. 2), or take two XLR3s via a Y-split. Only if the 3.5mm source is a BALANCED mono output (rare; check the manual) wire it T\u2192pin 2, R\u2192pin 3, S\u2192pin 1 instead. Consumer level is ~12 dB below pro line \u2014 add gain at the input.",
+    notes: "A balanced input amplifies the DIFFERENCE between pins 2 and 3. The old PinRef wiring put Left on pin 2 and Right on pin 3, so anything panned centre (voices, the whole IFB programme) cancelled out and only the stereo difference got through. Tying Ring to Tip is not the fix either \u2014 that shorts the device\u2019s two output amplifiers together (Rane Note 109). To get a true L+R mono, use a resistive summing cable or box (Rane Note 109 Fig. 2), or take two XLR3s via a Y-split. Only if the 3.5mm source is a BALANCED mono output (rare; check the manual) wire it T\u2192pin 2, R\u2192pin 3, S\u2192pin 1 instead. Consumer level is ~12 dB below pro line \u2014 add gain at the input. Turn 48 V phantom OFF on that channel before plugging in \u2014 pin 3 is grounded here and phantom DC would flow into the phone/receiver headphone output (same caution as the TS\u2192XLR3 and RCA\u2192XLR3 builds). Never into an intercom LINE jack (15\u201330 V DC on pin 2). On an RTS IFB-828 earset jack Tip is the interrupt feed and Ring the non-interrupt program, so \u2018Left\u2019 here means the IFB interrupt feed.",
     sources: [
       { label: "Rane Note 151 \u2014 Grounding & Shielding (Fig. 5: float cold on active balanced outputs; tie cold to ground at a balanced input fed unbalanced)", url: "https://www.ranecommercial.com/legacy/note151.html" },
       { label: "Rane Note 109 \u2014 Why Not Wye? (never tie two outputs together; sum L+R with resistors)", url: "https://www.ranecommercial.com/legacy/note109.html" },
       { label: "Rane Note 110 \u2014 Sound System Interconnection", url: "https://www.ranecommercial.com/legacy/note110.html" },
+      { label: "Yamaha \u2014 Phantom Power (never apply phantom to anything other than condenser microphones)", url: "https://hub.yamaha.com/proaudio/livesound/tools-of-the-trade-mixer-and-phantom-power/" },
     ],
   },
   {
@@ -1655,10 +1673,11 @@ const STANDARD_BUILDS = [
       { fromPin: 2, toPin: 1, desc: "Shell to Ground" },
       { fromPin: 2, toPin: 3, desc: "Shell ALSO to XLR3 pin 3 (Cold) \u2014 unbalanced source into a balanced input: tie cold to ground at the XLR3 (Rane Note 151 Fig. 5e)" },
     ],
-    notes: "Consumer \u221210 dBV to pro +4 dBu is ~12 dB low \u2014 push input trim up. Keep 48 V phantom OFF on that input (pin 3 is grounded here and the consumer output is not built for DC). Passive adapter is usually fine (pro mic preamps have plenty of gain headroom). If you hit a ground loop crossing AC mains, use a transformer DI (Jensen Iso-Max, Radial ProAV) instead of a passive adapter.",
+    notes: "Consumer \u221210 dBV to pro +4 dBu is ~12 dB low \u2014 push input trim up. Keep 48 V phantom OFF on that input (pin 3 is grounded here and the consumer output is not built for DC). Passive adapter is usually fine (pro mic preamps have plenty of gain headroom). If you hit a ground loop crossing AC mains, use a transformer DI (Jensen Iso-Max, Radial ProAV) instead of a passive adapter. The male XLR3 end that fits a Clear-Com / RTS party-line jack will meet +30 V DC on pin 2 \u2014 never plug this into an intercom LINE / loop-through connector. (the RTS BP-325 LINE LOOP jack is a program input only after its internal plug is moved).",
     sources: [
       { label: "Rane Note 110 \u2014 Sound System Interconnection", url: "https://www.ranecommercial.com/legacy/note110.html" },
       { label: "Benchmark \u2014 Balanced vs. Unbalanced", url: "https://benchmarkmedia.com/blogs/application_notes/balanced-vs-unbalanced-analog-interfaces" },
+      { label: "RTS BP-325 User Manual \u2014 Specifications p.13 (XLR-3-31 line, XLR-4-31 / XLR-5-31 headset pinouts, headphone amp 50\u2013600 \u03a9, 8 V p-p; p.7: dynamic-mic headsets only)", url: "https://www.manualslib.com/manual/3540984/Rts-Bp325.html?page=13" },
     ],
   },
   {
@@ -1680,9 +1699,10 @@ const STANDARD_BUILDS = [
       { fromPin: 2, toPin: 3, desc: "Shell to Sleeve \u2014 Ground" },
       { fromPin: 2, toPin: 2, desc: "Shell ALSO to Ring (Cold \u2212) \u2014 unbalanced source into a balanced input: tie cold to ground at the TRS (Rane Note 151 Fig. 5e)" },
     ],
-    notes: "Ring is tied to Sleeve at the TRS end for proper unbalanced operation. ~12 dB level difference expected (consumer \u221210 dBV to pro +4 dBu); the balanced input's gain makes it up.",
+    notes: "Ring is tied to Sleeve at the TRS end for proper unbalanced operation. ~12 dB level difference expected (consumer \u221210 dBV to pro +4 dBu); the balanced input's gain makes it up. Direction matters: this is physically identical to the TRS\u2192RCA build but with Ring tied to Sleeve. Used backwards (balanced TRS OUTPUT into an RCA input) the jumper grounds the output's cold leg \u2014 use the TRS\u2192RCA build for that direction and label this one RCA\u2192TRS.",
     sources: [
       { label: "Rane Note 110 \u2014 Sound System Interconnection", url: "https://www.ranecommercial.com/legacy/note110.html" },
+      { label: "Rane Note 151 \u2014 Grounding & Shielding (Fig. 5: float cold on active balanced outputs; tie cold to ground at a balanced input)", url: "https://www.ranecommercial.com/legacy/note151.html" },
     ],
   },
   // ─── POWERCON BUILDS ────────────────────────────────────────────────────────
@@ -1696,10 +1716,11 @@ const STANDARD_BUILDS = [
     deadEnds: [
       { connector: "from", pin: 2, desc: "TRS Ring (Cold \u2212) \u2014 leave floating (safer than grounding for transformerless outputs)" },
     ],
-    notes: "\u26a0\ufe0f Pro +4 dBu to consumer \u221210 dBV is ~12 dB level mismatch. Consumer RCA inputs usually have no gain control \u2014 use an inline pad, passive DI, or transformer isolator to avoid clipping. Leave Ring floating rather than tying to Sleeve to avoid shorting an active inverting op-amp output.",
+    notes: "\u26a0\ufe0f Pro +4 dBu to consumer \u221210 dBV is ~12 dB level mismatch. Consumer RCA inputs usually have no gain control \u2014 use an inline pad, passive DI, or transformer isolator to avoid clipping. Leave Ring floating rather than tying to Sleeve to avoid shorting an active inverting op-amp output. As with the XLR3\u2192RCA build, transformer and cross-coupled outputs want Ring tied to Sleeve (floating loses signal or 6 dB); float only for plain differential op-amp outputs.",
     sources: [
       { label: "Rane Note 110 \u2014 Sound System Interconnection", url: "https://www.ranecommercial.com/legacy/note110.html" },
       { label: "Benchmark \u2014 Balanced vs. Unbalanced", url: "https://benchmarkmedia.com/blogs/application_notes/balanced-vs-unbalanced-analog-interfaces" },
+      { label: "Rane Note 151 \u2014 Grounding & Shielding (Fig. 5: float cold on active balanced outputs; tie cold to ground at a balanced input)", url: "https://www.ranecommercial.com/legacy/note151.html" },
     ],
   },
   // ─── CABLE WHOLESALE SHELL ADAPTER BUILDS ────────────────────────────────────
