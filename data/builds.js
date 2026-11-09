@@ -460,7 +460,7 @@ const STANDARD_BUILDS = [
   {
     from: "xlr3", to: "mini_trs", status: "partial", title: "XLR3 to 3.5mm TRS \u2014 Mono Feed to a Stereo Input (Both Channels)",
     use: "Balanced XLR3 output into a 3.5mm STEREO (unbalanced) input \u2014 consumer recorder LINE IN, IFB/IEM transmitter aux in, camera (LINE setting). NOT a phone or laptop headset jack \u2014 those are outputs. The one mono signal lands on both Left and Right.",
-    audit: { verified: false, date: "2026-11-09", note: "Round 5 (2026-11-09): the reviewer raised issues; fixed, re-check pending." },
+    audit: { verified: true, date: "2026-11-09", note: "Round 5 (2026-11-09): an independent reviewer checked pin map, direction and polarity, grounds and returns, every voltage and mis-plug, and every claim against opened sources (6 cited) and agreed; its fixes were applied and re-checked." },
     wiring: [
       { fromPin: 2, toPin: 1, desc: "Hot (+) to Tip (Left)" },
       { fromPin: 2, toPin: 2, desc: "Hot (+) ALSO to Ring (Right) \u2014 same signal to both channels" },
@@ -484,7 +484,7 @@ const STANDARD_BUILDS = [
   {
     from: "xlr3", to: "ts", status: "standard", title: "XLR3 to TS \u2014 Balanced to Unbalanced",
     use: "Balanced XLR output to a 1/4\u201d unbalanced input (guitar amp, DI box, unbalanced line input). Not for a console INSERT jack (a TS plug there ties the send to this output).",
-    audit: { verified: false, date: "2026-11-09", note: "Round 5 (2026-11-09): the reviewer raised issues; fixed, re-check pending." },
+    audit: { verified: true, date: "2026-11-09", note: "Round 5 (2026-11-09): an independent reviewer checked pin map, direction and polarity, grounds and returns, every voltage and mis-plug, and every claim against opened sources (5 cited) and agreed; its fixes were applied and re-checked." },
     wiring: [
       { fromPin: 2, toPin: 1, desc: "Hot (+) to Tip \u2014 Signal" },
       { fromPin: 1, toPin: 2, desc: "Ground to Sleeve" },
@@ -506,7 +506,7 @@ const STANDARD_BUILDS = [
   {
     from: "xlr3", to: "rca", status: "partial", title: "XLR3 to RCA \u2014 Pro to Consumer",
     use: "Pro XLR output to consumer RCA input (amp, receiver, recording interface). Requires level matching \u2014 a bare adapter will overdrive consumer gear.",
-    audit: { verified: false, date: "2026-11-09", note: "Round 5 (2026-11-09): the reviewer raised issues; fixed, re-check pending." },
+    audit: { verified: true, date: "2026-11-09", note: "Round 5 (2026-11-09): an independent reviewer checked pin map, direction and polarity, grounds and returns, every voltage and mis-plug, and every claim against opened sources (5 cited) and agreed; its fixes were applied and re-checked." },
     wiring: [
       { fromPin: 2, toPin: 1, desc: "Hot (+) to Center \u2014 Signal" },
       { fromPin: 1, toPin: 2, desc: "Ground to Shell" },
@@ -601,7 +601,7 @@ const STANDARD_BUILDS = [
   {
     from: "xlr5", to: "db25", status: "field_hack", title: "XLR5 to DB25 \u2014 Single Headset Channel over DB25 (Field Hack)",
     use: "Field hack: carry ONE 5-pin intercom headset channel over a DB25 (pins 1\u20135). Non-standard \u2014 no generic standard (Clear-Com V-Series panels have two rear DB25s with their own pin plans \u2014 see notes). Nothing is defined for pins 6\u201325; if you need more channels, write your own plan on both connectors.",
-    audit: { verified: false, date: "2026-11-09", note: "Round 5 (2026-11-09): the reviewer raised issues; fixed, re-check pending." },
+    audit: { verified: true, date: "2026-11-09", note: "Round 5 (2026-11-09): an independent reviewer checked pin map, direction and polarity, grounds and returns, every voltage and mis-plug, and every claim against opened sources (7 cited) and agreed; its fixes were applied and re-checked." },
     wiring: [
       { fromPin: 1, toPin: 1, desc: "XLR5 pin 1 (Mic Ground) to DB25 pin 1" },
       { fromPin: 2, toPin: 2, desc: "XLR5 pin 2 (Mic Signal) to DB25 pin 2" },
@@ -1674,7 +1674,7 @@ const STANDARD_BUILDS = [
   {
     from: "speakon", to: "xlr3", status: "standard", title: "Speakon NL4 to XLR3 \u2014 Passive Speaker Adapter",
     use: "Passive speaker cable adapter \u2014 amp Speakon output to a passive speaker with XLR3 input (older PA cabinets). NOT for driving a powered monitor's line input.",
-    audit: { verified: false, date: "2026-11-09", note: "Round 5 (2026-11-09): the reviewer raised issues; fixed, re-check pending." },
+    audit: { verified: true, date: "2026-11-09", note: "Round 5 (2026-11-09): an independent reviewer checked pin map, direction and polarity, grounds and returns, every voltage and mis-plug, and every claim against opened sources (6 cited) and agreed; its fixes were applied and re-checked." },
     wiring: [
       { fromPin: 1, toPin: 2, desc: "NL4 1+ to XLR3 pin 2 (+ Hot)" },
       { fromPin: 2, toPin: 1, desc: "NL4 1\u2212 to XLR3 pin 1 (Speaker Return)" },
