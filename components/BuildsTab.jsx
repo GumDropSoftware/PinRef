@@ -86,7 +86,7 @@ export default function BuildsTab({ initialBuild, initialConnector, onClearIniti
                     <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
                       <span style={{ color: T.text, fontSize: 14, fontWeight: 700 }}>{otherConn.name}</span>
                     </div>
-                    <div style={{ fontSize: 11, color: T.textDim, marginTop: 1, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{shortLabel(build)}</div>
+                    <div style={{ fontSize: 11, color: T.textDim, marginTop: 1, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{build.status !== "not_possible" && !build.audit?.verified && <span title="Unverified: check with a meter before connecting powered gear" style={{ color: T.yellow, marginRight: 4 }}>{"\u26A0"}</span>}{shortLabel(build)}</div>
                   </div>
                   <span style={{ fontSize: 11, color: sm.color, fontFamily: "monospace", flexShrink: 0 }}>{sm.label}</span>
                 </button>
@@ -159,7 +159,7 @@ export default function BuildsTab({ initialBuild, initialConnector, onClearIniti
                 <span style={{ color: sm.color, fontSize: 14, flexShrink: 0 }}>{sm.icon}</span>
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <div style={{ color: T.text, fontSize: 13, fontWeight: 700, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{fromC.short} &rarr; {toC.short}</div>
-                  <div style={{ fontSize: 10, color: T.textDim, marginTop: 1 }}>{shortLabel}</div>
+                  <div style={{ fontSize: 10, color: T.textDim, marginTop: 1 }}>{build.status !== "not_possible" && !build.audit?.verified && <span style={{ color: T.yellow, marginRight: 4 }}>{"\u26A0"}</span>}{shortLabel}</div>
                 </div>
                 <span style={{ fontSize: 11, color: sm.color, fontFamily: "monospace", flexShrink: 0 }}>{sm.label}</span>
               </button>

@@ -192,6 +192,8 @@ export default function WiringDiagram({ build }) {
 
   const fromSide = side;
   const toSide = side;
+  const viewLabelFor = () => (side === "solder" ? "SOLDER SIDE" : "FACE VIEW");
+  const genderedConns = [fromConn, toConn].filter(c => c?.faceGender);
 
   const sameType = build.from === build.to;
   const fromLabel = sameType ? "MALE end" : fromConn.short;
@@ -207,6 +209,22 @@ export default function WiringDiagram({ build }) {
         </div>
       </div>
       {sm.desc && <div style={{ fontSize: 11, color: sm.color, marginBottom: 8, fontFamily: "monospace", opacity: 0.8 }}>{sm.desc}</div>}
+      {/* Five-angle audit state. A build is "verified" only when documentation, power, circuit,
+          field-practice and red-team reviews all agreed and it has an opened primary source.
+          Anything else gets the meter warning. */}
+      {build.status !== "not_possible" && (build.audit?.verified ? (
+        <div style={{ fontSize: 10, color: T.green, marginBottom: 8, fontFamily: "monospace", opacity: 0.85 }}>
+          {"\u2713"} Verified {build.audit.date ? `${build.audit.date} ` : ""}{"\u2014"} five independent checks agree{build.audit.note ? `. ${build.audit.note}` : ""}
+        </div>
+      ) : (
+        <div style={{ display: "flex", gap: 8, alignItems: "flex-start", marginBottom: 10, padding: "8px 10px", borderRadius: 8, background: T.yellow + "1a", border: `1px solid ${T.yellow}80` }}>
+          <span style={{ fontSize: 16, lineHeight: 1 }}>{"\u26A0"}</span>
+          <div style={{ fontSize: 11, color: T.yellow, fontFamily: "monospace", lineHeight: 1.4 }}>
+            <strong>UNVERIFIED {"\u2014"} check every pin with a meter before connecting powered gear.</strong>
+            {build.audit?.note ? ` ${build.audit.note}` : " This build has not passed all five independent checks (documentation, power, circuit, field practice, red team) against an opened source."}
+          </div>
+        </div>
+      ))}
 
       <h3 style={{ color: T.text, fontSize: 16, margin: "4px 0 2px", fontFamily: "'JetBrains Mono', monospace", lineHeight: 1.3 }}>{build.title}</h3>
       <p style={{ color: T.textDim, fontSize: 12, margin: "2px 0 4px" }}>{build.use}</p>
@@ -295,6 +313,14 @@ export default function WiringDiagram({ build }) {
               ))}
             </div>
           )}
+          {genderedConns.length > 0 && fromConn.type !== "dt12" && toConn.type !== "dt12" && (
+            <div style={{ fontSize: 10, color: T.textDim, fontFamily: "monospace", marginTop: -6, marginBottom: 12, lineHeight: 1.4 }}>
+              {genderedConns.map(c => {
+                const g = c.faceGender, o = g === "female" ? "male" : "female";
+                return <div key={c.name}>{c.short}: {side === "solder" ? `solder side of a ${g.toUpperCase()} end = mating face of a ${o} end` : `${g.toUpperCase()} mating face = solder side of a ${o} end`} — check the build's gender note.</div>;
+              })}
+            </div>
+          )}
 
           {/* Visual diagrams side by side */}
           <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "center", gap: 12, padding: "8px 0", flexWrap: "wrap" }}>
@@ -302,10 +328,10 @@ export default function WiringDiagram({ build }) {
               {channelCount > 1 && multiSide === "from" ? (
                 <div style={{ textAlign: "center" }}>
                   <div style={{ fontSize: 11, color: T.textDim, marginBottom: 4, fontFamily: "monospace" }}>{channelCount}&times; {fromConn.short}</div>
-                  <ConnectorDiagram connKey={build.from} side={fromSide} highlightPins={fromHighlight} pinColors={fromPinColors} viewLabel={side === "solder" ? "SOLDER SIDE" : "FACE VIEW"} shellHighlighted={fromShellHighlighted} shellColor={fromShellWireIdx >= 0 ? wireColors[fromShellWireIdx]?.lineColor : null} />
+                  <ConnectorDiagram connKey={build.from} side={fromSide} highlightPins={fromHighlight} pinColors={fromPinColors} viewLabel={viewLabelFor(fromConn)} shellHighlighted={fromShellHighlighted} shellColor={fromShellWireIdx >= 0 ? wireColors[fromShellWireIdx]?.lineColor : null} />
                 </div>
               ) : (
-                <ConnectorDiagram connKey={build.from} side={fromSide} highlightPins={fromHighlight} pinColors={fromPinColors} label={fromLabel} viewLabel={side === "solder" ? "SOLDER SIDE" : "FACE VIEW"} shellHighlighted={fromShellHighlighted} shellColor={fromShellWireIdx >= 0 ? wireColors[fromShellWireIdx]?.lineColor : null} />
+                <ConnectorDiagram connKey={build.from} side={fromSide} highlightPins={fromHighlight} pinColors={fromPinColors} label={fromLabel} viewLabel={viewLabelFor(fromConn)} shellHighlighted={fromShellHighlighted} shellColor={fromShellWireIdx >= 0 ? wireColors[fromShellWireIdx]?.lineColor : null} />
               )}
             </div>
             <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: 100, padding: "0 2px" }}>
@@ -354,10 +380,10 @@ export default function WiringDiagram({ build }) {
             {channelCount > 1 && multiSide === "to" ? (
               <div style={{ textAlign: "center" }}>
                 <div style={{ fontSize: 11, color: T.textDim, marginBottom: 4, fontFamily: "monospace" }}>{channelCount}&times; {toConn.short}</div>
-                <ConnectorDiagram connKey={build.to} side={toSide} highlightPins={toHighlight} pinColors={toPinColors} viewLabel={side === "solder" ? "SOLDER SIDE" : "FACE VIEW"} shellHighlighted={toShellHighlighted} shellColor={toShellWireIdx >= 0 ? wireColors[toShellWireIdx]?.lineColor : null} />
+                <ConnectorDiagram connKey={build.to} side={toSide} highlightPins={toHighlight} pinColors={toPinColors} viewLabel={viewLabelFor(toConn)} shellHighlighted={toShellHighlighted} shellColor={toShellWireIdx >= 0 ? wireColors[toShellWireIdx]?.lineColor : null} />
               </div>
             ) : (
-              <ConnectorDiagram connKey={build.to} side={toSide} highlightPins={toHighlight} pinColors={toPinColors} label={toLabel} viewLabel={side === "solder" ? "SOLDER SIDE" : "FACE VIEW"} shellHighlighted={toShellHighlighted} shellColor={toShellWireIdx >= 0 ? wireColors[toShellWireIdx]?.lineColor : null} />
+              <ConnectorDiagram connKey={build.to} side={toSide} highlightPins={toHighlight} pinColors={toPinColors} label={toLabel} viewLabel={viewLabelFor(toConn)} shellHighlighted={toShellHighlighted} shellColor={toShellWireIdx >= 0 ? wireColors[toShellWireIdx]?.lineColor : null} />
             )}
           </div>
 
