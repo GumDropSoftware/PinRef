@@ -883,21 +883,26 @@ const STANDARD_BUILDS = [
       { fromPin: 7, toPin: 4, desc: "RJ45 pin 7 (DSR) to DE-9 pin 4 (DTR)" },
       { fromPin: 8, toPin: 7, desc: "RJ45 pin 8 (CTS) to DE-9 pin 7 (RTS)" },
     ],
-    notes: "Verified against Cisco's own table (1750 Hardware Installation Guide, Table 3): console TxD 3 \u2192 PC RxD (DE-9 2), console RxD 6 \u2192 PC TxD (DE-9 3), GND 4/5 \u2192 5, RTS 1 \u2192 CTS 8, CTS 8 \u2192 RTS 7, DTR 2 \u2192 DSR 6, DSR 7 \u2192 DTR 4. This is NOT the Yost standard, although Cisco borrowed the idea: Yost puts RD on RJ45 pin 3 and TD on pin 6 (the mirror of Cisco) and DCD, not DSR, on pin 2 \u2014 on a genuinely Yost-wired device this cable ties TD to TD and passes nothing (swap 3\u21946, 1\u21948, 2\u21947 for Yost). Cisco's current web document 12223 prints a console table that disagrees with the 1750 manual and with itself; the manual wins. The cited pinoutguide table numbers the RJ45 at the ADAPTER jack (after the rollover), so it reads as the mirror of this build. For sports scoring (Daktronics All Sport, OmniSport) this is NOT the cable \u2014 those controllers expose PC-style DE-9 RS-232; see the DE-9 builds. Mis-plug: the RJ45 end fits powered jacks (passive PoE 24/48 V on 4/5 vs 7/8 lands on the PC's ground and RTS/DTR drivers; HelixNet \u00b130 V; StudioHub+ \u00b115 V) \u2014 console cables only into console ports.",
+    deadEnds: [
+      { connector: "to", pin: 1, desc: "DE-9 pin 1 (DCD) \u2014 not connected (Cisco 1750 Table 3)" },
+      { connector: "to", pin: 9, desc: "DE-9 pin 9 (RI) \u2014 not connected (Cisco 1750 Table 3)" },
+    ],
+    notes: "Verified against Cisco's own table (1750 Hardware Installation Guide, Table 3): console TxD 3 \u2192 PC RxD (DE-9 2), console RxD 6 \u2192 PC TxD (DE-9 3), GND 4/5 \u2192 5, RTS 1 \u2192 CTS 8, CTS 8 \u2192 RTS 7, DTR 2 \u2192 DSR 6, DSR 7 \u2192 DTR 4. This is NOT the Yost standard, although Cisco borrowed the idea: Yost puts RD on RJ45 pin 3 and TD on pin 6 (the mirror of Cisco), DCD (an input) on pin 2 and DTR (an output) on pin 7 \u2014 the mirror of Cisco's DTR on 2 and DSR on 7 \u2014 on a genuinely Yost-wired device this cable ties TD to TD and passes nothing (swap 3\u21946, 1\u21948, 2\u21947 for Yost). Cisco's current web document 12223 prints a console table that disagrees with the 1750 manual and with itself; the manual wins. The cited pinoutguide table numbers the RJ45 at the ADAPTER jack (after the rollover), so it reads as the mirror of this build. For sports scoring (Daktronics All Sport, OmniSport) this is NOT the cable \u2014 those controllers expose PC-style DE-9 RS-232; see the DE-9 builds. Mis-plug: the RJ45 end fits powered jacks (passive PoE 24/48 V on 4/5 vs 7/8 lands on the PC's ground and RTS/DTR drivers; HelixNet \u00b130 V; StudioHub+ \u00b115 V) \u2014 console cables only into console ports. The DE-9 end is FEMALE but the app draws the male face: the female shell is mirrored (1\u21945, 2\u21944, 6\u21949, 7\u21948) \u2014 use the SOLDER SIDE view or read the moulded numbers. DE-9 pins 1 (DCD) and 9 (RI) are not connected.",
     sources: [
       { label: "Cisco 1750 Hardware Installation Guide \u2014 Table 3 Console Cable and Adapter Pinouts (manualslib p.62)", url: "https://www.manualslib.com/manual/27918/Cisco-Cisco1750.html?page=62" },
       { label: "Yost Serial Device Wiring Standard", url: "https://yost.com/computers/RJ45-serial/" },
       { label: "Cisco doc 12223 \u2014 Understand Cable Requirements for Console and AUX Ports (table conflicts with the 1750 manual; logged)", url: "https://www.cisco.com/c/en/us/support/docs/routers/7000-series-routers/12223-14.html" },
+      { label: "pinoutguide \u2014 Cisco RJ-45 to DB-9 console pinout (numbers the RJ45 at the adapter jack, so it reads as the mirror of this build)", url: "https://pinoutguide.com/SerialPortsCables/Cisco_RJ-45_to_DB-9_conso_pinout.shtml" },
     ],
   },
   {
     from: "rj45", to: "db25", status: "standard", title: "RJ45 to DB25 \u2014 Minimal Serial Adapter",
     use: "Field-built Cat5 to DB25 serial adapter for legacy RS-232 DB25 equipment. 3-wire minimal (Tx/Rx/GND).",
     wiring: [
-      { fromPin: 3, toPin: 3, desc: "RJ45 pin 3 (TxD, Yost) to DB25 pin 3 (RxD on a DTE) \u2014 crossover built in" },
+      { fromPin: 3, toPin: 3, desc: "RJ45 pin 3 (TxD out of a Cisco-pinned console port) to DB25 pin 3 (RxD on a DTE) \u2014 crossover built in" },
       { fromPin: 4, toPin: 7, desc: "RJ45 pin 4 (GND) to DB25 pin 7 (GND)" },
       { fromPin: 5, toPin: 7, desc: "RJ45 pin 5 (GND) to DB25 pin 7 (GND)" },
-      { fromPin: 6, toPin: 2, desc: "RJ45 pin 6 (RxD, Yost) to DB25 pin 2 (TxD on a DTE) \u2014 crossover built in" },
+      { fromPin: 6, toPin: 2, desc: "RJ45 pin 6 (RxD into the console port) to DB25 pin 2 (TxD on a DTE) \u2014 crossover built in" },
     ],
     deadEnds: [
       { connector: "from", pin: 1, desc: "RJ45 pin 1 \u2014 unused" },
@@ -905,11 +910,12 @@ const STANDARD_BUILDS = [
       { connector: "from", pin: 7, desc: "RJ45 pin 7 \u2014 unused" },
       { connector: "from", pin: 8, desc: "RJ45 pin 8 \u2014 unused" },
     ],
-    notes: "RJ45 side uses the CISCO console pinning (3 = TxD out of the console port, 4/5 = GND, 6 = RxD) \u2014 the mirror of Yost (Yost: 3 = RD, 6 = TD); for a Yost-wired RJ45 device swap 3 and 6. DB25 pins are named from the DTE (PC/terminal) side per EIA-232: pin 2 = TxD, pin 3 = RxD, pin 7 = GND. As drawn the cable connects a Yost RJ45 device to a DTE DB25 with the Tx/Rx cross already built in; if the DB25 end is a DCE (modem), swap the DB25 2/3 connections. Not a manufacturer-specific cable \u2014 Swiss Timing / Omega / Tissot venue gear uses RS-485 on proprietary connectors, NOT DB25 RS-232. Add handshaking pins if the target device requires them. Genders: a DTE device port is male, so this adapter's DB25 is FEMALE for a DTE and MALE for a DCE (the app draws the male face). The app's DB25 face labels are the Tascam audio names (pin 2 \u2018Ch 8 Shield\u2019 etc.) \u2014 switch the Pinouts tab to the RS-232 variant; the wiring descriptions here are the serial names. A male DB25 also fits a PC parallel port \u2014 serial only.",
+    notes: "RJ45 side uses the CISCO console pinning (3 = TxD out of the console port, 4/5 = GND, 6 = RxD) \u2014 the mirror of Yost (Yost: 3 = RD, 6 = TD); for a Yost-wired RJ45 device swap 3 and 6. DB25 pins are named from the DTE (PC/terminal) side per EIA-232: pin 2 = TxD, pin 3 = RxD, pin 7 = GND. As drawn the cable connects a CISCO-pinned RJ45 console port to a DTE DB25 with the Tx/Rx cross already built in (for a Yost DTE-adapter jack swap 3 and 6); if the DB25 end is a DCE (modem), swap the DB25 2/3 connections. Not a manufacturer-specific cable \u2014 Swiss Timing / Omega / Tissot venue gear uses RS-485 on proprietary connectors, NOT DB25 RS-232. Add handshaking pins if the target device requires them. Genders: a DTE device port is male, so this adapter's DB25 is FEMALE for a DTE and MALE for a DCE (the app draws the male face). The app's DB25 face labels are the Tascam audio names (pin 2 \u2018Ch 8 Shield\u2019 etc.) \u2014 switch the Pinouts tab to the RS-232 variant; the wiring descriptions here are the serial names. A male DB25 also fits a PC parallel port \u2014 serial only. Mis-plug: the RJ45 end fits powered jacks \u2014 HelixNet puts \u00b130 V on pins 3\u20138 (this cable's 4/5 jumper would short a rail), passive PoE 24/48 V, StudioHub+ \u00b115 V on 7/8. Serial jacks only.",
     sources: [
       { label: "Yost Serial Device Wiring Standard", url: "https://yost.com/computers/RJ45-serial/" },
       { label: "RS-232 DB25 Pinout Reference", url: "https://www.ti.com/lit/an/snla039/snla039.pdf" },
       { label: "Cisco 1750 Hardware Installation Guide \u2014 Table 3 Console Cable and Adapter Pinouts (manualslib p.62)", url: "https://www.manualslib.com/manual/27918/Cisco-Cisco1750.html?page=62" },
+      { label: "Clear-Com \u2014 HelixNet Tip: Standard Pin Outs (RJ45 1/2 ground; 3/6/7 +30 V; 4/5/8 \u221230 V)", url: "https://www.clearcom.com/News-Events/Details/helixnet-tip-standard-pin-outs" },
     ],
   },
   {
@@ -1166,12 +1172,12 @@ const STANDARD_BUILDS = [
       { fromPin: 6, toPin: 4, desc: "Pin 6 (DSR) to Pin 4 (DTR)" },
     ],
     deadEnds: [
-      { connector: "from", pin: 1, desc: "DE-9 pin 1 (DCD) \u2014 not connected; tie to pins 4+6 locally if software waits for carrier" },
+      { connector: "from", pin: 1, desc: "DE-9 pin 1 (DCD) \u2014 not connected; jumper to pin 6 inside this shell if software waits for carrier (the far end's DTR then drives DSR and DCD, as in commercial null modems)" },
       { connector: "from", pin: 9, desc: "DE-9 pin 9 (RI) \u2014 not connected" },
-      { connector: "to", pin: 1, desc: "DE-9 pin 1 (DCD) \u2014 not connected; tie to pins 4+6 locally if software waits for carrier" },
+      { connector: "to", pin: 1, desc: "DE-9 pin 1 (DCD) \u2014 not connected; jumper to pin 6 inside this shell if software waits for carrier (the far end's DTR then drives DSR and DCD, as in commercial null modems)" },
       { connector: "to", pin: 9, desc: "DE-9 pin 9 (RI) \u2014 not connected" },
     ],
-    notes: "Use this when handshake lines matter (some PCs/terminal emulators won't open the port without DTR/DSR). For most sports-timing use (Daktronics, OES, Fairplay, Swiss Timing RS-232, DVSport replay ingest), the simpler 3-wire null modem is preferred \u2014 scoreboard controllers broadcast one-way, no flow control needed. DCD (pin 1) is left open; the common commercial null modem ties the far end's DTR to DSR AND DCD (pin 4 \u2192 pins 6 + 1) so software that waits for carrier is happy \u2014 add that jumper inside each shell if needed. Two-DTE null modems are normally female-female (the app draws male faces).",
+    notes: "Use this when handshake lines matter (some PCs/terminal emulators won't open the port without DTR/DSR). For most sports-timing use (OES, Fairplay, Swiss Timing RS-232, DVSport replay ingest), the simpler 3-wire null modem is preferred \u2014 except Daktronics All Sport J5, which takes a STRAIGHT-THROUGH 9-pin (Daktronics KB DD2557298) \u2014 scoreboard controllers broadcast one-way, no flow control needed. DCD (pin 1) is left open; the common commercial null modem ties the far end's DTR to DSR AND DCD (pin 4 \u2192 pins 6 + 1) so software that waits for carrier is happy \u2014 add that jumper inside each shell if needed. Two-DTE null modems are normally female-female (the app draws male faces).",
     sources: [
       { label: "Null Modem \u2014 Wikipedia", url: "https://en.wikipedia.org/wiki/Null_modem" },
       { label: "RS-232 Null Modem Wiring \u2014 Lammert Bies", url: "https://www.lammertbies.nl/comm/info/rs-232-null-modem" },
@@ -1179,7 +1185,7 @@ const STANDARD_BUILDS = [
   },
   {
     from: "de9", to: "de9", status: "standard", title: "DE-9 Null Modem (3-Wire, Scoreboard/Timing)",
-    use: "Minimal 3-wire null modem (2\u21943, 3\u21942, 5\u21945) for a one-way RS-232 data feed from a DTE source \u2014 OES, Fairplay, Colorado Time Systems, Swiss Timing RS-232, DVSport/graphics ingest. Check the controller's manual first: Daktronics All Sport 5X00 J5 (9-pin COMPUTER port) takes a STRAIGHT-THROUGH DE-9 cable (use the DE-9 straight build), and its J6 I/O port is a 25-pin that needs a DB9-to-DB25 null modem.",
+    use: "Minimal 3-wire null modem (2\u21943, 3\u21942, 5\u21945) for a one-way RS-232 data feed from a DTE source \u2014 OES, Fairplay, Colorado Time Systems, Swiss Timing RS-232, DVSport/graphics ingest. Check the controller's manual first: Daktronics All Sport 5X00 J5 (9-pin COMPUTER port) takes a STRAIGHT-THROUGH DE-9 cable (use the DE-9 straight build), and its J6 I/O port is a 25-pin (Daktronics KB DD2180294 shows data on pins 2/3 and ground on 7) \u2014 check the All Sport manual for the cable it needs.",
     wiring: [
       { fromPin: 2, toPin: 3, desc: "Pin 2 (RxD) to Pin 3 (TxD) \u2014 cross Tx/Rx" },
       { fromPin: 3, toPin: 2, desc: "Pin 3 (TxD) to Pin 2 (RxD) \u2014 cross Tx/Rx" },
@@ -1458,7 +1464,7 @@ const STANDARD_BUILDS = [
       { fromPin: 3, toPin: 3, desc: "2+ to 2+ \u2014 Ch2 + (HF)" },
       { fromPin: 4, toPin: 4, desc: "2\u2212 to 2\u2212 \u2014 Ch2 \u2212 (HF)" },
     ],
-    notes: "Check BOTH ends before using a 4-conductor cable: Neutrik's suggested cabinet wiring for \u2018standard PA\u2019 and bridged-mono speakers ties 2+ to 1\u2212 inside the cabinet, and some amplifiers put a second channel (or a bridged output) on 2\u00b1 of one socket \u2014 two channels on one socket into such a cabinet shorts Ch2+ to Ch1\u2212 and can destroy the amp. Polarity convention (Neutrik): + is in phase, lower numbers = lower frequencies. Speaker level only \u2014 speakON is NOT an AC mains or power connector (Neutrik), and it has no rated breaking capacity: mute or power down the amp before mating or unmating under drive. The face drawing: read the moulded 1+/1\u2212/2+/2\u2212 marks on the insert rather than copying positions from the picture.",
+    notes: "Check BOTH ends before using a 4-conductor cable: Neutrik's suggested cabinet wiring for \u2018standard PA\u2019 and bridged-mono speakers ties 2+ to 1\u2212 inside the cabinet, and some amplifiers put a second channel (or a bridged output) on 2\u00b1 of one socket \u2014 two channels on one socket into such a cabinet shorts Ch2+ to Ch1\u2212 and can destroy the amp. Polarity convention (Neutrik): + is in phase, lower numbers = lower frequencies. Speaker level only \u2014 speakON is NOT an AC mains or power connector (Neutrik), and it has no rated breaking capacity: mute or power down the amp before mating or unmating under drive. The face drawing: read the moulded 1+/1\u2212/2+/2\u2212 marks on the insert rather than copying positions from the picture. Face drawing: the speakON diamond in the app was set from a physical reference; one reviewer reads it as the solder-side order rotated 45\u00b0. Wire from the moulded 1+/1\u2212/2+/2\u2212 marks on the insert, not from pin positions in the picture.",
     sources: [
       { label: "Neutrik Speakon Wiring Suggestion", url: "https://www.neutrik.com/media/8027/download/speakon-wiring-suggestion.pdf" },
       { label: "Neutrik NL4FX Product Page", url: "https://www.neutrik.com/en/product/nl4fx" },
@@ -1493,17 +1499,18 @@ const STANDARD_BUILDS = [
     deadEnds: [
       { connector: "from", pin: 3, desc: "NL4 2+ \u2014 unused (add 2nd XLR3 for Ch2)" },
       { connector: "from", pin: 4, desc: "NL4 2\u2212 \u2014 unused (add 2nd XLR3 for Ch2)" },
-      { connector: "to", pin: 3, desc: "XLR3 pin 3 \u2014 No Connect (speaker signal is 2-wire, no cold/return)" },
+      { connector: "to", pin: 3, desc: "XLR3 pin 3 \u2014 No Connect (2-wire speaker signal; the return is on pin 1)" },
     ],
-    notes: "\u26a0\ufe0f PASSIVE SPEAKER USE ONLY. Speaker-level signal is tens of volts at high current \u2014 NEVER plug this into a mic input, line input, or powered speaker's input jack. Will destroy the input stage. This follows Neutrik's factory NA4FC-M / NA4FX-F adapter wiring: only NL4 pins 1+ and 1\u2212 are active (Neutrik FAQ confirmed); XLR pin 3 is NC. The specific NL4\u2192XLR pin mapping (1+\u2192XLR2 hot, 1\u2212\u2192XLR1 ground) is not explicitly published in any Neutrik datasheet I could find \u2014 it follows the universal XLR convention of pin 1 = ground/return. If you have an NA4FC-M in hand, a continuity check confirms the exact mapping. Genders: the XLR end of a Speakon-to-XLR speaker lead is MALE (Neutrik NA4FC-M/NA4FX-M; the app draws the female face). Two XLR speaker conventions exist in the field \u2014 pin 2 hot/pin 1 return (this build) and pin 3 hot \u2014 check the cabinet. Do NOT bond the XLR shell to pin 1: on bridged/BTL (most Class-D) amps the 1\u2212 terminal is a live output, not ground. An amp socket wired for Neutrik bridged mono (output on 1+/2+) gives no sound through this 1+/1\u2212 adapter \u2014 do not \u2018fix\u2019 it by moving 1\u2212 to 2+. The male XLR3 also fits a party-line jack (+30 V DC on pin 2 into the amp output) and every mic/line input on the stage.",
+    notes: "\u26a0\ufe0f PASSIVE SPEAKER USE ONLY. Speaker-level signal is tens of volts at high current \u2014 NEVER plug this into a mic input, line input, or powered speaker's input jack. Will destroy the input stage. Pin map: 1+ \u2192 XLR pin 2, 1\u2212 \u2192 XLR pin 1, pin 3 open \u2014 the common field convention; reviewers report Neutrik's adapter drawings (ST-NA4FX-M / ST-NA4FC-F) show exactly this, and the NA4FX-M product page (opened) lists the drawing but no pin table. Confirm with a continuity check on any factory adapter you have. Other XLR speaker conventions exist in the field: 2+/3\u2212 (silent through this adapter) and 1+/2\u2212 (polarity-inverted) \u2014 check the cabinet's internal wiring. An amp socket in Neutrik bridged mono (speaker across 1+/2+) feeds this 1+/1\u2212 adapter only the left-channel half at reduced level \u2014 do not \u2018fix\u2019 it by moving 1\u2212 to 2+. Genders: the XLR end of a Speakon-to-XLR speaker lead is MALE (Neutrik NA4FC-M/NA4FX-M; the app draws the female face). Two XLR speaker conventions exist in the field \u2014 pin 2 hot/pin 1 return (this build) and pin 3 hot \u2014 check the cabinet. Do NOT bond the XLR shell to pin 1: on bridged/BTL (most Class-D) amps the 1\u2212 terminal is a live output, not ground. The male XLR3 also fits a party-line jack (+30 V DC on pin 2 into the amp output) and every mic/line input on the stage. Face/solder: the app draws the FEMALE mating face. For a MALE cable end that drawing is exactly what the male insert's solder cups look like, so wire the male straight from the FACE VIEW. For a FEMALE cable end use the app's SOLDER SIDE view (the mirror).",
     sources: [
-      { label: "Neutrik Speakon Wiring Suggestion (official) \u2014 confirms 4-pin layout", url: "https://www.neutrik.com/media/8027/download/speakon-wiring-suggestion.pdf" },
-      { label: "Neutrik NA4FC-M (factory adapter) \u2014 FAQ: only NL4 1+/1\u2212 active", url: "https://www.markertek.com/product/na4fc-m/neutrik-na4fc-m-speakon-to-3-pin-xlr-male-adapter" },
+      { label: "Neutrik NA4FX-M \u2014 speakON NL4FX to 3-pole XLR male (discontinued; drawing ST-NA4FX-M)", url: "https://www.neutrik.com/en/product/na4fx-m" },
+      { label: "Neutrik NL4FX Product Page (speakON is NOT to be used as an AC mains connector)", url: "https://www.neutrik.com/en/product/nl4fx" },
+      { label: "Clear-Com Solution Finder \u2014 3-pin XLR party-line pinout (1 Ground, 2 Voltage, 3 Audio)", url: "https://clear-com.atlassian.net/wiki/spaces/SF/pages/158784598" },
     ],
   },
   // ─── TS BUILDS ──────────────────────────────────────────────────────────────
   {
-    from: "speakon", to: "trs", status: "field_hack", title: "Speakon NL4 to 1/4\" TS \u2014 Passive Speaker Only",
+    from: "speakon", to: "trs", status: "standard", title: "Speakon NL4 to 1/4\" TS \u2014 Passive Speaker Only",
     use: "Passive speaker cable adapter \u2014 amp Speakon output to a passive speaker with 1/4\" jack input (older PA cabinets and guitar-style speakers). NOT for powered monitors.",
     wiring: [
       { fromPin: 1, toPin: 1, desc: "NL4 1+ to Tip \u2014 Speaker +" },
@@ -1533,10 +1540,10 @@ const STANDARD_BUILDS = [
       { connector: "from", pin: 4, desc: "NL4 2\u2212 \u2014 unused" },
       { connector: "to", pin: 2, desc: "TRS Ring \u2014 use a TS (mono) jack; if TRS is all you have, leave Ring floating" },
     ],
-    notes: "\u26a0\ufe0f DANGER \u2014 PASSIVE SPEAKER USE ONLY. Never plug this into a powered speaker's TRS line input \u2014 the speaker-level signal (tens of volts, amperes) will destroy the monitor's differential receiver, can damage Class-D amp output stages if pins short during mating, and presents a shock hazard on exposed barrels during partial insertion. Commercial equivalents (Hosa NA4LJX etc.) are all sold for passive-speaker use only. For powered speakers, use a line-level XLR or TRS cable from the mixer output instead. The NA4LJX is a Neutrik part (the Hosa page resells it) and goes the other way round (a 1/4\" jack on a speakON cable connector); the Tip = 1+, Sleeve = 1\u2212 convention is the same. Use real speaker cable \u2014 a shielded instrument cable on a 1/4\" plug overheats at speaker current. An amp socket wired for bridged mono on 1+/2+ gives no sound through this adapter. Many cabinets bond the jack sleeve to a metal plate; on BTL amps that plate carries the 1\u2212 output voltage.",
+    notes: "\u26a0\ufe0f DANGER \u2014 PASSIVE SPEAKER USE ONLY. Never plug this into a powered speaker's TRS line input \u2014 the speaker-level signal (tens of volts, amperes) will destroy the monitor's differential receiver, can damage Class-D amp output stages if pins short during mating, and presents a shock hazard on exposed barrels during partial insertion. Commercial equivalents (Hosa NA4LJX etc.) are all sold for passive-speaker use only. For powered speakers, use a line-level XLR or TRS cable from the mixer output instead. The NA4LJX is a Neutrik part (the Hosa page resells it) and goes the other way round (a 1/4\" jack on a speakON cable connector); the Tip = 1+, Sleeve = 1\u2212 convention is the same. Use real speaker cable \u2014 a shielded instrument cable on a 1/4\" plug overheats at speaker current. An amp socket in Neutrik bridged mono (1+/2+) feeds this adapter only the left-channel half at reduced level \u2014 do not move 1\u2212 to 2+. Many cabinets bond the jack sleeve to a metal plate; on BTL amps that plate carries the 1\u2212 output voltage.",
     sources: [
-      { label: "Neutrik speakON Wiring Suggestion (1+ = Tip, 1\u2212 = Sleeve)", url: "https://www.neutrik.com/en/product/nl4fx" },
-      { label: "Neutrik NA4LJX (speakON to 1/4\" jack adapter) \u2014 sold by Hosa and others", url: "https://hosatech.com/product/na4ljx/" },
+      { label: "Neutrik NA4LJX \u2014 speakON to 1/4\" jack adapter (+1 = Tip, \u22121 = Sleeve); resold by Hosa", url: "https://hosatech.com/product/na4ljx/" },
+      { label: "Neutrik NL4FX Product Page (speakON is NOT to be used as an AC mains connector)", url: "https://www.neutrik.com/en/product/nl4fx" },
     ],
   },
   {
@@ -1867,14 +1874,14 @@ const STANDARD_BUILDS = [
   // Cable Wholesale DE-9-to-RJ45/RJ12 adapter shells (Adam intercom, serial, timing).
   // tag: "shell" tells WiringDiagram to use Cable Wholesale grey shell wire colors.
   {
-    from: "powercon", to: "powercon", status: "standard", title: "PowerCON Daisy-Chain / Extension",
+    from: "powercon", to: "powercon", status: "standard", title: "PowerCON Daisy-Chain Jumper (OUT to IN)",
     use: "PowerCON jumper cable for daisy-chaining powered lighting, speakers, or distro. Cable has a BLUE NAC3FCA (power-in type, into the downstream device's IN chassis) on one end and a GREY NAC3FCB (power-out type, into the upstream device's OUT chassis) on the other. Neutrik calls both cable connectors \u2018female\u2019; the chassis parts are male. NEVER build grey\u2013grey (OUT-to-OUT): it parallels two live mains sources.",
     wiring: [
       { fromPin: 1, toPin: 1, desc: "Line (L) to Line \u2014 Brown (IEC) / Black (NEC)" },
       { fromPin: 2, toPin: 2, desc: "Neutral (N) to Neutral \u2014 Blue (IEC) / White (NEC)" },
       { fromPin: 3, toPin: 3, desc: "Earth (PE) to Earth \u2014 Green-Yellow (IEC) / Green (NEC)" },
     ],
-    notes: "\u26a0\ufe0f Standard PowerCON (NAC3FCA/FCB) is NOT rated for hot-plug \u2014 power must be dead before mating/unmating. TRUE1 (different shell, mechanically incompatible with standard PowerCON) IS hot-plug rated. Daisy-chain current limit = lowest-rated link in the chain. Wire colours per IEC 60445 (IEC 60446 was withdrawn into it) or NEC (US). Strip the earth (PE) conductor longer than L and N so it makes first and breaks last (BDA 452). Current parts: NAC3FXXA-W-S/-L (blue) and NAC3FXXB-W-S/-L (grey) \u2014 same pinout and keying. A wall-mains lead is always terminated BLUE so it can only feed an IN. A standard powerCON cable connector cannot mate another cable connector, so this is a jumper, not an extension.",
+    notes: "\u26a0\ufe0f Standard PowerCON (NAC3FCA/FCB) is NOT rated for hot-plug \u2014 power must be dead before mating/unmating. TRUE1 (different shell, mechanically incompatible with standard PowerCON) IS hot-plug rated. Daisy-chain current limit = lowest-rated link in the chain. Wire colours per IEC 60445 (IEC 60446 was withdrawn into it) or NEC (US). Cut the earth (PE) conductor about 3 mm longer than L and N (BDA 452) so it is the last wire to pull free under strain; earth-first mating is built into the pre-mating ground contact, not the wire length. Current parts: NAC3FXXA-W-S/-L (blue) and NAC3FXXB-W-S/-L (grey) \u2014 same pinout and keying, rated 16 A 250 V (IEC) and with breaking capacity only when mated with powerCON XX receptacles; on legacy NAC3MPA/MPB chassis treat them as no-hot-plug like NAC3FCA/FCB. A wall-mains lead is always terminated BLUE so it can only feed an IN. A standard powerCON cable connector cannot mate another cable connector, so this is a jumper, not an extension.",
     sources: [
       { label: "Neutrik powerCON Assembly Instruction (BDA 452)", url: "https://www.neutrik.com/media/10217/download/BDA%20452%20V4%20-%20powerCON%20-%20NAC3FCA%20+%20NAC3FCB.pdf" },
       { label: "Neutrik NAC3FCA Product Page", url: "https://www.neutrik.com/en/product/nac3fca" },
@@ -1930,7 +1937,7 @@ const STANDARD_BUILDS = [
       { connector: "to", pin: 7, desc: "RJ45 pin 7 \u2014 unused" },
       { connector: "to", pin: 8, desc: "RJ45 pin 8 \u2014 unused" },
     ],
-    notes: "Cable Wholesale yellow shell. Male DE-9. Same MTX wiring as Black but without DATA+/DATA\u2212 pair. DE-9 side matches the published Telex matrix line connector (4/5 talk, 8/7 listen); RJ45 pair assignment is this rig\u2019s own and differs from the Clear-Com/ASG drawing \u2014 label the shells. Against RTS's own keypanel RJ-45 (KP-5032 J8: 1 RS485+, 2 RS485\u2212, 3 FROM MTX+, 4 TO MTX+, 5 TO MTX\u2212, 6 FROM MTX\u2212, 7/8 RS485) this shell matches on pins 1, 2, 3 and 6 and has the TO MATRIX (talk) pair POLARITY INVERTED (shell: 5 = +, 4 = \u2212; RTS: 4 = +, 5 = \u2212). It does not match the XCP-48-RJ45 breakout (data on 2/7) or the Clear-Com/ASG drawing. The DE-9 face in the app shows RS-232 pin names \u2014 ignore them here; the wiring descriptions carry the keypanel signals. No ground/shield is carried (DE-9 3, 6, 9 open) \u2014 fine on short runs. Never plug the RJ45 into an Ethernet/PoE port or a HelixNet powerline jack.",
+    notes: "Cable Wholesale yellow shell. Male DE-9. Same MTX wiring as Black but without DATA+/DATA\u2212 pair. DE-9 side matches the published Telex matrix line connector (4/5 talk, 8/7 listen); RJ45 pair assignment is this rig\u2019s own and differs from the Clear-Com/ASG drawing \u2014 label the shells. Against RTS's own keypanel RJ-45 (KP-5032 J8: 1 RS485+, 2 RS485\u2212, 3 FROM MTX+, 4 TO MTX+, 5 TO MTX\u2212, 6 FROM MTX\u2212, 7/8 RS485) this shell matches on pins 3 and 6 (listen pair; it carries no data pair) and has the TO MATRIX (talk) pair POLARITY INVERTED (shell: 5 = +, 4 = \u2212; RTS: 4 = +, 5 = \u2212). It does not match the XCP-48-RJ45 breakout (data on 2/7) or the Clear-Com/ASG drawing. The DE-9 face in the app shows RS-232 pin names \u2014 ignore them here; the wiring descriptions carry the keypanel signals. No ground/shield is carried (DE-9 3, 6, 9 open) \u2014 fine on short runs. Never plug the RJ45 into an Ethernet/PoE port or a HelixNet powerline jack.",
     sources: [
       { label: "Internal Build for custom use", url: null },
       { label: "Telex/RTS pinouts (plsystem.com) \u2014 KP98-7 / KP32 / KP12 matrix line connector DB-9F", url: "https://www.plsystem.com/pinout1.htm" },
@@ -1960,14 +1967,15 @@ const STANDARD_BUILDS = [
       { connector: "to", pin: 7, desc: "RJ45 pin 7 \u2014 unused" },
       { connector: "to", pin: 8, desc: "RJ45 pin 8 \u2014 unused" },
     ],
-    notes: "Cable Wholesale grey shell, 4 wires. Pairing is right for RS-422: TX+/TX\u2212 (DE-9 3/8) share RJ45 3/6 and RX+/RX\u2212 (DE-9 7/2) share RJ45 4/5. No common is carried (Kalypso DE-9 pin 6), so it relies on both chassis sharing a ground \u2014 fine between co-grounded racks. The RS-232 half of the old title was wrong: RS-232 is single-ended and needs pin 5; this shell has no ground conductor at all. The app's DE-9 face shows RS-232 names (RxD/TxD/RTS/CTS) \u2014 ignore them; the descriptions carry the RS-422 signals. Shells 79\u201382 look identical: record the colour on each and never pair an RS-232 shell (81/82) with an RS-422 shell (79/80) on one Cat5 \u2014 RS-232 levels (\u00b112 V) exceed an RS-422 receiver's \u00b17 V common-mode rating.",
+    notes: "Cable Wholesale grey shell, 4 wires. Pairing is right for RS-422: TX+/TX\u2212 (DE-9 3/8) share RJ45 3/6 and RX+/RX\u2212 (DE-9 7/2) share RJ45 4/5. No common is carried (Kalypso DE-9 pin 6), so it relies on both chassis sharing a ground \u2014 fine between co-grounded racks. The RS-232 half of the old title was wrong: RS-232 is single-ended and needs pin 5; this shell has no ground conductor at all. The app's DE-9 face shows RS-232 names (RxD/TxD/RTS/CTS) \u2014 ignore them; the descriptions carry the RS-422 signals. Shells 79\u201382 look identical: record the colour on each and never pair an RS-232 shell (81/82) with an RS-422 shell (79/80) on one Cat5 \u2014 RS-232 levels (\u00b112 V) exceed an RS-422 receiver's \u00b17 V common-mode rating. Never plug the RJ45 into an Ethernet/PoE port or a HelixNet powerline jack (\u00b130 V on RJ45 3\u20138 would sit across the RS-422 driver and receiver pins).",
     sources: [
       { label: "Internal Build for custom use", url: null },
       { label: "Grass Valley Kalypso HD/Duo Installation & Service Manual v15.0 p.67\u201368 \u2014 Serial (RS-422) D-9: 1 chassis gnd, 2 RX\u2212, 3 TX+, 4 chassis gnd, 5 n/u, 6 common, 7 RX+, 8 TX\u2212, 9 chassis gnd; Diagnostic port is the only RS-232", url: "https://www.yumpu.com/en/document/view/11330522/kalypso-version-150-installation-service-manual-grass-valley/68" },
+      { label: "Clear-Com \u2014 HelixNet Tip: Standard Pin Outs (RJ45 1/2 ground; 3/6/7 +30 V; 4/5/8 \u221230 V)", url: "https://www.clearcom.com/News-Events/Details/helixnet-tip-standard-pin-outs" },
     ],
   },
   {
-    from: "de9", to: "rj45", status: "standard", title: "RS-422 Null Crossover \u2014 TSI to Kalypso",
+    from: "de9", to: "rj45", status: "field_hack", title: "RS-422 Null Crossover \u2014 TSI to Kalypso",
     use: "RS-422 null/crossover adapter. TSI-1000 to Kalypso at the Kalypso end.",
     tag: "shell",
     wiring: [
@@ -1987,14 +1995,15 @@ const STANDARD_BUILDS = [
       { connector: "to", pin: 7, desc: "RJ45 pin 7 \u2014 unused" },
       { connector: "to", pin: 8, desc: "RJ45 pin 8 \u2014 unused" },
     ],
-    notes: "\u26a0\ufe0f UNVERIFIED \u2014 as recorded this is not a valid RS-422 null. Relative to the grey shell it moves only DE-9 pins 2 and 3 (RJ45 3\u21944), i.e. single legs of two different pairs: through a grey shell at the far end, TX\u2212 meets TX\u2212 (two drivers tied together), RX+ meets RX+, and pins 2/3 cross with inverted polarity, so no data can pass. A real RS-422 crossover swaps whole pairs with polarity kept \u2014 at this end: DE-9 2 (RX\u2212) \u2192 RJ45 6, 7 (RX+) \u2192 RJ45 3, 3 (TX+) \u2192 RJ45 5, 8 (TX\u2212) \u2192 RJ45 4 (then, via a grey 79 at the far end: 2\u21948, 7\u21943, 3\u21947, 8\u21942). Alternatively the Kalypso manual says RX/TX on pins 2&7 / 3&8 can be reversed in software, which would retire this shell. If this record describes a shell that is in service and works, the far-end device is not a 207M-style port \u2014 document which. Old note said \u2018pins 2\u21943 on the RJ45 side\u2019; the RJ45 pins that move are 3 and 4.",
+    notes: "\u26a0\ufe0f UNVERIFIED \u2014 as recorded this is not a valid RS-422 null. Relative to the grey shell it moves only DE-9 pins 2 and 3 (RJ45 3\u21944), i.e. single legs of two different pairs: through a grey shell at the far end, TX\u2212 meets TX\u2212 (two drivers tied together), RX+ meets RX+, and pins 2/3 cross with inverted polarity, so no data can pass. A real RS-422 crossover swaps whole pairs with polarity kept \u2014 at this end: DE-9 2 (RX\u2212) \u2192 RJ45 6, 7 (RX+) \u2192 RJ45 3, 3 (TX+) \u2192 RJ45 5, 8 (TX\u2212) \u2192 RJ45 4 (then, via a grey 79 at the far end: 2\u21948, 7\u21943, 3\u21947, 8\u21942). Alternatively the Kalypso manual says RX/TX on pins 2&7 / 3&8 can be reversed in software, which would retire this shell. If this record describes a shell that is in service and works, the far-end device is not a 207M-style port \u2014 document which. Old note said \u2018pins 2\u21943 on the RJ45 side\u2019; the RJ45 pins that move are 3 and 4. Never plug the RJ45 into an Ethernet/PoE port or a HelixNet powerline jack (\u00b130 V on RJ45 3\u20138 would sit across the RS-422 driver and receiver pins).",
     sources: [
       { label: "Internal Build for custom use", url: null },
       { label: "Grass Valley Kalypso HD/Duo Installation & Service Manual v15.0 p.67\u201368 \u2014 Serial (RS-422) D-9: 1 chassis gnd, 2 RX\u2212, 3 TX+, 4 chassis gnd, 5 n/u, 6 common, 7 RX+, 8 TX\u2212, 9 chassis gnd; Diagnostic port is the only RS-232", url: "https://www.yumpu.com/en/document/view/11330522/kalypso-version-150-installation-service-manual-grass-valley/68" },
+      { label: "Clear-Com \u2014 HelixNet Tip: Standard Pin Outs (RJ45 1/2 ground; 3/6/7 +30 V; 4/5/8 \u221230 V)", url: "https://www.clearcom.com/News-Events/Details/helixnet-tip-standard-pin-outs" },
     ],
   },
   {
-    from: "de9", to: "rj45", status: "standard", title: "RS-232 Adapter \u2014 TSI to Kalypso",
+    from: "de9", to: "rj45", status: "field_hack", title: "RS-232 Adapter \u2014 TSI to Kalypso",
     use: "RS-232 straight adapter. TSI-1000 to Kalypso at the Kalypso end.",
     tag: "shell",
     wiring: [
@@ -2015,15 +2024,17 @@ const STANDARD_BUILDS = [
       { connector: "to", pin: 6, desc: "RJ45 pin 6 \u2014 unused" },
       { connector: "to", pin: 7, desc: "RJ45 pin 7 \u2014 unused" },
     ],
-    notes: "\u26a0\ufe0f UNVERIFIED. Only 3 wires and DE-9 pin 5 (RS-232 signal ground) is NOT carried; the old note's \u2018ground through connector shell or cable shield\u2019 does not exist on a plastic Cable Wholesale shell with UTP Cat5. A 3-wire RS-232 link is TxD, RxD and ground. The pin-1 wire (labelled DCD) is probably doing that job if the far port is Sony-style (pin 1 = chassis ground, as on the Kalypso serial ports) \u2014 confirm with a meter and relabel it GND; otherwise add DE-9 pin 5 \u2192 RJ45 pin 8 (or 7) and drop DCD. TxD and RxD share one twisted pair (blue 4/5), which invites crosstalk on long runs. Note the Kalypso HD/Duo frame's only RS-232 port is the D-9 Diagnostic port (DCE: 1 DCD, 2 TX, 3 RX, 5 GND); its Serial 1\u20138 ports are RS-422 \u2014 record which port this plugs into. Shells 79\u201382 look identical: label by colour and never mix an RS-232 shell with the RS-422 shells on one Cat5.",
+    notes: "\u26a0\ufe0f UNVERIFIED. Only 3 wires and DE-9 pin 5 (RS-232 signal ground) is NOT carried; the old note's \u2018ground through connector shell or cable shield\u2019 does not exist on a plastic Cable Wholesale shell with UTP Cat5. A 3-wire RS-232 link is TxD, RxD and ground. The pin-1 wire (labelled DCD) can only be a ground if the far port has chassis ground on pin 1 (Sony-style RS-422 ports do; the Kalypso's only RS-232 port, the Diagnostic D-9, has DCD \u2014 an output \u2014 on pin 1), so at the Kalypso Diagnostic port there is NO ground path as recorded. Fix: add DE-9 pin 5 \u2192 RJ45 pin 7 (brown pair, next to the pin-8 wire) at both shells and drop DCD, or meter the far port and relabel. Kalypso end: Diagnostic D-9 ONLY \u2014 Serial 1\u20138 are RS-422 and \u00b112 V RS-232 on their pins 2/3 exceeds their rating (default tally port is Serial 5). Not Yost/Cisco-compatible (those carry ground on RJ45 4/5 where this shell has data). Never into an Ethernet/PoE port or a HelixNet jack (this shell sits on the PoE Mode-B pairs 4/5 and 7/8). TxD and RxD share one twisted pair (blue 4/5), which invites crosstalk on long runs. Note the Kalypso HD/Duo frame's only RS-232 port is the D-9 Diagnostic port (DCE: 1 DCD, 2 TX, 3 RX, 5 GND); its Serial 1\u20138 ports are RS-422 \u2014 record which port this plugs into. Shells 79\u201382 look identical: label by colour and never mix an RS-232 shell with the RS-422 shells on one Cat5.",
     sources: [
       { label: "Internal Build for custom use", url: null },
       { label: "Grass Valley Kalypso HD/Duo Installation & Service Manual v15.0 p.67\u201368 \u2014 Serial (RS-422) D-9: 1 chassis gnd, 2 RX\u2212, 3 TX+, 4 chassis gnd, 5 n/u, 6 common, 7 RX+, 8 TX\u2212, 9 chassis gnd; Diagnostic port is the only RS-232", url: "https://www.yumpu.com/en/document/view/11330522/kalypso-version-150-installation-service-manual-grass-valley/68" },
       { label: "RS-232 Null Modem Wiring \u2014 Lammert Bies (3-wire: 2\u21943, 3\u21942, 5\u21945; loopback handshaking ties 1+4+6 and 7+8)", url: "https://www.lammertbies.nl/comm/info/rs-232-null-modem" },
+      { label: "Clear-Com \u2014 HelixNet Tip: Standard Pin Outs (RJ45 1/2 ground; 3/6/7 +30 V; 4/5/8 \u221230 V)", url: "https://www.clearcom.com/News-Events/Details/helixnet-tip-standard-pin-outs" },
+      { label: "Yost Serial Device Wiring Standard", url: "https://yost.com/computers/RJ45-serial/" },
     ],
   },
   {
-    from: "de9", to: "rj45", status: "standard", title: "RS-232 Null Crossover \u2014 TSI to Kalypso",
+    from: "de9", to: "rj45", status: "field_hack", title: "RS-232 Null Crossover \u2014 TSI to Kalypso",
     use: "RS-232 null/crossover adapter. TSI-1000 to Kalypso at the Kalypso end.",
     tag: "shell",
     wiring: [
@@ -2044,15 +2055,17 @@ const STANDARD_BUILDS = [
       { connector: "to", pin: 6, desc: "RJ45 pin 6 \u2014 unused" },
       { connector: "to", pin: 7, desc: "RJ45 pin 7 \u2014 unused" },
     ],
-    notes: "\u26a0\ufe0f UNVERIFIED. Same missing signal ground as the straight RS-232 shell (DE-9 pin 5 not carried); the pin-1 \u2018DCD\u2019 wire is likely the ground if the far port is Sony-style (pin 1 = chassis ground) \u2014 meter it and relabel, or add pin 5 \u2192 RJ45 pin 8. The 2/3 cross itself (RJ45 4\u21945 relative to the straight shell) is a correct RS-232 TxD/RxD null. Record which Kalypso/TSI ports this is for \u2014 the Kalypso HD/Duo's only RS-232 port is the D-9 Diagnostic port. Never mix with the RS-422 shells (79/80) on one Cat5.",
+    notes: "\u26a0\ufe0f UNVERIFIED. Same missing signal ground as the straight RS-232 shell (DE-9 pin 5 not carried); The pin-1 wire (labelled DCD) can only be a ground if the far port has chassis ground on pin 1 (Sony-style RS-422 ports do; the Kalypso's only RS-232 port, the Diagnostic D-9, has DCD \u2014 an output \u2014 on pin 1), so at the Kalypso Diagnostic port there is NO ground path as recorded. Fix: add DE-9 pin 5 \u2192 RJ45 pin 7 (brown pair, next to the pin-8 wire) at both shells and drop DCD, or meter the far port and relabel. Kalypso end: Diagnostic D-9 ONLY \u2014 Serial 1\u20138 are RS-422 and \u00b112 V RS-232 on their pins 2/3 exceeds their rating (default tally port is Serial 5). Not Yost/Cisco-compatible (those carry ground on RJ45 4/5 where this shell has data). Never into an Ethernet/PoE port or a HelixNet jack (this shell sits on the PoE Mode-B pairs 4/5 and 7/8). The 2/3 cross itself (RJ45 4\u21945 relative to the straight shell) is a correct RS-232 TxD/RxD null. Record which Kalypso/TSI ports this is for \u2014 the Kalypso HD/Duo's only RS-232 port is the D-9 Diagnostic port. Never mix with the RS-422 shells (79/80) on one Cat5.",
     sources: [
       { label: "Internal Build for custom use", url: null },
       { label: "Grass Valley Kalypso HD/Duo Installation & Service Manual v15.0 p.67\u201368 \u2014 Serial (RS-422) D-9: 1 chassis gnd, 2 RX\u2212, 3 TX+, 4 chassis gnd, 5 n/u, 6 common, 7 RX+, 8 TX\u2212, 9 chassis gnd; Diagnostic port is the only RS-232", url: "https://www.yumpu.com/en/document/view/11330522/kalypso-version-150-installation-service-manual-grass-valley/68" },
       { label: "RS-232 Null Modem Wiring \u2014 Lammert Bies (3-wire: 2\u21943, 3\u21942, 5\u21945; loopback handshaking ties 1+4+6 and 7+8)", url: "https://www.lammertbies.nl/comm/info/rs-232-null-modem" },
+      { label: "Clear-Com \u2014 HelixNet Tip: Standard Pin Outs (RJ45 1/2 ground; 3/6/7 +30 V; 4/5/8 \u221230 V)", url: "https://www.clearcom.com/News-Events/Details/helixnet-tip-standard-pin-outs" },
+      { label: "Yost Serial Device Wiring Standard", url: "https://yost.com/computers/RJ45-serial/" },
     ],
   },
   {
-    from: "rj12", to: "rj45", status: "standard", title: "Cronus RJ12 to RJ45",
+    from: "rj12", to: "rj45", status: "field_hack", title: "Cronus RJ12 to RJ45",
     use: "RTS Cronus matrix intercom RJ-12 port (keypanel RS-485 data + two balanced audio pairs) to RJ45 structured cabling. Not a timing or tally adapter.",
     tag: "shell",
     wiring: [
@@ -2067,10 +2080,11 @@ const STANDARD_BUILDS = [
       { connector: "to", pin: 7, desc: "RJ45 pin 7 \u2014 unused" },
       { connector: "to", pin: 8, desc: "RJ45 pin 8 \u2014 unused" },
     ],
-    notes: "\u26a0\ufe0f UNVERIFIED \u2014 pair map matches no RTS RJ-45 convention and is INCOMPATIBLE with the Adam KP Black/Yellow shells on a straight Cat5: this adapter puts data on RJ45 3/6, matrix-out audio on 5/4 and matrix-in audio on 1/2, while the Black shell expects data on 1/2, listen on 3/6 and talk on 4/5 \u2014 patched together, the matrix's audio output meets the keypanel's talk output (two balanced line drivers tied together) and the data pair lands on the listen input. RTS's own RJ-12 \u2194 RJ-45 relationship (KP-5032 J8) is RJ-12 pin n \u2192 RJ-45 pin n+1: data 1/6 \u2192 2/7, from-matrix 2/5 \u2192 3/6, to-matrix 3/4 \u2192 4/5. To mate with the Black shell, rewire: RJ12 6 \u2192 RJ45 1, 1 \u2192 2, 2 \u2192 3, 5 \u2192 6, 3 \u2192 5, 4 \u2192 4. Pair integrity itself is fine (each RJ-12 pair stays on one RJ45 pair). Use a straight (pin 1 to pin 1) RJ-12 cord, not a reversed telephone cord. State which far-end adapter this actually mates with. Never into an Ethernet/PoE port.",
+    notes: "\u26a0\ufe0f UNVERIFIED \u2014 pair map matches no RTS RJ-45 convention and is INCOMPATIBLE with the Adam KP Black/Yellow shells on a straight Cat5: this adapter puts data on RJ45 3/6, matrix-out audio on 5/4 and matrix-in audio on 1/2, while the Black shell expects data on 1/2, listen on 3/6 and talk on 4/5 \u2014 patched together, the matrix's audio output meets the keypanel's talk output (two balanced line drivers tied together) and the data pair lands on the listen input. RTS's own RJ-12 \u2194 RJ-45 relationship (KP-5032 J8) is RJ-12 pin n \u2192 RJ-45 pin n+1: data 1/6 \u2192 2/7, from-matrix 2/5 \u2192 3/6, to-matrix 3/4 \u2192 4/5. To mate with the Black shell, rewire: RJ12 6 \u2192 RJ45 1, 1 \u2192 2, 2 \u2192 3, 5 \u2192 6, 3 \u2192 5, 4 \u2192 4. Pair integrity itself is fine (each RJ-12 pair stays on one RJ45 pair). Use a straight (pin 1 to pin 1) RJ-12 cord, not a reversed telephone cord. State which far-end adapter this actually mates with. Never into an Ethernet/PoE port or a HelixNet powerline jack (\u00b130 V on RJ45 3\u20138 would land on the matrix port's RS-485 transceiver and line output). Alternative rewire to RTS's own convention (RJ12 1\u21922, 2\u21923, 3\u21924, 4\u21925, 5\u21926, 6\u21927, i.e. RJ-12 pin n \u2192 RJ-45 pin n+1) mates with XCP-48-RJ45 and KP-5032-style ports.",
     sources: [
       { label: "Internal Build for custom use", url: null },
       { label: "RTS KP-5032 Technical Manual p.19 \u2014 Matrix connector J8: RJ-45 1 RS485+, 2 RS485\u2212, 3 FROM MATRIX+, 4 TO MATRIX+, 5 TO MATRIX\u2212, 6 FROM MATRIX\u2212, 7 RS485+, 8 RS485\u2212; RJ-12 1 RS485\u2212, 2 FROM MATRIX+, 3 TO MATRIX+, 4 TO MATRIX\u2212, 5 FROM MATRIX\u2212, 6 RS485+", url: "https://www.manualslib.com/manual/3852144/Rts-Kp-5032.html?page=19" },
+      { label: "Clear-Com \u2014 HelixNet Tip: Standard Pin Outs (RJ45 1/2 ground; 3/6/7 +30 V; 4/5/8 \u221230 V)", url: "https://www.clearcom.com/News-Events/Details/helixnet-tip-standard-pin-outs" },
     ],
   },
 ];
