@@ -2,7 +2,7 @@
 
 Working doc for the 1-by-1 source verification pass. Update status + `Last verified` as we go.
 
-**Latest: Pass 4 Sonnet review round (round 5) + one Fable audit, 2026-11-09 — see Part B.** 83 builds: 80 verified, 3 unverified (the Kalypso shells #80–#82, left for Jadon). No pin map changed in Pass 4; cautions on powerCON, headphone outputs, phantom and the phone-headset adapters were tightened, and three drawing captions corrected. Not pushed.
+**Latest: 2026-11-09 — 86 builds: 80 verified, 6 unverified.** Unverified on purpose: the three TSI-to-Kalypso shells #80–#82 (LMG as-built from LMG's documents; as recorded they cannot do their job, and the TSI-1000 side is undocumented) and the three LMG as-built records #84–#86 (LMG's house pin maps for the Adam KP Black/Yellow shells and the Cronus adapter — no public source; new cables use the RTS-layout #77, #78, #83). See Pass 4 and "Jadon's decisions" in Part B.
 
 **Legend:** ✅ verified · ⚠ needs review · ❌ issue found · 🚩 flagged for change
 
