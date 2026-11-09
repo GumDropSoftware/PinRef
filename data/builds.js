@@ -125,7 +125,7 @@ const STANDARD_BUILDS = [
       { connector: "to", pin: 7, desc: "RJ45 pin 7 \u2014 unused" },
       { connector: "to", pin: 8, desc: "RJ45 pin 8 \u2014 unused" },
     ],
-    notes: "StudioHub+ single-channel balanced: Hot on pin 1 (Wht/Org), Cold on pin 2 (Orange), Ground on pin 4 (Blue). Second channel uses the green pair 3/6 and white-blue 5. Pins 7/8 are reserved for \u00b115V DC in active StudioHub+ panels \u2014 do not short to audio ground.",
+    notes: "StudioHub+ balanced layout: Hot on pin 1 (Wht/Org), Cold on pin 2 (Orange); second channel Hot 3 (Wht/Grn), Cold 6 (Green). In the official StudioHub+ adapter XLR pin 1 goes to the CABLE SHIELD (shielded Cat5 and shielded RJ45), not to a numbered pin; RJ45 pin 4 is the DC GND rail and pin 5 is n/c. PinRef lands pin 1 on pins 4 (ch1) and 5 (ch2) so the ground has a path on ordinary unshielded Cat5 \u2014 both ends must use the same convention (pair this with RJ45 \u2192 XLR3). Pins 7/8 carry \u00b115 V DC on powered StudioHub+ panels \u2014 never short them to audio ground, and never plug this into an Ethernet switch or PoE port.",
     sources: [
       { label: "StudioHub+ Adapter Pinout Guide", url: "https://studiohub.com/wp-content/uploads/2019/10/AAPinoutandAdapterGuide.pdf" },
     ],
@@ -368,7 +368,7 @@ const STANDARD_BUILDS = [
       { connector: "to", pin: 7, desc: "RJ45 pin 7 \u2014 unused" },
       { connector: "to", pin: 8, desc: "RJ45 pin 8 \u2014 unused" },
     ],
-    notes: "XLR5 is not natively part of StudioHub+. This wiring extends the StudioHub+ XLR3 convention (verified for build #4): mic-ground on Blue, mic-signal+ear-return on the Wht/Org pair, then maps XLR5's two additional ear signals onto pair 2 (Wht/Grn + Green). The receive-side breakout uses the inverse mapping. Pair 1 is shared between mic-signal and ear-return rather than mic-signal and mic-ground, so common-mode rejection on the mic line isn't ideal \u2014 use shielded Cat5 for any run beyond a few feet.",
+    notes: "XLR5 is not natively part of StudioHub+. This wiring extends the StudioHub+ XLR3 convention (verified for build #4): mic-ground on Blue, mic-signal+ear-return on the Wht/Org pair, then maps XLR5's two additional ear signals onto pair 2 (Wht/Grn + Green). The receive-side breakout uses the inverse mapping. Pair 1 is shared between mic-signal and ear-return rather than mic-signal and mic-ground, so common-mode rejection on the mic line isn't ideal \u2014 use shielded Cat5 for any run beyond a few feet. PinRef convention only \u2014 no manufacturer publishes a headset-over-RJ45 pinout; both ends must be built from these two builds. The mic DC bias on pin 2 rides along on pair 1. Never plug this into an Ethernet switch, a PoE port (48 V on pins 4/5 and 7/8) or a powered StudioHub+ panel (\u00b115 V on 7/8).",
     sources: [
       { label: "StudioHub+ Adapter Pinout Guide (XLR3 convention extended to XLR5)", url: "https://studiohub.com/wp-content/uploads/2019/10/AAPinoutandAdapterGuide.pdf" },
       { label: "Clear-Com V-Series Headset Connectors (XLR-5F pin functions)", url: "https://www.clearcom.com/DownloadCenter/manuals/V-Series_Iris_Online_Manual/Content/Common%20Topics/Headset%20connectors.htm" },
@@ -586,7 +586,7 @@ const STANDARD_BUILDS = [
     deadEnds: [
       { connector: "to", pin: 3, desc: "RJ45 pins 3,5,6 \u2014 unused (add 2nd TRS for Ch2)" },
     ],
-    notes: "StudioHub+ layout. Cat5 has 4 pairs; 2 balanced TRS channels use 3 pairs (pins 1/2/4 and 3/6/5). Pins 7\u20138 are reserved for DC power on active StudioHub+ panels.",
+    notes: "StudioHub+ layout for the signal pairs (Tip 1 / Ring 2, second channel Tip 3 / Ring 6). The official StudioHub+ TRS adapter puts the Sleeve on the cable SHIELD, not pin 4 (pin 4 is DC GND, pin 5 n/c); PinRef lands the sleeves on pins 4/5 so unshielded Cat5 works \u2014 wire both ends the same way (pair with RJ45 \u2192 TRS). Pins 7\u20138 carry \u00b115 V DC on powered StudioHub+ panels; never plug into an Ethernet/PoE port.",
     sources: [
       { label: "StudioHub+ Adapter Pinout Guide", url: "https://studiohub.com/wp-content/uploads/2019/10/AAPinoutandAdapterGuide.pdf" },
     ],
@@ -656,15 +656,15 @@ const STANDARD_BUILDS = [
     from: "rj45", to: "db25", status: "standard", title: "RJ45 to DB25 \u2014 Minimal Serial Adapter",
     use: "Field-built Cat5 to DB25 serial adapter for legacy RS-232 DB25 equipment. 3-wire minimal (Tx/Rx/GND).",
     wiring: [
-      { fromPin: 3, toPin: 3, desc: "RJ45 pin 3 (TxD) to DB25 pin 3 (TxD)" },
+      { fromPin: 3, toPin: 3, desc: "RJ45 pin 3 (TxD, Yost) to DB25 pin 3 (RxD on a DTE) \u2014 crossover built in" },
       { fromPin: 4, toPin: 7, desc: "RJ45 pin 4 (GND) to DB25 pin 7 (GND)" },
       { fromPin: 5, toPin: 7, desc: "RJ45 pin 5 (GND) to DB25 pin 7 (GND)" },
-      { fromPin: 6, toPin: 2, desc: "RJ45 pin 6 (RxD) to DB25 pin 2 (RxD)" },
+      { fromPin: 6, toPin: 2, desc: "RJ45 pin 6 (RxD, Yost) to DB25 pin 2 (TxD on a DTE) \u2014 crossover built in" },
     ],
     deadEnds: [
       { connector: "from", pin: 1, desc: "RJ45 pins 1, 2, 7, 8 \u2014 unused" },
     ],
-    notes: "RJ45 side uses the Yost/Cisco standard (pins 3=TxD, 4/5=GND, 6=RxD). Not a manufacturer-specific cable \u2014 Swiss Timing / Omega / Tissot venue gear uses RS-485 on proprietary connectors, NOT DB25 RS-232. Add handshaking pins if the target device requires them.",
+    notes: "RJ45 side uses the Yost/Cisco standard (pins 3=TxD, 4/5=GND, 6=RxD). DB25 pins are named from the DTE (PC/terminal) side per EIA-232: pin 2 = TxD, pin 3 = RxD, pin 7 = GND. As drawn the cable connects a Yost RJ45 device to a DTE DB25 with the Tx/Rx cross already built in; if the DB25 end is a DCE (modem), swap the DB25 2/3 connections. Not a manufacturer-specific cable \u2014 Swiss Timing / Omega / Tissot venue gear uses RS-485 on proprietary connectors, NOT DB25 RS-232. Add handshaking pins if the target device requires them.",
     sources: [
       { label: "Yost Serial Device Wiring Standard", url: "https://yost.com/computers/RJ45-serial/" },
       { label: "RS-232 DB25 Pinout Reference", url: "https://www.ti.com/lit/an/snla039/snla039.pdf" },
@@ -687,7 +687,7 @@ const STANDARD_BUILDS = [
       { fromPin: 4, toPin: 1, desc: "RJ45 pin 4 (Blue) to Ground" },
     ],
     deadEnds: [{ connector: "from", pin: 3, desc: "RJ45 pins 3,5,6,7,8 \u2014 unused (single channel)" }],
-    notes: "StudioHub+ receive side. Pair with XLR3\u2192RJ45 at the source. Two balanced channels fit in one Cat5. Pins 7/8 reserved for DC on active StudioHub+ panels.",
+    notes: "StudioHub+ receive side. Pair with XLR3\u2192RJ45 at the source. Two balanced channels fit in one Cat5. Note: official StudioHub+ adapters carry XLR pin 1 on the cable SHIELD; pin 4 is the DC GND rail and pin 5 is n/c. PinRef uses pins 4/5 as the ground conductors so plain unshielded Cat5 works \u2014 only valid when the far end is wired the same way. Pins 7/8 carry \u00b115 V DC on powered StudioHub+ panels; never plug into an Ethernet/PoE port.",
     sources: [
       { label: "StudioHub+ Adapter Pinout Guide", url: "https://studiohub.com/wp-content/uploads/2019/10/AAPinoutandAdapterGuide.pdf" },
     ],
@@ -703,7 +703,7 @@ const STANDARD_BUILDS = [
       { fromPin: 6, toPin: 5, desc: "RJ45 pin 6 (Green) to Right Earphone (XLR5 pin 5)" },
     ],
     deadEnds: [{ connector: "from", pin: 5, desc: "RJ45 pins 5, 7, 8 \u2014 unused" }],
-    notes: "Receive end of an XLR5-over-Cat5 intercom run. Pair with #15 (XLR5\u2192RJ45) at the source end \u2014 both ends use the same mapping. Same caveat as #15: this isn't a native StudioHub+ build; the convention extends StudioHub+'s XLR3 mapping by adding the two ear signals onto pair 2. Use shielded Cat5 for any longer run.",
+    notes: "Receive end of an XLR5-over-Cat5 intercom run. Pair with #15 (XLR5\u2192RJ45) at the source end \u2014 both ends use the same mapping. Same caveat as #15: this isn't a native StudioHub+ build; the convention extends StudioHub+'s XLR3 mapping by adding the two ear signals onto pair 2. Use shielded Cat5 for any longer run. PinRef convention only \u2014 no manufacturer publishes a headset-over-RJ45 pinout; both ends must be built from these two builds. The mic DC bias on pin 2 rides along on pair 1. Never plug this into an Ethernet switch, a PoE port (48 V on pins 4/5 and 7/8) or a powered StudioHub+ panel (\u00b115 V on 7/8).",
     sources: [
       { label: "StudioHub+ Adapter Pinout Guide (XLR3 convention extended to XLR5)", url: "https://studiohub.com/wp-content/uploads/2019/10/AAPinoutandAdapterGuide.pdf" },
       { label: "Clear-Com V-Series Headset Connectors (XLR-5F pin functions)", url: "https://www.clearcom.com/DownloadCenter/manuals/V-Series_Iris_Online_Manual/Content/Common%20Topics/Headset%20connectors.htm" },
@@ -739,7 +739,7 @@ const STANDARD_BUILDS = [
       { fromPin: 4, toPin: 3, desc: "RJ45 pin 4 (Blue) to Sleeve (Ground)" },
     ],
     deadEnds: [{ connector: "from", pin: 3, desc: "RJ45 pins 3,5,6 \u2014 unused (add 2nd TRS for Ch2)" }],
-    notes: "StudioHub+ receive side. Pair with TRS\u2192RJ45 at the source. Pins 7\u20138 reserved for DC power on active StudioHub+ panels.",
+    notes: "StudioHub+ receive side. Pair with TRS\u2192RJ45 at the source. Official StudioHub+ carries the Sleeve on the cable shield (pin 4 = DC GND, pin 5 = n/c); PinRef uses pins 4/5 as ground so unshielded Cat5 works, which only holds if the far end matches. Pins 7\u20138 carry \u00b115 V DC on powered StudioHub+ panels; never plug into an Ethernet/PoE port.",
     sources: [
       { label: "StudioHub+ Adapter Pinout Guide", url: "https://studiohub.com/wp-content/uploads/2019/10/AAPinoutandAdapterGuide.pdf" },
     ],
@@ -754,7 +754,7 @@ const STANDARD_BUILDS = [
       { fromPin: 3, toPin: 4, desc: "RJ45 pin 3 (Wht/Grn) to Earphone Signal (pin 4)" },
     ],
     deadEnds: [{ connector: "from", pin: 5, desc: "RJ45 pins 5, 6, 7, 8 \u2014 unused" }],
-    notes: "Receive end of an XLR4-over-Cat5 intercom run. Pair with #47 (XLR4\u2192RJ45) at the source end \u2014 both ends use the same mapping. Same caveat as #15/#47: this isn't a native StudioHub+ build; the convention extends StudioHub+'s XLR3 mapping. Pair 1 ends up sharing mic-signal with ear-return rather than mic-signal with mic-ground, so common-mode rejection isn't ideal \u2014 keep runs under 100 ft and use shielded Cat5.",
+    notes: "Receive end of an XLR4-over-Cat5 intercom run. Pair with #47 (XLR4\u2192RJ45) at the source end \u2014 both ends use the same mapping. Same caveat as #15/#47: this isn't a native StudioHub+ build; the convention extends StudioHub+'s XLR3 mapping. Pair 1 ends up sharing mic-signal with ear-return rather than mic-signal with mic-ground, so common-mode rejection isn't ideal \u2014 keep runs under 100 ft and use shielded Cat5. PinRef convention only \u2014 no manufacturer publishes a headset-over-RJ45 pinout; both ends must be built from these two builds. The mic DC bias on pin 2 rides along on pair 1. Never plug this into an Ethernet switch, a PoE port (48 V on pins 4/5 and 7/8) or a powered StudioHub+ panel (\u00b115 V on 7/8).",
     sources: [
       { label: "StudioHub+ Adapter Pinout Guide (XLR3 convention extended to XLR4)", url: "https://studiohub.com/wp-content/uploads/2019/10/AAPinoutandAdapterGuide.pdf" },
       { label: "Clear-Com V-Series Headset Connectors (XLR-4M pin functions)", url: "https://www.clearcom.com/DownloadCenter/manuals/V-Series_Iris_Online_Manual/Content/Common%20Topics/Headset%20connectors.htm" },
@@ -1003,7 +1003,7 @@ const STANDARD_BUILDS = [
       { fromPin: 4, toPin: 3, desc: "Earphone Signal (pin 4) to RJ45 pin 3 (Wht/Grn)" },
     ],
     deadEnds: [{ connector: "to", pin: 5, desc: "RJ45 pins 5,6,7,8 \u2014 unused" }],
-    notes: "Mic and earphone signals are unbalanced over Cat5. Keep runs under 100 ft for reliable mic level. XLR4 is not natively part of StudioHub+ \u2014 this wiring extends the StudioHub+ XLR3 convention: mic-ground on Blue (pair 3), mic-signal+ear-return on the Wht/Org pair, ear-signal on pair 2's Wht/Grn. Same caveat as #15: pair 1 ends up sharing mic-signal with ear-return rather than mic-signal with mic-ground, so common-mode rejection isn't ideal \u2014 use shielded Cat5 for any longer run.",
+    notes: "Mic and earphone signals are unbalanced over Cat5. Keep runs under 100 ft for reliable mic level. XLR4 is not natively part of StudioHub+ \u2014 this wiring extends the StudioHub+ XLR3 convention: mic-ground on Blue (pair 3), mic-signal+ear-return on the Wht/Org pair, ear-signal on pair 2's Wht/Grn. Same caveat as #15: pair 1 ends up sharing mic-signal with ear-return rather than mic-signal with mic-ground, so common-mode rejection isn't ideal \u2014 use shielded Cat5 for any longer run. PinRef convention only \u2014 no manufacturer publishes a headset-over-RJ45 pinout; both ends must be built from these two builds. The mic DC bias on pin 2 rides along on pair 1. Never plug this into an Ethernet switch, a PoE port (48 V on pins 4/5 and 7/8) or a powered StudioHub+ panel (\u00b115 V on 7/8).",
     sources: [
       { label: "StudioHub+ Adapter Pinout Guide (XLR3 convention extended to XLR4)", url: "https://studiohub.com/wp-content/uploads/2019/10/AAPinoutandAdapterGuide.pdf" },
       { label: "Clear-Com V-Series Headset Connectors (XLR-4M pin functions)", url: "https://www.clearcom.com/DownloadCenter/manuals/V-Series_Iris_Online_Manual/Content/Common%20Topics/Headset%20connectors.htm" },
@@ -1268,7 +1268,7 @@ const STANDARD_BUILDS = [
       { connector: "to", pin: 7, desc: "RJ45 pin 7 \u2014 reserved for \u221215V DC on active StudioHub+ panels" },
       { connector: "to", pin: 8, desc: "RJ45 pin 8 \u2014 reserved for +15V DC on active StudioHub+ panels" },
     ],
-    notes: "StudioHub+ ADAPT-MINIUNBAL convention: Left/Tip on pin 1 (Wht/Org), Right/Ring on pin 3 (Wht/Grn), ground on pin 4 (Blue = DC GND rail). Pins 2 and 6 are n/c per the official StudioHub+ Adapter Pinout Guide. Pins 7/8 carry \u00b115V DC on powered StudioHub+ panels \u2014 do not short to audio ground.",
+    notes: "StudioHub+ ADAPT-MINIUNBAL convention: Left/Tip on pin 1 (Wht/Org), Right/Ring on pin 3 (Wht/Grn), ground on pin 4 (Blue = DC GND rail). Pins 2 and 6 are n/c per the official StudioHub+ Adapter Pinout Guide; that guide shows the sleeve going to \u201cShield/G\u201d, which PinRef reads as the pin 4 DC GND rail (the only ground conductor on unshielded Cat5). Pins 7/8 carry \u00b115V DC on powered StudioHub+ panels \u2014 do not short to audio ground.",
     sources: [
       { label: "StudioHub+ Adapter Pinout Guide (official)", url: "https://studiohub.com/wp-content/uploads/2019/10/AAPinoutandAdapterGuide.pdf" },
     ],
@@ -1460,9 +1460,11 @@ const STANDARD_BUILDS = [
       { connector: "to", pin: 7, desc: "RJ45 pin 7 \u2014 unused" },
       { connector: "to", pin: 8, desc: "RJ45 pin 8 \u2014 unused" },
     ],
-    notes: "Cable Wholesale black shell. Male DE-9. Wires cross in the middle \u2014 Yellow/Black swap, Green/Red swap.",
+    notes: "Cable Wholesale black shell. Male DE-9. Wires cross in the middle \u2014 Yellow/Black swap, Green/Red swap. DE-9 side matches the published Telex KP98-7/KP32 matrix line connector (1 Data+, 2 Data\u2212, 4/5 station output = talk / TO MTX, 8/7 station input = listen / FROM MTX). The RJ45 pair assignment is this rig\u2019s own: the Clear-Com/ASG \u2018Adam DB9 to RJ45\u2019 drawing puts listen on the blue pair (4/5) and talk on the green pair (3/6) \u2014 the opposite of this shell \u2014 so label the shells and never mix the two conventions on one run.",
     sources: [
       { label: "Internal Build for custom use", url: null },
+      { label: "Telex/RTS pinouts (plsystem.com) \u2014 KP98-7 / KP32 / KP12 matrix line connector DB-9F", url: "https://www.plsystem.com/pinout1.htm" },
+      { label: "Clear-Com Solution Finder \u2014 RTS Adam DB9 to RJ45 (ASG drawing; note its RJ45 pairs differ from this shell)", url: "https://clear-com.atlassian.net/wiki/spaces/SF/pages/513900634/RTS+Adam+DB9+to+RJ45+Pin-Out" },
     ],
   },
   {
@@ -1479,9 +1481,11 @@ const STANDARD_BUILDS = [
       { connector: "from", pin: 1, desc: "DE-9 pins 1, 2, 3, 6, 9 \u2014 N/C" },
       { connector: "to", pin: 1, desc: "RJ45 pins 1, 2, 7, 8 \u2014 unused" },
     ],
-    notes: "Cable Wholesale yellow shell. Male DE-9. Same MTX wiring as Black but without DATA+/DATA\u2212 pair.",
+    notes: "Cable Wholesale yellow shell. Male DE-9. Same MTX wiring as Black but without DATA+/DATA\u2212 pair. DE-9 side matches the published Telex matrix line connector (4/5 talk, 8/7 listen); RJ45 pair assignment is this rig\u2019s own and differs from the Clear-Com/ASG drawing \u2014 label the shells.",
     sources: [
       { label: "Internal Build for custom use", url: null },
+      { label: "Telex/RTS pinouts (plsystem.com) \u2014 KP98-7 / KP32 / KP12 matrix line connector DB-9F", url: "https://www.plsystem.com/pinout1.htm" },
+      { label: "Clear-Com Solution Finder \u2014 RTS Adam DB9 to RJ45 (ASG drawing; note its RJ45 pairs differ from this shell)", url: "https://clear-com.atlassian.net/wiki/spaces/SF/pages/513900634/RTS+Adam+DB9+to+RJ45+Pin-Out" },
     ],
   },
   {
