@@ -30,7 +30,8 @@ export const CONNECTORS = {
     notch: "top",
     sources: [
       { label: "AES14-1992 (pin 2 hot standard)", url: "https://www.aes.org/publications/standards/search.cfm?docID=36" },
-      { label: "Sescom XLR Pin 2 Hot Reference", url: "https://www.sescom.com/Portals/0/Documents/3-Pin%20XLR%20Pinouts%20and%20Pin%202%20Hot%20Wiring%20Information.pdf" },
+      { label: "Sescom XLR Pin 2 Hot Reference (pin functions; its face drawing is the mirror of the face shown here)", url: "https://www.sescom.com/Portals/0/Documents/3-Pin%20XLR%20Pinouts%20and%20Pin%202%20Hot%20Wiring%20Information.pdf" },
+      { label: "Wikimedia Commons — XLR pinouts (female face: 2 top-left, 1 top-right, 3 bottom)", url: "https://commons.wikimedia.org/wiki/File:XLR_pinouts.svg" },
     ],
   },
   xlr5: {
@@ -321,8 +322,8 @@ export const CONNECTORS = {
       },
       {
         id: "rts_keypanel",
-        name: "RTS keypanel matrix line (KP-32 / KP98-7 DB9S)",
-        description: "RS-485 keypanel data on 1/2, keypanel audio OUT to the matrix on 4/5, audio IN from the matrix on 8/7. Used by the Adam KP shell adapters.",
+        name: "RTS keypanel matrix line (KP-32 DB9S)",
+        description: "RS-485 keypanel data on 1/2, keypanel audio OUT to the matrix on 4/5, audio IN from the matrix on 8/7. Used by the Adam KP shell adapters. Pins 3/6/9 follow the KP-32 data sheet; the older KP98-7 table (plsystem.com) has 3 = data ground, 6 = audio ground, 9 = NC.",
         pins: [
           { id: 1, label: "1", name: "Pin 1 \u2014 Data + (RS-485 keypanel data)" },
           { id: 2, label: "2", name: "Pin 2 \u2014 Data \u2212 (RS-485 keypanel data)" },
