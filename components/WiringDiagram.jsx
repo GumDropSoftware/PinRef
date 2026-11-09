@@ -198,7 +198,7 @@ export default function WiringDiagram({ build }) {
   const isPlugSideView = (c) => ["trs", "ts", "mini_trs", "mini_trrs"].includes(c?.type);
   const viewLabelFor = (c) => isModular(c)
     ? (side === "solder" ? "WIRE-ENTRY SIDE (clip down)" : "JACK FACE (clip down)")
-    : isPlugSideView(c) ? "PLUG — SIDE VIEW"
+    : isPlugSideView(c) ? "SIDE VIEW (plug or jack)"
     : (side === "solder" ? "SOLDER SIDE" : "FACE VIEW");
   const genderedConns = [...new Set([fromConn, toConn])].filter(c => c?.faceGender);
   const modularConn = [fromConn, toConn].find(isModular);
@@ -340,7 +340,7 @@ export default function WiringDiagram({ build }) {
           {powerConn && (
             <div style={{ fontSize: 10, color: T.textDim, fontFamily: "monospace", marginTop: -8, marginBottom: 12, lineHeight: 1.4 }}>
               {powerConn.type === "powercon"
-                ? "powerCON: the solder side matches Neutrik's wiring view for the cable connector (N, earth, L from left to right; BDA 452). Wire by the L / N / earth marks on the insert."
+                ? "powerCON: in Neutrik's wiring view (BDA 452) the terminals read N, earth, L from left to right, as on this solder side; the latch position in this picture is not from Neutrik. Wire only by the L / N / earth marks on the insert."
                 : "speakON: the pin positions are schematic. Wire by the 1+ / 1− / 2+ / 2− marks on the insert."}
             </div>
           )}
