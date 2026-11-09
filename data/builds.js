@@ -100,7 +100,7 @@ const STANDARD_BUILDS = [
   },
   {
     from: "xlr3", to: "rj45", status: "standard", title: "XLR3 to RJ45 \u2014 Audio over Cat5",
-    use: "Clear-Com or audio balun. Up to 2 balanced channels over Cat5.",
+    use: "Balanced audio over Cat5 (StudioHub+ signal pairs). Up to 2 balanced channels. NOT for Clear-Com / RTS party line.",
     wiring: [
       { fromPin: 2, toPin: 1, desc: "Hot (+) (pin 2) to RJ45 pin 1 (Wht/Org)" },
       { fromPin: 3, toPin: 2, desc: "Cold (\u2212) (pin 3) to RJ45 pin 2 (Orange)" },
@@ -132,9 +132,11 @@ const STANDARD_BUILDS = [
       { connector: "to", pin: 7, desc: "RJ45 pin 7 \u2014 unused" },
       { connector: "to", pin: 8, desc: "RJ45 pin 8 \u2014 unused" },
     ],
-    notes: "StudioHub+ balanced layout: Hot on pin 1 (Wht/Org), Cold on pin 2 (Orange); second channel Hot 3 (Wht/Grn), Cold 6 (Green). In the official StudioHub+ adapter XLR pin 1 goes to the CABLE SHIELD (shielded Cat5 and shielded RJ45), not to a numbered pin; RJ45 pin 4 is the DC GND rail and pin 5 is n/c. PinRef lands pin 1 on pins 4 (ch1) and 5 (ch2) so the ground has a path on ordinary unshielded Cat5 \u2014 both ends must use the same convention (pair this with RJ45 \u2192 XLR3). Pins 7/8 carry \u00b115 V DC on powered StudioHub+ panels \u2014 never short them to audio ground, and never plug this into an Ethernet switch or PoE port.",
+    notes: "StudioHub+ balanced layout: Hot on pin 1 (Wht/Org), Cold on pin 2 (Orange); second channel Hot 3 (Wht/Grn), Cold 6 (Green). In the official StudioHub+ adapter XLR pin 1 goes to the CABLE SHIELD (shielded Cat5 and shielded RJ45), not to a numbered pin; RJ45 pin 4 is the DC GND rail and pin 5 is n/c. PinRef lands pin 1 on pins 4 (ch1) and 5 (ch2) so the ground has a path on ordinary unshielded Cat5 \u2014 both ends must use the same convention (pair this with RJ45 \u2192 XLR3). Pins 7/8 carry \u00b115 V DC on powered StudioHub+ panels \u2014 never short them to audio ground, and never plug this into an Ethernet switch or PoE port. Never use this for a party line: XLR pin 2 on a Clear-Com/RTS line is +30 V DC, which this layout puts on RJ45 pin 1 \u2014 straight into a StudioHub+ L+ input if the run is ever patched into a studio plant. Clear-Com's own Cat5 party-line layout (HelixNet: RJ45 1/2 = ground, 3/6/7 and 4/5/8 = the \u00b130 V/audio pins) is pin-incompatible with this cable. Channel order differs on other makers' Cat5 snakes (Radial: orange pair = ch 4; RAT/ETS: orange = ch 2, blue = ch 1; Whirlwind/Radial put a signal pair on 4/5) \u2014 only pair with the PinRef RJ45\u2192XLR3 build. Against an official StudioHub+ adapter the pin-4 ground has no partner (StudioHub puts pin 1 on the shield), so phantom power will not reach a mic through that mix.",
     sources: [
       { label: "StudioHub+ Adapter Pinout Guide", url: "https://studiohub.com/wp-content/uploads/2019/10/AAPinoutandAdapterGuide.pdf" },
+      { label: "Clear-Com \u2014 HelixNet Tip: Standard Pin Outs (RJ45 1/2 ground; 3/6/7 +30 V; 4/5/8 \u221230 V)", url: "https://www.clearcom.com/News-Events/Details/helixnet-tip-standard-pin-outs" },
+      { label: "Clear-Com Solution Finder \u2014 3-pin XLR party-line pinout (1 Ground, 2 Voltage, 3 Audio)", url: "https://clear-com.atlassian.net/wiki/spaces/SF/pages/158784598" },
     ],
   },
   {
@@ -754,9 +756,13 @@ const STANDARD_BUILDS = [
       ],
     },
     deadEnds: [
-      { connector: "to", pin: 3, desc: "RJ45 pins 3,5,6 \u2014 unused (add 2nd TRS for Ch2)" },
+      { connector: "to", pin: 3, desc: "RJ45 pin 3 \u2014 unused (add 2nd TRS for Ch2)" },
+      { connector: "to", pin: 5, desc: "RJ45 pin 5 \u2014 unused (add 2nd TRS for Ch2)" },
+      { connector: "to", pin: 6, desc: "RJ45 pin 6 \u2014 unused (add 2nd TRS for Ch2)" },
+      { connector: "to", pin: 7, desc: "RJ45 pin 7 \u2014 unused; carries \u00b115 V on powered StudioHub+ panels" },
+      { connector: "to", pin: 8, desc: "RJ45 pin 8 \u2014 unused; carries \u00b115 V on powered StudioHub+ panels" },
     ],
-    notes: "StudioHub+ layout for the signal pairs (Tip 1 / Ring 2, second channel Tip 3 / Ring 6). The official StudioHub+ TRS adapter puts the Sleeve on the cable SHIELD, not pin 4 (pin 4 is DC GND, pin 5 n/c); PinRef lands the sleeves on pins 4/5 so unshielded Cat5 works \u2014 wire both ends the same way (pair with RJ45 \u2192 TRS). Pins 7\u20138 carry \u00b115 V DC on powered StudioHub+ panels; never plug into an Ethernet/PoE port.",
+    notes: "StudioHub+ layout for the signal pairs (Tip 1 / Ring 2, second channel Tip 3 / Ring 6). The official StudioHub+ TRS adapter puts the Sleeve on the cable SHIELD, not pin 4 (pin 4 is DC GND, pin 5 n/c); PinRef lands the sleeves on pins 4/5 so unshielded Cat5 works \u2014 wire both ends the same way (pair with RJ45 \u2192 TRS). Pins 7\u20138 carry \u00b115 V DC on powered StudioHub+ panels; never plug into an Ethernet/PoE port. A TS plug in the TRS jack shorts Ring to Sleeve, i.e. RJ45 pin 2 (cold) to pin 4 (DC GND) \u2014 on a powered StudioHub+ hub channel that drags the far-end cold leg onto the power-ground bus. Balanced TRS sources only.",
     sources: [
       { label: "StudioHub+ Adapter Pinout Guide", url: "https://studiohub.com/wp-content/uploads/2019/10/AAPinoutandAdapterGuide.pdf" },
     ],
@@ -809,8 +815,10 @@ const STANDARD_BUILDS = [
       { fromPin: 7, toPin: 7, desc: "Pin 7 to Pin 7" },
       { fromPin: 8, toPin: 8, desc: "Pin 8 to Pin 8" },
     ],
+    notes: "Pin-for-pin T568B. Caution for a broadcast plant: the identical RJ45 is used in this app for StudioHub+ audio (\u00b115 V DC on pins 7/8 of powered panels), headset-over-Cat5 and intercom (HelixNet powerline \u2248 \u00b130 V on pins 3\u20138). A plain patch cord carries all of that happily, so label Cat5 runs by purpose and never patch an audio/intercom run into a switch or PoE port (44\u201357 V on 1/2 & 3/6 or 4/5 & 7/8).",
     sources: [
       { label: "TIA/EIA-568-B Wiring Standard", url: "https://www.truecable.com/blogs/cable-academy/t568a-vs-t568b" },
+      { label: "Power over Ethernet \u2014 Wikipedia (Mode A = pins 1/2 & 3/6, Mode B = pins 4/5 & 7/8, 44\u201357 V)", url: "https://en.wikipedia.org/wiki/Power_over_Ethernet" },
     ],
   },
   {
@@ -878,11 +886,16 @@ const STANDARD_BUILDS = [
       ],
     },
     deadEnds: [
-      { connector: "from", pin: 3, desc: "RJ45 pins 3,5,6,7,8 \u2014 unused (single channel)" },
+      { connector: "from", pin: 3, desc: "RJ45 pin 3 \u2014 unused (single channel)" },
+      { connector: "from", pin: 5, desc: "RJ45 pin 5 \u2014 unused (single channel)" },
+      { connector: "from", pin: 6, desc: "RJ45 pin 6 \u2014 unused (single channel)" },
+      { connector: "from", pin: 7, desc: "RJ45 pin 7 \u2014 unused; carries \u00b115 V on powered StudioHub+ panels" },
+      { connector: "from", pin: 8, desc: "RJ45 pin 8 \u2014 unused; carries \u00b115 V on powered StudioHub+ panels" },
     ],
-    notes: "StudioHub+ receive side. Pair with XLR3\u2192RJ45 at the source. Two balanced channels fit in one Cat5. Note: official StudioHub+ adapters carry XLR pin 1 on the cable SHIELD; pin 4 is the DC GND rail and pin 5 is n/c. PinRef uses pins 4/5 as the ground conductors so plain unshielded Cat5 works \u2014 only valid when the far end is wired the same way. Pins 7/8 carry \u00b115 V DC on powered StudioHub+ panels; never plug into an Ethernet/PoE port.",
+    notes: "StudioHub+ receive side. Pair with XLR3\u2192RJ45 at the source. Two balanced channels fit in one Cat5. Note: official StudioHub+ adapters carry XLR pin 1 on the cable SHIELD; pin 4 is the DC GND rail and pin 5 is n/c. PinRef uses pins 4/5 as the ground conductors so plain unshielded Cat5 works \u2014 only valid when the far end is wired the same way. Pins 7/8 carry \u00b115 V DC on powered StudioHub+ panels; never plug into an Ethernet/PoE port. Not compatible with Clear-Com/HelixNet RJ45 adapters (their RJ45 1/2 is ground, 3\u20138 carry \u00b130 V). If the far end was ever a party line, this XLR3 presents +30 V DC on pin 2 \u2014 meter before plugging into audio gear. Pins 4/5 as ground is PinRef's convention: Radial (ch 2), Whirlwind (ch 3) and RAT/ETS (ch 1) snake boxes carry a signal pair on 4/5, so this adapter on their boxes grounds a channel. Plugged straight into a StudioHub+ hub channel with the DC-link jumpers in, pin 4 is the power-ground bus.",
     sources: [
       { label: "StudioHub+ Adapter Pinout Guide", url: "https://studiohub.com/wp-content/uploads/2019/10/AAPinoutandAdapterGuide.pdf" },
+      { label: "Clear-Com \u2014 HelixNet Tip: Standard Pin Outs (RJ45 1/2 ground; 3/6/7 +30 V; 4/5/8 \u221230 V)", url: "https://www.clearcom.com/News-Events/Details/helixnet-tip-standard-pin-outs" },
     ],
   },
   {
@@ -934,9 +947,13 @@ const STANDARD_BUILDS = [
       ],
     },
     deadEnds: [
-      { connector: "from", pin: 3, desc: "RJ45 pins 3,5,6 \u2014 unused (add 2nd TRS for Ch2)" },
+      { connector: "from", pin: 3, desc: "RJ45 pin 3 \u2014 unused (add 2nd TRS for Ch2)" },
+      { connector: "from", pin: 5, desc: "RJ45 pin 5 \u2014 unused (add 2nd TRS for Ch2)" },
+      { connector: "from", pin: 6, desc: "RJ45 pin 6 \u2014 unused (add 2nd TRS for Ch2)" },
+      { connector: "from", pin: 7, desc: "RJ45 pin 7 \u2014 unused; carries \u00b115 V on powered StudioHub+ panels" },
+      { connector: "from", pin: 8, desc: "RJ45 pin 8 \u2014 unused; carries \u00b115 V on powered StudioHub+ panels" },
     ],
-    notes: "StudioHub+ receive side. Pair with TRS\u2192RJ45 at the source. Official StudioHub+ carries the Sleeve on the cable shield (pin 4 = DC GND, pin 5 = n/c); PinRef uses pins 4/5 as ground so unshielded Cat5 works, which only holds if the far end matches. Pins 7\u20138 carry \u00b115 V DC on powered StudioHub+ panels; never plug into an Ethernet/PoE port.",
+    notes: "StudioHub+ receive side. Pair with TRS\u2192RJ45 at the source. Official StudioHub+ carries the Sleeve on the cable shield (pin 4 = DC GND, pin 5 = n/c); PinRef uses pins 4/5 as ground so unshielded Cat5 works, which only holds if the far end matches. Pins 7\u20138 carry \u00b115 V DC on powered StudioHub+ panels; never plug into an Ethernet/PoE port. If the TRS end goes into an unbalanced TS jack, the jack shorts Ring (RJ45 2 = the source's cold leg) to ground over the whole run \u2014 fine for transformer/cross-coupled sources, bad for a plain op-amp output; use an XLR3\u2192TS or TRS\u2192TS adapter that floats cold instead. If the run originates from a party line, +30 V DC arrives on the Tip.",
     sources: [
       { label: "StudioHub+ Adapter Pinout Guide", url: "https://studiohub.com/wp-content/uploads/2019/10/AAPinoutandAdapterGuide.pdf" },
     ],
@@ -1440,17 +1457,23 @@ const STANDARD_BUILDS = [
   },
   {
     from: "ts", to: "rj45", status: "standard", title: "TS to RJ45 \u2014 Unbalanced Audio over Cat5 (StudioHub+)",
-    use: "Single unbalanced audio channel over Cat5, using the StudioHub+ ADAPT-RCA/TS pair convention. Signal and ground share a twisted pair to preserve EMI rejection.",
+    use: "Single unbalanced audio channel over Cat5, using the StudioHub+ ADAPT-RCA unbalanced convention (StudioHub sells no 1/4\" TS adapter; this is the RCA layout on a TS plug). Signal and ground share a twisted pair to preserve EMI rejection.",
     wiring: [
       { fromPin: 1, toPin: 1, desc: "Tip (Signal) to RJ45 pin 1 (Wht/Org)" },
       { fromPin: 2, toPin: 2, desc: "Sleeve (Ground) to RJ45 pin 2 (Orange)" },
     ],
     deadEnds: [
-      { connector: "to", pin: 3, desc: "RJ45 pins 3\u20138 \u2014 unused (pins 7/8 reserved for DC on powered StudioHub+ panels)" },
+      { connector: "to", pin: 3, desc: "RJ45 pin 3 \u2014 unused" },
+      { connector: "to", pin: 4, desc: "RJ45 pin 4 \u2014 unused" },
+      { connector: "to", pin: 5, desc: "RJ45 pin 5 \u2014 unused" },
+      { connector: "to", pin: 6, desc: "RJ45 pin 6 \u2014 unused" },
+      { connector: "to", pin: 7, desc: "RJ45 pin 7 \u2014 unused; carries \u00b115 V on powered StudioHub+ panels" },
+      { connector: "to", pin: 8, desc: "RJ45 pin 8 \u2014 unused; carries \u00b115 V on powered StudioHub+ panels" },
     ],
-    notes: "StudioHub+ layout: signal on pin 1, ground on pin 2 (same twisted pair) preserves common-mode rejection even though the signal itself is unbalanced. Putting ground on pin 4 (different pair) breaks the twist and picks up more noise.",
+    notes: "StudioHub+ layout: signal on pin 1, ground on pin 2 (same twisted pair) preserves common-mode rejection even though the signal itself is unbalanced. Putting ground on pin 4 (different pair) breaks the twist and picks up more noise. Direction: TS end = unbalanced SOURCE, RJ45 end toward a balanced input (ground on pin 2 ties the cold leg to the source ground, Rane 151 Fig. 5e). Do not use it backwards into an unbalanced input from a non-floating balanced output. Paired with the PinRef RJ45\u2192XLR3 build the destination XLR pin 1 (fed from RJ45 4) is left open \u2014 the signal still works via pins 1/2 but there is no pin-1 shield path; keep 48 V phantom OFF at that input. Unbalanced runs over Cat5 pick up hum beyond ~10 m \u2014 keep it short.",
     sources: [
       { label: "StudioHub+ Adapter Pinout Guide (official)", url: "https://studiohub.com/wp-content/uploads/2019/10/AAPinoutandAdapterGuide.pdf" },
+      { label: "Rane Note 151 \u2014 Grounding & Shielding (Fig. 5: float cold on active balanced outputs; tie cold to ground at a balanced input)", url: "https://www.ranecommercial.com/legacy/note151.html" },
     ],
   },
   // ─── 3.5mm TRS BUILDS ──────────────────────────────────────────────────────
@@ -1546,19 +1569,20 @@ const STANDARD_BUILDS = [
     use: "Stereo 3.5mm feed (IFB, aux, talkback return) over Cat5, using the StudioHub+ ADAPT-MINIUNBAL layout. One stereo feed per Cat5.",
     wiring: [
       { fromPin: 1, toPin: 1, desc: "Tip (Left Audio) to RJ45 pin 1 (Wht/Org)" },
+      { fromPin: 3, toPin: 2, desc: "Sleeve (Ground) to RJ45 pin 2 (Orange) \u2014 Left return on the same twisted pair as Left" },
       { fromPin: 2, toPin: 3, desc: "Ring (Right Audio) to RJ45 pin 3 (Wht/Grn)" },
-      { fromPin: 3, toPin: 4, desc: "Sleeve (Ground) to RJ45 pin 4 (Blue) \u2014 DC GND rail on StudioHub+ panels" },
+      { fromPin: 3, toPin: 6, desc: "Sleeve (Ground) ALSO to RJ45 pin 6 (Green) \u2014 Right return on the same twisted pair as Right (one wire fans out to pins 2 and 6)" },
     ],
     deadEnds: [
-      { connector: "to", pin: 2, desc: "RJ45 pin 2 \u2014 n/c per StudioHub+ ADAPT-MINIUNBAL" },
-      { connector: "to", pin: 5, desc: "RJ45 pin 5 \u2014 unused" },
-      { connector: "to", pin: 6, desc: "RJ45 pin 6 \u2014 n/c per StudioHub+ ADAPT-MINIUNBAL" },
+      { connector: "to", pin: 4, desc: "RJ45 pin 4 \u2014 not used (StudioHub+ DC GND rail; earlier PinRef revision put the sleeve here)" },
+      { connector: "to", pin: 5, desc: "RJ45 pin 5 \u2014 unused (n/c on StudioHub+)" },
       { connector: "to", pin: 7, desc: "RJ45 pin 7 \u2014 reserved for \u221215V DC on active StudioHub+ panels" },
       { connector: "to", pin: 8, desc: "RJ45 pin 8 \u2014 reserved for +15V DC on active StudioHub+ panels" },
     ],
-    notes: "StudioHub+ ADAPT-MINIUNBAL convention: Left/Tip on pin 1 (Wht/Org), Right/Ring on pin 3 (Wht/Grn), ground on pin 4 (Blue = DC GND rail). Pins 2 and 6 are n/c per the official StudioHub+ Adapter Pinout Guide; that guide shows the sleeve going to \u201cShield/G\u201d, which PinRef reads as the pin 4 DC GND rail (the only ground conductor on unshielded Cat5). Pins 7/8 carry \u00b115V DC on powered StudioHub+ panels \u2014 do not short to audio ground.",
+    notes: "StudioHub+ ADAPT-MINIUNBAL as drawn in the official guide: Tip (Left) \u2192 pin 1, Ring (Right) \u2192 pin 3, and the Sleeve bracketed to pin 2, pin 6 AND the cable shield \u2014 i.e. each channel's return rides on its own pair-mate (L\u2212 on 2, R\u2212 on 6), which is what a StudioHub+ panel's balanced inputs expect (unbalanced source into balanced inputs, cold tied to source ground). The \u2018n/c\u2019 marks in the guide mean the plug has no separate contact for those pins, not that they are open. Earlier PinRef revisions put the sleeve on pin 4 (DC GND) and left 2/6 open; against a real StudioHub+ panel that left the cold inputs floating and, on a hub channel with DC-link jumpers, rode the audio ground on the power return. Use shielded Cat5 if you can and land the drain on the 3.5 mm sleeve/shell. Pins 7/8 carry \u00b115 V DC on powered StudioHub+ panels; never plug this into an Ethernet switch or PoE port. Unbalanced stereo only \u2014 a balanced-mono 3.5 mm output would arrive with L and R out of phase.",
     sources: [
       { label: "StudioHub+ Adapter Pinout Guide (official)", url: "https://studiohub.com/wp-content/uploads/2019/10/AAPinoutandAdapterGuide.pdf" },
+      { label: "Power over Ethernet \u2014 Wikipedia (Mode A = pins 1/2 & 3/6, Mode B = pins 4/5 & 7/8, 44\u201357 V)", url: "https://en.wikipedia.org/wiki/Power_over_Ethernet" },
     ],
   },
   // ─── 3.5mm TRRS BUILDS ─────────────────────────────────────────────────────
@@ -1635,23 +1659,26 @@ const STANDARD_BUILDS = [
   },
   // ─── RCA BUILDS ─────────────────────────────────────────────────────────────
   {
-    from: "mini_trrs", to: "rj45", status: "field_hack", title: "3.5mm TRRS to RJ45 \u2014 Headset over Cat5 (non-standard)",
-    use: "Run a CTIA TRRS headset (audio + mic) over Cat5. \u26a0\ufe0f No formal published standard \u2014 every manufacturer does this differently. OHIS (Open Headset Interconnect Standard) is the closest published best-practice reference.",
+    from: "mini_trrs", to: "rj45", status: "field_hack", title: "3.5mm TRRS to RJ45 \u2014 Headset over Cat5 (OHIS pinout)",
+    use: "Run a CTIA TRRS headset (stereo audio + mic) over Cat5 using the OHIS (Open Headset Interconnect Standard) RJ45 pin table. Both ends of the run must use this build; the device end is a TRRS plug, the headset end a TRRS jack.",
     wiring: [
-      { fromPin: 1, toPin: 1, desc: "Tip (Left Audio) to RJ45 pin 1 (Wht/Org)" },
-      { fromPin: 3, toPin: 2, desc: "Ring 2 (Audio Ground CTIA) to RJ45 pin 2 (Orange) \u2014 same twisted pair as Tip" },
-      { fromPin: 2, toPin: 3, desc: "Ring 1 (Right Audio) to RJ45 pin 3 (Wht/Grn)" },
-      { fromPin: 3, toPin: 6, desc: "Ring 2 (Audio Ground CTIA) to RJ45 pin 6 (Green) \u2014 same twisted pair as Ring 1" },
-      { fromPin: 4, toPin: 7, desc: "Sleeve (Mic CTIA) to RJ45 pin 7 (Wht/Brn)" },
-      { fromPin: 3, toPin: 8, desc: "Ring 2 (Audio Ground CTIA) to RJ45 pin 8 (Brown) \u2014 mic return on same pair" },
+      { fromPin: 1, toPin: 4, desc: "Tip (Left Audio) to RJ45 pin 4 (Blue) \u2014 OHIS Headphone Left" },
+      { fromPin: 3, toPin: 5, desc: "Ring 2 (Ground CTIA) to RJ45 pin 5 (Wht/Blue) \u2014 OHIS Headphone Ground, same pair as Left" },
+      { fromPin: 2, toPin: 8, desc: "Ring 1 (Right Audio) to RJ45 pin 8 (Brown) \u2014 OHIS Headphone Right" },
+      { fromPin: 4, toPin: 6, desc: "Sleeve (Mic CTIA) to RJ45 pin 6 (Green) \u2014 OHIS Microphone (electret level)" },
+      { fromPin: 3, toPin: 3, desc: "Ring 2 (Ground CTIA) ALSO to RJ45 pin 3 (Wht/Grn) \u2014 OHIS Microphone Ground, same pair as Mic (one wire fans out to pins 3 and 5)" },
     ],
     deadEnds: [
-      { connector: "to", pin: 4, desc: "RJ45 pins 4, 5 \u2014 unused" },
+      { connector: "to", pin: 1, desc: "RJ45 pin 1 \u2014 OHIS Vcc (5 V from a radio) \u2014 leave open, never jumper" },
+      { connector: "to", pin: 2, desc: "RJ45 pin 2 \u2014 OHIS PTT (pulled to power ground to key) \u2014 leave open" },
+      { connector: "to", pin: 7, desc: "RJ45 pin 7 \u2014 OHIS Power/PTT Ground \u2014 unused here (tie the cable shield to it if you use shielded Cat5)" },
     ],
-    notes: "Non-standard \u2014 document your pinout on the cable itself. This layout pairs each signal with its ground on a twisted pair (per OHIS best practice): L+Gnd on pair 1/2, R+Gnd on pair 3/6, Mic+Gnd on pair 7/8. Keep runs under 50 ft. Pair with identical wiring at the far end.",
+    notes: "OHIS 8P8C table: 1 Vcc, 2 PTT, 3 Mic Ground, 4 Headphone Left, 5 Headphone Ground, 6 Microphone (electret level, bias from the device), 7 Power/PTT Ground, 8 Headphone Right, shield to power ground. CTIA headsets share one ground for mic and headphones, so Ring 2 fans out to pins 3 and 5 \u2014 OHIS explicitly allows this (\u2018CTIA headsets use a 4-pin TRRS ... THE RADIO DEVICE MUST SUPPORT THIS\u2019). OHIS calls for shielded cable; a short unshielded run usually works. Earlier PinRef revisions used a home-made layout (L/gnd 1/2, R/gnd 3/6, mic/gnd 7/8) that put the mic on the StudioHub+ \u00b115 V pins and shared no pin with OHIS; cables built to that layout must be re-terminated at BOTH ends or kept as a matched pair and labelled. Headphone Right rides on pin 8, which is +15 V on a powered StudioHub+ panel, and pins 4/5 are the PoE Mode-B pair \u2014 never plug this into a StudioHub+ panel, an Ethernet switch, a PoE injector or any intercom RJ45. CTIA headsets only (OMTP swaps mic and ground).",
     sources: [
-      { label: "Android AOSP 3.5mm Headset Jack Spec", url: "https://source.android.com/docs/core/interaction/accessories/headset/plug-headset-spec" },
-      { label: "OHIS \u2014 Open Headset Interconnect Standard", url: "https://www.ohis.org/" },
+      { label: "OHIS \u2014 Open Headset Interconnect Standard (PDF, 8P8C pin table \u00a73.2)", url: "https://open-headset-interconnect-standard.github.io/ohis/Open-Headset-Interconnect-Standard.pdf" },
+      { label: "Android AOSP 3.5mm Headset Jack Spec (CTIA LRGM; Tip/Ring are headphone OUTPUTS, mic on Sleeve)", url: "https://source.android.com/docs/core/interaction/accessories/headset/plug-headset-spec" },
+      { label: "StudioHub+ Adapter Pinout Guide (official)", url: "https://studiohub.com/wp-content/uploads/2019/10/AAPinoutandAdapterGuide.pdf" },
+      { label: "Power over Ethernet \u2014 Wikipedia (Mode A = pins 1/2 & 3/6, Mode B = pins 4/5 & 7/8, 44\u201357 V)", url: "https://en.wikipedia.org/wiki/Power_over_Ethernet" },
     ],
   },
   {
