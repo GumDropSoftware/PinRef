@@ -318,6 +318,7 @@ The full reasoning for each is under the question in `research/open-questions-20
   - #77 Black and #78 Yellow: DE-9 pin 4 moved from RJ45 5 to 4, and DE-9 pin 5 from RJ45 4 to 5. Swap the leads in DE-9 positions 4 and 5.
   - #83 Cronus: every RJ-12 pin moved (1: 3→2, 2: 5→3, 3: 1→4, 4: 2→5, 5: 4→6, 6: 6→1). It is now titled for the RTS layout, with status standard.
   - Data stays on RJ45 1/2. An RTS XCP-48-RJ45 breakout (data on 2/7) will not bring a panel up through these shells.
+  - **Follow-up (Jadon):** the original pin maps came from LMG's internal documents, so they are kept as "LMG As-Built" builds #84 (Black), #85 (Yellow) and #86 (Cronus). LMG's existing shells do not need re-pinning: keep them as a matched LMG set, use the RTS layout for new cables, and never mix the two on one run. The other LMG builds (#19, #79, #80–#82) still carry LMG's documented pins; their source now says so again (it had been relabelled "Internal Build" in May).
 - **Q5, headsets:** Jadon's headsets are Clear-Com and Sennheiser, very seldom RTS.
   - From the makers' pages: Clear-Com CC-110, CC-220, CC-300 and CC-400 are dynamic, and CC-15/CC-30 are electret. Sennheiser HMD 26/27 are dynamic. HME 26/27 and HMDC 27 need P48 and have no intercom cable.
   - #3, #9 and #20 say how each pack is set to Dynamic: RS-700 DIP 1 ON, HelixNet and V-Series in the menu, FreeSpeak II on Auto. They also say what Electret mode puts on the coil.
