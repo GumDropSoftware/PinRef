@@ -25,14 +25,24 @@ export default function BuildsTab({ initialBuild, initialConnector, onClearIniti
       if (!opts.has(other)) opts.set(other, []);
       opts.get(other).push(b);
     });
-    // Dedupe mirror pairs: if a connector pair has both a forward (from === first)
-    // and a reverse (to === first) build, keep only the forward ones. The detail
-    // page renders the forward direction anyway, so reverse mirrors are redundant.
+    // Dedupe true mirror pairs only: a reverse build (to === first) is hidden when
+    // a forward build (from === first) has the same short title AND exactly the
+    // same pin-to-pin wiring read the other way round. Reverse builds with a
+    // different circuit or a different job (an unbalanced→balanced jumper that
+    // the balanced→unbalanced build floats; a headset-mic-to-mixer cable vs an
+    // XLR3-mic-into-beltpack cable) are real builds and stay visible.
+    const shortTitle = (b) => { const p = b.title.split(" \u2014 "); return p.length > 1 ? p[1] : b.title; };
+    const wireKey = (b, reversed) =>
+      shortTitle(b) + "::" + [...(b.wiring || [])]
+        .map((w) => (reversed ? `${w.toPin}>${w.fromPin}` : `${w.fromPin}>${w.toPin}`))
+        .sort()
+        .join("|");
     for (const [other, builds] of opts) {
       const forward = builds.filter((b) => b.from === first);
-      if (forward.length > 0 && forward.length < builds.length) {
-        opts.set(other, forward);
-      }
+      if (forward.length === 0) continue;
+      const forwardKeys = new Set(forward.map((b) => wireKey(b, false)));
+      const kept = builds.filter((b) => b.from === first || !forwardKeys.has(wireKey(b, true)));
+      if (kept.length < builds.length) opts.set(other, kept);
     }
     return Array.from(opts.entries());
   }, [first, matchingBuilds]);
