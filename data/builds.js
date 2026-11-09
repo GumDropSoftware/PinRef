@@ -5,6 +5,7 @@ const STANDARD_BUILDS = [
   {
     from: "xlr3", to: "xlr3", status: "standard", title: "XLR3 Mic Cable (Straight-Through)",
     use: "Standard microphone or balanced audio cable. Also carries SMPTE LTC timecode, AES3 digital audio (AES3 wants true 110\u03a9 cable) and the intercom party line (RTS two-channel: pin 1 common, pin 2 +30 VDC + channel 1 audio, pin 3 channel 2 audio; Clear-Com single-channel: pin 1 ground, pin 2 DC only, pin 3 audio) over the same wiring.",
+    audit: { verified: true, date: "2026-11-09", note: "Round 2: documentation, power, circuit, field-practice and red-team reviewers all agreed with this build against an opened source; the round 3 power pass agreed too. Sentences an agreeing reviewer suggested were added afterwards." },
     wiring: [
       { fromPin: 1, toPin: 1, desc: "Ground / Shield to Ground / Shield" },
       { fromPin: 2, toPin: 2, desc: "Hot (+) to Hot (+)" },
@@ -22,6 +23,7 @@ const STANDARD_BUILDS = [
   {
     from: "xlr3", to: "xlr5", status: "standard", title: "XLR3 to XLR5 \u2014 Pass-Through (XLR3 Signal over an XLR5 Run)",
     use: "Carry an ordinary XLR3 balanced signal down a spare 5-pin cable (intercom headset extension or DMX cable). Build TWO of these \u2014 one at each end \u2014 and the 5-pin run becomes a plain XLR3 extension.",
+    audit: { verified: false, date: "2026-11-09", note: "Round 4: circuit reviewer raised issues; fixed 2026-11-09 (AES3 claim qualified: headset-extension cable splits pins 2/3 across pairs; face/solder sentence + ring-out) but not yet re-reviewed by all five angles." },
     wiring: [
       { fromPin: 1, toPin: 1, desc: "XLR3 pin 1 (Ground / Shield) to XLR5 pin 1" },
       { fromPin: 2, toPin: 2, desc: "XLR3 pin 2 (Hot +) to XLR5 pin 2" },
@@ -45,6 +47,7 @@ const STANDARD_BUILDS = [
   {
     from: "xlr3", to: "xlr5", status: "partial", title: "XLR3 to XLR5 \u2014 Mic into Intercom Beltpack (Mic Input)",
     use: "Plug an ordinary XLR3 dynamic microphone into the headset jack of a 5-pin Clear-Com / RTS beltpack or panel. Mic only \u2014 the earphone pins are left empty, so you hear nothing (use a separate listen feed or the pack's speaker).",
+    audit: { verified: true, date: "2026-11-09", note: "Round 4: documentation, power, circuit, field-practice and red-team reviewers all agreed with this build against an opened source." },
     wiring: [
       { fromPin: 2, toPin: 2, desc: "XLR3 pin 2 (Hot +) to XLR5 pin 2 (Mic Input)" },
       { fromPin: 1, toPin: 1, desc: "XLR3 pin 1 (Ground / Shield) to XLR5 pin 1 (Mic Ground)" },
@@ -67,6 +70,7 @@ const STANDARD_BUILDS = [
   {
     from: "xlr3", to: "xlr5", status: "partial", title: "XLR3 to XLR5 \u2014 Balanced Feed to Both Ears of a Headset",
     use: "Drive BOTH earpieces of a 5-pin intercom headset from one balanced XLR3 source (mixer headphone/aux out, IFB feed). Listen-only \u2014 the headset mic is not connected.",
+    audit: { verified: false, date: "2026-11-09", note: "Round 4: circuit reviewer raised issues; fixed 2026-11-09 (transformer-balanced source gives no sound with pin 3 floated; face/solder wording: the drawing is the female end's own face) but not yet re-reviewed by all five angles." },
     wiring: [
       { fromPin: 2, toPin: 4, desc: "XLR3 pin 2 (Hot +) to XLR5 pin 4 (Left Earphone)" },
       { fromPin: 2, toPin: 5, desc: "XLR3 pin 2 (Hot +) ALSO to XLR5 pin 5 (Right Earphone) \u2014 same mono signal to both ears" },
@@ -92,6 +96,7 @@ const STANDARD_BUILDS = [
   {
     from: "xlr3", to: "trs", status: "standard", title: "XLR3 to 1/4\" TRS \u2014 Balanced Audio",
     use: "Balanced line-level audio between XLR and TRS gear",
+    audit: { verified: true, date: "2026-11-09", note: "Round 2: documentation, power, circuit, field-practice and red-team reviewers all agreed with this build against an opened source; the round 3 power pass agreed too. Sentences an agreeing reviewer suggested were added afterwards." },
     wiring: [
       { fromPin: 1, toPin: 3, desc: "Ground (pin 1) to Sleeve" },
       { fromPin: 2, toPin: 1, desc: "Hot (+) (pin 2) to Tip" },
@@ -107,6 +112,7 @@ const STANDARD_BUILDS = [
   {
     from: "xlr3", to: "rj45", status: "standard", title: "XLR3 to RJ45 \u2014 Audio over Cat5",
     use: "Balanced audio over Cat5 (StudioHub+ signal pairs). Up to 2 balanced channels. NOT for Clear-Com / RTS party line.",
+    audit: { verified: false, date: "2026-11-09", note: "Round 4: documentation, field-practice, red-team reviewers raised issues; fixed 2026-11-09 (HelixNet hazard made polarity-neutral (two Clear-Com tables disagree); face/solder wording: the drawing is the female end's own face) but not yet re-reviewed by all five angles." },
     wiring: [
       { fromPin: 2, toPin: 1, desc: "Hot (+) (pin 2) to RJ45 pin 1 (Wht/Org)" },
       { fromPin: 3, toPin: 2, desc: "Cold (\u2212) (pin 3) to RJ45 pin 2 (Orange)" },
@@ -150,6 +156,7 @@ const STANDARD_BUILDS = [
   {
     from: "xlr3", to: "db25", status: "standard", title: "XLR3 to DB25 \u2014 Tascam/AES59 Audio Snake",
     use: "One channel of a Tascam/AES59 analog audio snake breakout. 8 channels fit in a DB25. Ch1 is on pins 24/12/25 and Ch8 on pins 1/14/2 (see notes for which way that reads on the plug).",
+    audit: { verified: true, date: "2026-11-09", note: "Round 2: documentation, power, circuit, field-practice and red-team reviewers all agreed with this build against an opened source; the round 3 power pass agreed too. Sentences an agreeing reviewer suggested were added afterwards." },
     wiring: [
       { fromPin: 2, toPin: 24, desc: "Hot (XLR 2) to DB25 pin 24 (Ch1 Hot)" },
       { fromPin: 3, toPin: 12, desc: "Cold (XLR 3) to DB25 pin 12 (Ch1 Cold)" },
@@ -233,6 +240,7 @@ const STANDARD_BUILDS = [
   {
     from: "xlr3", to: "xlr4", status: "partial", title: "XLR3 to XLR4 \u2014 Balanced Feed to Headset Earphone",
     use: "Drive an XLR4 intercom headset earphone from a balanced XLR3 source. Listen-only \u2014 mic (XLR4 pin 2) is unused.",
+    audit: { verified: false, date: "2026-11-09", note: "Round 4: circuit reviewer raised issues; fixed 2026-11-09 (unsourced Telex Audiocom reversal removed; Telex pinout cited; LINE LOOP jack added to the never-feed caution; transformer-balanced source gives no sound with pin 3 floated; \u2026) but not yet re-reviewed by all five angles." },
     wiring: [
       { fromPin: 1, toPin: 3, desc: "Ground (XLR3 pin 1) to Earphone Return (XLR4 pin 3)" },
       { fromPin: 2, toPin: 4, desc: "Hot (+) to Earphone Signal (XLR4 pin 4)" },
@@ -256,6 +264,7 @@ const STANDARD_BUILDS = [
   {
     from: "xlr3", to: "xlr4", status: "partial", title: "XLR3 to XLR4 \u2014 Mic into Intercom Beltpack (Mic Input)",
     use: "Plug an ordinary XLR3 dynamic microphone into the headset jack of a 4-pin Clear-Com / RTS beltpack or panel. Mic only \u2014 no earphone, so you hear nothing (use the pack speaker or a separate listen feed).",
+    audit: { verified: true, date: "2026-11-09", note: "Round 4: documentation, power, circuit, field-practice and red-team reviewers all agreed with this build against an opened source. Sentences an agreeing reviewer suggested were added afterwards." },
     wiring: [
       { fromPin: 2, toPin: 2, desc: "XLR3 pin 2 (Hot +) to XLR4 pin 2 (Mic Input)" },
       { fromPin: 1, toPin: 1, desc: "XLR3 pin 1 (Ground / Shield) to XLR4 pin 1 (Mic Ground)" },
@@ -276,6 +285,7 @@ const STANDARD_BUILDS = [
   {
     from: "xlr3", to: "bnc", status: "partial", title: "XLR3 to BNC \u2014 LTC Timecode / Unbalanced Audio Only (not SDI, not AES3)",
     use: "Passive XLR3-to-BNC for LTC TIMECODE or other audio-band unbalanced signals (recorder/slate XLR timecode out to a camera BNC timecode in, or BNC timecode out to a recorder XLR in). NOT for video/SDI (different signal) and NOT for AES3 digital audio (110 \u03a9 \u2192 75 \u03a9 needs a transformer balun, e.g. Neutrik NADITBNC).",
+    audit: { verified: false, date: "2026-11-09", note: "Round 4: documentation, circuit reviewers raised issues; fixed 2026-11-09 (dead-end: transformer output gives no signal, not \u22126 dB; transformer case is no signal, not lower level) but not yet re-reviewed by all five angles." },
     wiring: [
       { fromPin: 2, toPin: 1, desc: "XLR pin 2 (Hot +) to BNC centre pin \u2014 LTC signal" },
       { fromPin: 1, toPin: 2, desc: "XLR pin 1 (Ground) to BNC shell \u2014 ground" },
@@ -296,6 +306,7 @@ const STANDARD_BUILDS = [
   {
     from: "xlr3", to: "triax", status: "not_possible", title: "XLR3 to Triax \u2014 Not Compatible",
     use: "Triax carries multiplexed camera control, video, and DC power. Completely different system from balanced audio \u2014 not adaptable with a passive cable.",
+    audit: { verified: true, date: "2026-11-09", note: "Independent checks agree this cannot be adapted with a passive cable." },
     wiring: [],
     notes: "Triax also carries the camera power supply on the CENTRE conductor \u2014 Sony CCUs put up to 180 V DC on it \u2014 so even probing a live triax port with a mic cable is dangerous.",
     sources: [
@@ -306,6 +317,7 @@ const STANDARD_BUILDS = [
   {
     from: "xlr3", to: "dt12", status: "standard", title: "XLR3 to DT12 \u2014 Channel Breakout",
     use: "Connecting audio channels from a DT12 multi-channel snake. Up to 12 XLR3 cables.",
+    audit: { verified: false, date: "2026-11-09", note: "Round 4: power, field-practice reviewers raised issues; fixed 2026-11-09 (channel-1 pins 5/6 excluded from the 'channels 2\u201312' range; party-line-on-a-snake-channel caution) but not yet re-reviewed by all five angles." },
     wiring: [
       { fromPin: 2, toPin: 5, desc: "Hot (+) (XLR pin 2) to DT12 pin 5 (Ch 1 Hot)" },
       { fromPin: 3, toPin: 6, desc: "Cold (\u2212) (XLR pin 3) to DT12 pin 6 (Ch 1 Cold)" },
@@ -415,6 +427,7 @@ const STANDARD_BUILDS = [
   {
     from: "xlr3", to: "mini_trs", status: "partial", title: "XLR3 to 3.5mm TRS \u2014 Mono Feed to a Stereo Input (Both Channels)",
     use: "Balanced XLR3 output into a 3.5mm STEREO (unbalanced) input \u2014 consumer recorder LINE IN, IFB/IEM transmitter aux in, camera (LINE setting). NOT a phone or laptop headset jack \u2014 those are outputs. The one mono signal lands on both Left and Right.",
+    audit: { verified: false, date: "2026-11-09", note: "Round 4: circuit reviewer raised issues; fixed 2026-11-09 (citation corrected: Rane 110 covers cross-coupled only; face/solder wording: the drawing is the female end's own face) but not yet re-reviewed by all five angles." },
     wiring: [
       { fromPin: 2, toPin: 1, desc: "Hot (+) to Tip (Left)" },
       { fromPin: 2, toPin: 2, desc: "Hot (+) ALSO to Ring (Right) \u2014 same signal to both channels" },
@@ -435,6 +448,7 @@ const STANDARD_BUILDS = [
   {
     from: "xlr3", to: "ts", status: "standard", title: "XLR3 to TS \u2014 Balanced to Unbalanced",
     use: "Balanced XLR output to a 1/4\u201d unbalanced input (guitar amp, DI box, unbalanced line input). Not for a console INSERT jack (a TS plug there ties the send to this output).",
+    audit: { verified: false, date: "2026-11-09", note: "Round 4: circuit reviewer raised issues; fixed 2026-11-09 (citation corrected: Rane 110 covers cross-coupled only; face/solder wording: the drawing is the female end's own face) but not yet re-reviewed by all five angles." },
     wiring: [
       { fromPin: 2, toPin: 1, desc: "Hot (+) to Tip \u2014 Signal" },
       { fromPin: 1, toPin: 2, desc: "Ground to Sleeve" },
@@ -454,6 +468,7 @@ const STANDARD_BUILDS = [
   {
     from: "xlr3", to: "rca", status: "partial", title: "XLR3 to RCA \u2014 Pro to Consumer",
     use: "Pro XLR output to consumer RCA input (amp, receiver, recording interface). Requires level matching \u2014 a bare adapter will overdrive consumer gear.",
+    audit: { verified: false, date: "2026-11-09", note: "Round 4: power, circuit, red-team reviewers raised issues; fixed 2026-11-09 (citation corrected: Rane 110 covers cross-coupled only; face/solder wording: the drawing is the female end's own face; RCA input-only caution) but not yet re-reviewed by all five angles." },
     wiring: [
       { fromPin: 2, toPin: 1, desc: "Hot (+) to Center \u2014 Signal" },
       { fromPin: 1, toPin: 2, desc: "Ground to Shell" },
@@ -473,6 +488,7 @@ const STANDARD_BUILDS = [
   {
     from: "xlr5", to: "xlr5", status: "standard", title: "XLR5 Straight-Through",
     use: "Clear-Com / RTS 5-pin headset extension, stereo audio, or DMX512 extension \u2014 all five conductors straight through.",
+    audit: { verified: false, date: "2026-11-09", note: "Round 4: documentation reviewer raised issues; fixed 2026-11-09 (MR202-2AT is 2-pair (4-pin); a 5-pin extension needs 3 pairs; face/solder sentence + ring-out) but not yet re-reviewed by all five angles." },
     wiring: [
       { fromPin: 1, toPin: 1, desc: "Mic Ground to Mic Ground" },
       { fromPin: 2, toPin: 2, desc: "Mic Signal to Mic Signal" },
@@ -493,6 +509,7 @@ const STANDARD_BUILDS = [
   {
     from: "xlr5", to: "xlr4", status: "standard", title: "XLR5 to XLR4 \u2014 Intercom Beltpack to Headset",
     use: "Clear-Com or RTS beltpack to XLR4 intercom headset. Full 2-way \u2014 mic and earphone both work. XLR4 is mono so right earphone (XLR5 pin 5) is unused.",
+    audit: { verified: true, date: "2026-11-09", note: "Round 4: documentation, power, circuit, field-practice and red-team reviewers all agreed with this build against an opened source." },
     wiring: [
       { fromPin: 1, toPin: 1, desc: "Mic Ground to Mic Ground" },
       { fromPin: 2, toPin: 2, desc: "Mic Signal (+) to Mic Signal (pin 2)" },
@@ -513,6 +530,7 @@ const STANDARD_BUILDS = [
   {
     from: "xlr5", to: "rj45", status: "field_hack", title: "XLR5 to RJ45 \u2014 Intercom Headset over Cat5",
     use: "Clear-Com / RTS 5-pin headset extension over Cat5 \u2014 source end (plugs into the beltpack/panel, so this XLR5 is MALE). Mic pair on orange, left ear on green, right ear on blue; brown pair unused.",
+    audit: { verified: false, date: "2026-11-09", note: "Round 4: power, red-team reviewers raised issues; fixed 2026-11-09 (HelixNet short stated for both published Clear-Com pinouts; wiring desc: two conductors share XLR5 pin 3, not one wire bridged in the RJ45; never-join-two-source-ends caution; face/solder sentence for the MALE XLR5) but not yet re-reviewed by all five angles." },
     wiring: [
       { fromPin: 2, toPin: 1, desc: "Mic Signal (pin 2) to RJ45 pin 1 (Wht/Org)" },
       { fromPin: 1, toPin: 2, desc: "Mic Ground (pin 1) to RJ45 pin 2 (Orange) \u2014 mic circuit on its own pair" },
@@ -542,6 +560,7 @@ const STANDARD_BUILDS = [
   {
     from: "xlr5", to: "db25", status: "field_hack", title: "XLR5 to DB25 \u2014 Single Headset Channel over DB25 (Field Hack)",
     use: "Field hack: carry ONE 5-pin intercom headset channel over a DB25 (pins 1\u20135). Non-standard \u2014 no generic standard (Clear-Com V-Series panels do have a rear DB25, but it is the GPIO connector, not a headset port; their headset jacks are XLR-4/5/7). Nothing is defined for pins 6\u201325; if you need more channels, write your own plan on both connectors.",
+    audit: { verified: false, date: "2026-11-09", note: "Round 4: field-practice reviewer raised issues; fixed 2026-11-09 (use: V-Series DB25 is GPIO, not a headset port; V-Series DB25 is GPIO, not aux audio; gender advice that cannot be satisfied replaced; \u2026) but not yet re-reviewed by all five angles." },
     wiring: [
       { fromPin: 1, toPin: 1, desc: "XLR5 pin 1 (Mic Ground) to DB25 pin 1" },
       { fromPin: 2, toPin: 2, desc: "XLR5 pin 2 (Mic Signal) to DB25 pin 2" },
@@ -582,6 +601,7 @@ const STANDARD_BUILDS = [
   {
     from: "xlr5", to: "xlr3", status: "partial", title: "XLR5 to XLR3 \u2014 Beltpack Breakout (Mic In + Ear Out)",
     use: "Plug into a 5-pin beltpack\u2019s headset jack and break it out to XLR3s: one FEMALE XLR3 to take an ordinary dynamic mic INTO the pack, and one MALE XLR3 carrying the pack\u2019s earphone audio OUT to a mixer or recorder\u2019s balanced input. One cable = mic in only; two = mic in + ear out.",
+    audit: { verified: true, date: "2026-11-09", note: "Round 4: documentation, power, circuit, field-practice and red-team reviewers all agreed with this build against an opened source. Sentences an agreeing reviewer suggested were added afterwards." },
     wiring: [
       { fromPin: 2, toPin: 2, desc: "XLR5 pin 2 (Mic Input) to XLR3 pin 2 (Hot +) \u2014 mic signal into the pack" },
       { fromPin: 1, toPin: 1, desc: "XLR5 pin 1 (Mic Ground) to XLR3 pin 1 (Ground)" },
@@ -628,6 +648,7 @@ const STANDARD_BUILDS = [
   {
     from: "xlr5", to: "xlr3", status: "partial", title: "XLR5 to XLR3 \u2014 Headset Mic to Balanced Input",
     use: "Use the mic of a 5-pin intercom headset (RTS / Telex) as a mic into a mixer or recorder\u2019s balanced XLR3 input. Mic only \u2014 the earphones are not connected.",
+    audit: { verified: true, date: "2026-11-09", note: "Round 4: documentation, power, circuit, field-practice and red-team reviewers all agreed with this build against an opened source. Sentences an agreeing reviewer suggested were added afterwards." },
     wiring: [
       { fromPin: 2, toPin: 2, desc: "XLR5 pin 2 (Mic) to XLR3 pin 2 (Hot +)" },
       { fromPin: 1, toPin: 1, desc: "XLR5 pin 1 (Mic Ground) to XLR3 pin 1 (Ground)" },
@@ -649,6 +670,7 @@ const STANDARD_BUILDS = [
   {
     from: "xlr5", to: "mini_trs", status: "standard", title: "XLR5 to 3.5mm TRS \u2014 Intercom Earpiece Feed",
     use: "Taking the earpiece output from a Clear-Com beltpack to drive a 3.5mm consumer headphone.",
+    audit: { verified: true, date: "2026-11-09", note: "Round 2: documentation, power, circuit, field-practice and red-team reviewers all agreed with this build against an opened source; the round 3 power pass agreed too." },
     wiring: [
       { fromPin: 4, toPin: 1, desc: "XLR5 pin 4 (Left Earphone +) to Tip" },
       { fromPin: 5, toPin: 2, desc: "XLR5 pin 5 (Right Earphone +) to Ring" },
@@ -669,6 +691,7 @@ const STANDARD_BUILDS = [
   {
     from: "xlr5", to: "mini_trrs", status: "standard", title: "XLR5 to 3.5mm TRRS \u2014 Intercom to Consumer Headset",
     use: "Drive a CTIA TRRS headset (iPhone, modern Android) from a 5-pin beltpack that supplies electret mic bias (see notes \u2014 the RTS BP-325 does not, so it is listen-only there).",
+    audit: { verified: false, date: "2026-11-09", note: "Round 4: field-practice reviewer raised issues; fixed 2026-11-09 (BP-325 claim restated as the manual and Clear-Com actually say it; RS-700 no longer listed as a usable bias pack for a 5-pin cable; pack check widened to pin 3 = common; ROAMEO TR-1800 excluded; \u2026) but not yet re-reviewed by all five angles." },
     wiring: [
       { fromPin: 4, toPin: 1, desc: "XLR5 pin 4 (Left Earphone +) to Tip (Left Audio)" },
       { fromPin: 5, toPin: 2, desc: "XLR5 pin 5 (Right Earphone +) to Ring 1 (Right Audio)" },
@@ -696,6 +719,7 @@ const STANDARD_BUILDS = [
   {
     from: "dt12", to: "dt12", status: "standard", title: "DT12 Straight-Through Extension",
     use: "Extending a DT12 / FK37 multi-channel audio snake \u2014 all 37 pins straight through (inline male one end, inline female the other)",
+    audit: { verified: true, date: "2026-11-09", note: "Round 4: documentation, power, circuit, field-practice and red-team reviewers all agreed with this build against an opened source. Sentences an agreeing reviewer suggested were added afterwards." },
     wiring: [
       { fromPin: 1, toPin: 1, desc: "Pin 1 to Pin 1" },
       { fromPin: 2, toPin: 2, desc: "Pin 2 to Pin 2" },
@@ -746,6 +770,7 @@ const STANDARD_BUILDS = [
   {
     from: "dt12", to: "db25", status: "standard", title: "DT12 to DB25 \u2014 Audio Snake (8 Ch, AES59/Tascam)",
     use: "First 8 channels of DT12 to DB25 AES59/Tascam standard. Common in broadcast trucks. A DB25 only carries 8 channels \u2014 DT12 channels 9\u201312 do not fit and must break out separately.",
+    audit: { verified: true, date: "2026-11-09", note: "Round 4: documentation, power, circuit, field-practice and red-team reviewers all agreed with this build against an opened source. Sentences an agreeing reviewer suggested were added afterwards." },
     wiring: [
       { fromPin: 5, toPin: 24, desc: "DT12 pin 5 (Ch1 Hot) \u2192 DB25 pin 24 (Ch1 Hot)" },
       { fromPin: 6, toPin: 12, desc: "DT12 pin 6 (Ch1 Cold) \u2192 DB25 pin 12 (Ch1 Cold)" },
@@ -799,6 +824,7 @@ const STANDARD_BUILDS = [
   {
     from: "trs", to: "trs", status: "standard", title: "TRS Straight-Through Patch Cable",
     use: "Balanced audio patch cable",
+    audit: { verified: true, date: "2026-11-09", note: "Round 1: documentation, power, circuit, field-practice and red-team reviewers all agreed with this build against an opened source." },
     wiring: [
       { fromPin: 1, toPin: 1, desc: "Tip to Tip (Signal +)" },
       { fromPin: 2, toPin: 2, desc: "Ring to Ring (Signal \u2212)" },
@@ -811,6 +837,7 @@ const STANDARD_BUILDS = [
   {
     from: "trs", to: "rj45", status: "standard", title: "TRS to RJ45 \u2014 Balanced Audio over Cat5",
     use: "One or two balanced audio channels over a single Cat5 run. Cat5 has 4 pairs \u2014 2 channels use 3 pairs, leaving 1 spare.",
+    audit: { verified: true, date: "2026-11-09", note: "Round 4: documentation, power, circuit, field-practice and red-team reviewers all agreed with this build against an opened source." },
     wiring: [
       { fromPin: 1, toPin: 1, desc: "Tip (Signal +) to RJ45 pin 1 (Wht/Org)" },
       { fromPin: 2, toPin: 2, desc: "Ring (Signal \u2212) to RJ45 pin 2 (Orange)" },
@@ -854,6 +881,7 @@ const STANDARD_BUILDS = [
   {
     from: "trs", to: "xlr3", status: "standard", title: "TRS to XLR3 \u2014 Balanced Audio",
     use: "Balanced TRS output to XLR input. Mixer TRS main/aux output or outboard TRS output into an XLR input. Not for a console INSERT jack (an unbalanced send/return pair).",
+    audit: { verified: false, date: "2026-11-09", note: "Round 4: red-team reviewer raised issues; fixed 2026-11-09 (speaker-output caution on the TRS end) but not yet re-reviewed by all five angles." },
     wiring: [
       { fromPin: 1, toPin: 2, desc: "Tip to Hot (+)" },
       { fromPin: 2, toPin: 3, desc: "Ring to Cold (\u2212)" },
@@ -871,6 +899,7 @@ const STANDARD_BUILDS = [
   {
     from: "trs", to: "xlr4", status: "partial", title: "TRS to XLR4 \u2014 Headphone-Amp Feed to Headset Earphone",
     use: "Send a 1/4\u201d TRS feed from a HEADPHONE amplifier output (not a raw line/program send) to an XLR4 intercom headset earphone. Listen-only \u2014 mic circuit unused.",
+    audit: { verified: true, date: "2026-11-09", note: "Round 4: documentation, power, circuit, field-practice and red-team reviewers all agreed with this build against an opened source." },
     wiring: [
       { fromPin: 1, toPin: 4, desc: "Tip to Earphone Signal (pin 4)" },
       { fromPin: 3, toPin: 3, desc: "Sleeve to Earphone Return (pin 3)" },
@@ -891,6 +920,7 @@ const STANDARD_BUILDS = [
   {
     from: "rj45", to: "rj45", status: "standard", title: "RJ45 Straight-Through (T568B)",
     use: "Standard Ethernet patch cable. Both ends wired to T568B (pins 1/2 = Orange pair, 3/6 = Green pair, 4/5 = Blue pair, 7/8 = Brown pair).",
+    audit: { verified: true, date: "2026-11-09", note: "Round 2: documentation, power, circuit, field-practice and red-team reviewers all agreed with this build against an opened source; the round 3 power pass agreed too." },
     wiring: [
       { fromPin: 1, toPin: 1, desc: "Pin 1 to Pin 1" },
       { fromPin: 2, toPin: 2, desc: "Pin 2 to Pin 2" },
@@ -910,6 +940,7 @@ const STANDARD_BUILDS = [
   {
     from: "rj45", to: "de9", status: "standard", title: "RJ45 to DE-9 \u2014 Cisco Console Cable (rollover + DB-9 adapter combined)",
     use: "Cisco router/switch console access: the light-blue rollover cable and its RJ45-to-DB-9 adapter collapsed into one cable. Plug-pin numbers are the console port's; the DE-9 end is FEMALE (plugs into the PC's male port).",
+    audit: { verified: false, date: "2026-11-09", note: "Round 4 agreed, but its face/solder sentence sent the FEMALE DE-9 to the app's SOLDER SIDE view, which shows a male shell's cups; corrected 2026-11-09 and not yet re-reviewed." },
     wiring: [
       { fromPin: 1, toPin: 8, desc: "RJ45 pin 1 (RTS) to DE-9 pin 8 (CTS)" },
       { fromPin: 2, toPin: 6, desc: "RJ45 pin 2 (DTR) to DE-9 pin 6 (DSR)" },
@@ -935,6 +966,7 @@ const STANDARD_BUILDS = [
   {
     from: "rj45", to: "db25", status: "standard", title: "RJ45 (Cisco console pinning) to DB25 \u2014 3-Wire Serial Adapter",
     use: "Field-built Cat5 to DB25 serial adapter for legacy RS-232 DB25 equipment. 3-wire minimal (Tx/Rx/GND).",
+    audit: { verified: false, date: "2026-11-09", note: "Round 4 agreed, but its face/solder sentence sent the FEMALE DB25 to the app's SOLDER SIDE view, which shows a male shell's cups; corrected 2026-11-09 and not yet re-reviewed." },
     wiring: [
       { fromPin: 3, toPin: 3, desc: "RJ45 pin 3 (TxD out of a Cisco-pinned console port) to DB25 pin 3 (RxD on a DTE) \u2014 crossover built in" },
       { fromPin: 4, toPin: 7, desc: "RJ45 pin 4 (GND) to DB25 pin 7 (GND)" },
@@ -958,6 +990,7 @@ const STANDARD_BUILDS = [
   {
     from: "rj45", to: "xlr3", status: "standard", title: "RJ45 to XLR3 \u2014 Audio over Cat5",
     use: "Receiving end of an audio-over-Cat5 run (MALE XLR3 into a mixer input). Up to 2 balanced channels. NOT for Clear-Com / RTS party line.",
+    audit: { verified: true, date: "2026-11-09", note: "Round 4: documentation, power, circuit, field-practice and red-team reviewers all agreed with this build against an opened source." },
     wiring: [
       { fromPin: 1, toPin: 2, desc: "RJ45 pin 1 (Wht/Org) to Hot +" },
       { fromPin: 2, toPin: 3, desc: "RJ45 pin 2 (Orange) to Cold \u2212" },
@@ -999,6 +1032,7 @@ const STANDARD_BUILDS = [
   {
     from: "rj45", to: "xlr5", status: "field_hack", title: "RJ45 to XLR5 \u2014 Intercom Headset over Cat5",
     use: "Receive end of a 5-pin headset run over Cat5 \u2014 this XLR5 is FEMALE and takes the headset's male plug. Mirror of XLR5 \u2192 RJ45; pair with that build at the beltpack end.",
+    audit: { verified: false, date: "2026-11-09", note: "Round 4: power, red-team reviewers raised issues; fixed 2026-11-09 (HelixNet short stated for both published Clear-Com pinouts; PoE wording: this is the headset end; face/solder wording: the drawing is the female end's own face) but not yet re-reviewed by all five angles." },
     wiring: [
       { fromPin: 1, toPin: 2, desc: "RJ45 pin 1 (Wht/Org) to Mic Signal (XLR5 pin 2)" },
       { fromPin: 2, toPin: 1, desc: "RJ45 pin 2 (Orange) to Mic Ground (XLR5 pin 1)" },
@@ -1027,6 +1061,7 @@ const STANDARD_BUILDS = [
   {
     from: "rj45", to: "trs", status: "standard", title: "RJ45 to TRS \u2014 Balanced Audio over Cat5",
     use: "Receiving end of a balanced audio-over-Cat5 run. One or two TRS outputs from a single Cat5.",
+    audit: { verified: false, date: "2026-11-09", note: "Round 4: red-team reviewer raised issues; fixed 2026-11-09 (speaker-output caution) but not yet re-reviewed by all five angles." },
     wiring: [
       { fromPin: 1, toPin: 1, desc: "RJ45 pin 1 (Wht/Org) to Tip (Signal +)" },
       { fromPin: 2, toPin: 2, desc: "RJ45 pin 2 (Orange) to Ring (Signal \u2212)" },
@@ -1071,6 +1106,7 @@ const STANDARD_BUILDS = [
   {
     from: "rj45", to: "xlr4", status: "field_hack", title: "RJ45 to XLR4 \u2014 Intercom Headset over Cat5",
     use: "Receive end of a 4-pin headset run over Cat5 \u2014 takes the headset (Clear-Com headsets have a FEMALE XLR4, so this XLR4 is MALE; for an RTS PH-88R with a male plug it is female). Mirror of XLR4 \u2192 RJ45; pair with that build at the beltpack end.",
+    audit: { verified: false, date: "2026-11-09", note: "Round 4: red-team reviewer raised issues; fixed 2026-11-09 (face/solder guidance for the default MALE variant) but not yet re-reviewed by all five angles." },
     wiring: [
       { fromPin: 1, toPin: 2, desc: "RJ45 pin 1 (Wht/Org) to Mic Signal (pin 2)" },
       { fromPin: 2, toPin: 1, desc: "RJ45 pin 2 (Orange) to Mic Ground (pin 1)" },
@@ -1100,6 +1136,7 @@ const STANDARD_BUILDS = [
   {
     from: "rj45", to: "bnc", status: "not_possible", title: "RJ45 to BNC \u2014 NOT a Real SDI-over-Cat5 Path",
     use: "\u26a0\ufe0f This is NOT a working SDI-over-Cat5 cable. A raw pin-to-pin bodge between BNC and RJ45 almost never works even at short distances.",
+    audit: { verified: true, date: "2026-11-09", note: "Independent checks agree this cannot be adapted with a passive cable." },
     wiring: [],
     notes: "SDI is 75\u03a9 single-ended and runs at 1.5\u201312 Gb/s. Cat5/5e/6 is 100\u03a9 balanced. Tying RJ45 pins together to mate a single-ended signal to a balanced cable violates impedance AND defeats the twisted pair's common-mode rejection. The signal will almost never lock even at 1 m. For real SDI over Cat5, use an ACTIVE extender with a 75\u03a9/100\u03a9 balun and equalizer (MuxLab, AAS, Foresight). For long runs, use SDI-to-fiber. For IP transport, use SMPTE ST 2022-6 or ST 2110. Passive 75/100 \u03a9 SDI baluns exist for short runs and passive composite-video baluns are the CCTV norm \u2014 the point is that a wire-only bodge is not one. Also a power hazard: an RJ45 bodge plugged into a PoE switch or passive injector can put 44\u201357 V DC onto the BNC centre/shell and into the SDI input.",
     sources: [
@@ -1111,6 +1148,7 @@ const STANDARD_BUILDS = [
   {
     from: "bnc", to: "bnc", status: "standard", title: "BNC Straight-Through \u2014 SDI / Genlock / LTC",
     use: "SDI video, genlock/blackburst, tri-level sync, LTC timecode. Always 75\u03a9 cable with 75\u03a9 connectors.",
+    audit: { verified: true, date: "2026-11-09", note: "Round 2: documentation, power, circuit, field-practice and red-team reviewers all agreed with this build against an opened source; the round 3 power pass agreed too." },
     wiring: [
       { fromPin: 1, toPin: 1, desc: "Center conductor to Center conductor (Signal)" },
       { fromPin: 2, toPin: 2, desc: "Shell to Shell (Shield / Ground)" },
@@ -1124,6 +1162,7 @@ const STANDARD_BUILDS = [
   {
     from: "bnc", to: "triax", status: "partial", title: "BNC to Triax \u2014 SDI on Triax Cable",
     use: "Run SDI through dead broadcast triax when you have triax in the ground and need to pull SDI. Centre to centre; BNC shell to the INNER shield (the 75 \u03a9 return) with the outer shield bonded to it.",
+    audit: { verified: true, date: "2026-11-09", note: "Round 4: documentation, power, circuit, field-practice and red-team reviewers all agreed with this build against an opened source." },
     wiring: [
       { fromPin: 1, toPin: 1, desc: "BNC centre to Triax centre (signal)" },
       { fromPin: 2, toPin: 2, desc: "BNC shell to Triax INNER shield \u2014 the 75 \u03a9 return (centre + inner shield form the coax)" },
@@ -1140,6 +1179,7 @@ const STANDARD_BUILDS = [
   {
     from: "bnc", to: "rj45", status: "not_possible", title: "BNC to RJ45 \u2014 NOT a Real SDI-over-Cat5 Path",
     use: "\u26a0\ufe0f Do not build this. A raw pin-to-pin BNC\u2013Cat5 bodge is not a functional SDI path at any useful distance.",
+    audit: { verified: true, date: "2026-11-09", note: "Independent checks agree this cannot be adapted with a passive cable." },
     wiring: [],
     notes: "75\u03a9 single-ended SDI cannot be passed cleanly down 100\u03a9 twisted pair without impedance matching and equalization. Tying pairs together at both ends defeats the cable's EMI geometry. For SDI over Cat cable use a proper active extender with balun/EQ (MuxLab, AAS, Foresight); for long distance use SDI\u2013fiber; for IP transport use SMPTE ST 2022-6 or ST 2110. Passive 75/100 \u03a9 SDI baluns exist for short runs; what does not exist is a wire-only adapter that works.",
     sources: [
@@ -1151,6 +1191,7 @@ const STANDARD_BUILDS = [
   {
     from: "triax", to: "bnc", status: "partial", title: "Triax to BNC \u2014 Receive Side of Triax-as-Coax",
     use: "Receive end when using dead broadcast triax as a coax path for SDI. Centre to centre; inner shield (75 \u03a9 return) and outer shield both to the BNC shell. Mirror of BNC \u2192 Triax.",
+    audit: { verified: true, date: "2026-11-09", note: "Round 4: documentation, power, circuit, field-practice and red-team reviewers all agreed with this build against an opened source." },
     wiring: [
       { fromPin: 1, toPin: 1, desc: "Triax centre to BNC centre (signal)" },
       { fromPin: 2, toPin: 2, desc: "Triax INNER shield to BNC shell \u2014 the 75 \u03a9 return" },
@@ -1168,6 +1209,7 @@ const STANDARD_BUILDS = [
   {
     from: "triax", to: "triax", status: "standard", title: "Triax Extension Cable",
     use: "Camera-to-CCU extension. All three conductors straight through. Use 75 \u03a9 broadcast triax (Belden 1857A, Canare L-5CFTX).",
+    audit: { verified: true, date: "2026-11-09", note: "Round 4: documentation, power, circuit, field-practice and red-team reviewers all agreed with this build against an opened source." },
     wiring: [
       { fromPin: 1, toPin: 1, desc: "Centre to Centre \u2014 multiplexed video/data AND the camera DC supply (Sony: 180 V DC)" },
       { fromPin: 2, toPin: 2, desc: "Inner shield to Inner shield \u2014 signal/DC return" },
@@ -1183,6 +1225,7 @@ const STANDARD_BUILDS = [
   {
     from: "de9", to: "de9", status: "standard", title: "DE-9 Straight-Through (DCE to DTE)",
     use: "Standard serial extension cable \u2014 all 9 pins pass through unchanged.",
+    audit: { verified: true, date: "2026-11-09", note: "Round 2: documentation, power, circuit, field-practice and red-team reviewers all agreed with this build against an opened source." },
     wiring: [
       { fromPin: 1, toPin: 1, desc: "Pin 1 to Pin 1" },
       { fromPin: 2, toPin: 2, desc: "Pin 2 to Pin 2" },
@@ -1203,6 +1246,7 @@ const STANDARD_BUILDS = [
   {
     from: "de9", to: "de9", status: "standard", title: "DE-9 Null Modem (Full Handshake)",
     use: "Full-handshake crossover between two DTE devices (two PCs, PC to serial device). Needed when the PC requires hardware flow control or DTR/DSR lines high to open the port.",
+    audit: { verified: false, date: "2026-11-09", note: "Round 4: documentation reviewer raised issues; fixed 2026-11-09 (Swiss Timing removed from the null-modem list (matches build 32); commercial null-modem conventions stated as two, not one; face/solder sentence for the FEMALE DE-9 shells) but not yet re-reviewed by all five angles." },
     wiring: [
       { fromPin: 2, toPin: 3, desc: "Pin 2 (RxD) to Pin 3 (TxD) \u2014 cross Tx/Rx" },
       { fromPin: 3, toPin: 2, desc: "Pin 3 (TxD) to Pin 2 (RxD) \u2014 cross Tx/Rx" },
@@ -1229,6 +1273,7 @@ const STANDARD_BUILDS = [
   {
     from: "de9", to: "de9", status: "standard", title: "DE-9 Null Modem (3-Wire, Scoreboard/Timing)",
     use: "Minimal 3-wire null modem (2\u21943, 3\u21942, 5\u21945) for a one-way RS-232 data feed from a DTE source \u2014 OES, Fairplay, DVSport/graphics ingest. Colorado Time Systems 4/5/6 take a STRAIGHT-THROUGH RS-232 cable (only early System 6 units need a null modem) and Swiss Timing / Omega units need special cables (Hy-Tek serial cable guide). Check the controller's manual first: Daktronics All Sport 5100/5500 J5 (9-pin COMPUTER port) takes a STRAIGHT-THROUGH DE-9 (KB DD2557298 \u2014 use the DE-9 straight build); on the All Sport 5010 the computer port is J6 (KB 000029017). The 5100's J6 is a 25-pin port to the J-box (KB DD2557278); KB DD2180294 gives the J-box wiring (data 2/3, ground 7), not the J6 pinout \u2014 check the All Sport manual.",
+    audit: { verified: false, date: "2026-11-09", note: "Round 4: documentation, field-practice reviewers raised issues; fixed 2026-11-09 (use: CTS takes straight-through; Swiss Timing special cables; Daktronics J5/J6 by model; face/solder sentence for the FEMALE DE-9 shells) but not yet re-reviewed by all five angles." },
     wiring: [
       { fromPin: 2, toPin: 3, desc: "Pin 2 (RxD) to Pin 3 (TxD) \u2014 cross Tx/Rx" },
       { fromPin: 3, toPin: 2, desc: "Pin 3 (TxD) to Pin 2 (RxD) \u2014 cross Tx/Rx" },
@@ -1263,6 +1308,7 @@ const STANDARD_BUILDS = [
   {
     from: "de9", to: "db25", status: "standard", title: "DE-9 to DB25 \u2014 Serial Adapter (EIA-574 to EIA-232)",
     use: "Adapting between DE-9 (EIA-574) and DB25 (EIA-232) serial ports. Common on older timing equipment and legacy modems.",
+    audit: { verified: true, date: "2026-11-09", note: "Round 2: documentation, power, circuit, field-practice and red-team reviewers all agreed with this build against an opened source." },
     wiring: [
       { fromPin: 1, toPin: 8, desc: "DE-9 pin 1 to DB25 pin 8 (DCD)" },
       { fromPin: 2, toPin: 3, desc: "DE-9 pin 2 (RxD) to DB25 pin 3 (RxD)" },
@@ -1283,6 +1329,7 @@ const STANDARD_BUILDS = [
   {
     from: "db25", to: "db25", status: "standard", title: "DB25 Straight-Through",
     use: "In-line EXTENSION of a DB25 audio snake (male one end, female the other) \u2014 Tascam/AES59 analog, Tascam or Yamaha AES/EBU. All 25 pins pass through unchanged.",
+    audit: { verified: false, date: "2026-11-09", note: "Round 4: field-practice reviewer raised issues; fixed 2026-11-09 (AES flip applies to Yamaha format too; dead source URL removed) but not yet re-reviewed by all five angles." },
     wiring: [
       { fromPin: 1, toPin: 1, desc: "Pin 1 to Pin 1" },
       { fromPin: 2, toPin: 2, desc: "Pin 2 to Pin 2" },
@@ -1320,6 +1367,7 @@ const STANDARD_BUILDS = [
   {
     from: "db25", to: "xlr3", status: "standard", title: "DB25 to XLR3 \u2014 Tascam/AES59 Audio Breakout",
     use: "Receiving end of a Tascam/AES59 8-channel DB25 snake as balanced XLR3 outputs. Ch1 is on pins 24/12/25 (see notes for orientation).",
+    audit: { verified: true, date: "2026-11-09", note: "Round 2: documentation, power, circuit, field-practice and red-team reviewers all agreed with this build against an opened source; the round 3 power pass agreed too. Sentences an agreeing reviewer suggested were added afterwards." },
     wiring: [
       { fromPin: 24, toPin: 2, desc: "DB25 pin 24 (Ch1 Hot) to XLR Hot +" },
       { fromPin: 12, toPin: 3, desc: "DB25 pin 12 (Ch1 Cold) to XLR Cold \u2212" },
@@ -1403,6 +1451,7 @@ const STANDARD_BUILDS = [
   {
     from: "xlr4", to: "xlr4", status: "standard", title: "XLR4 Headset Extension",
     use: "Extending a 4-pin intercom headset cable (Clear-Com, RTS, Telex)",
+    audit: { verified: true, date: "2026-11-09", note: "Round 4: documentation, power, circuit, field-practice and red-team reviewers all agreed with this build against an opened source. Sentences an agreeing reviewer suggested were added afterwards." },
     wiring: [
       { fromPin: 1, toPin: 1, desc: "Mic Ground to Mic Ground" },
       { fromPin: 2, toPin: 2, desc: "Mic Signal to Mic Signal" },
@@ -1421,6 +1470,7 @@ const STANDARD_BUILDS = [
   {
     from: "xlr4", to: "trs", status: "partial", title: "XLR4 to TRS \u2014 Earphone Feed Out",
     use: "Take the earphone monitor feed from an XLR4 beltpack jack and output as a 1/4\u201d TRS mono feed \u2014 for an in-ear rig, wedge, or recording.",
+    audit: { verified: true, date: "2026-11-09", note: "Round 4: documentation, power, circuit, field-practice and red-team reviewers all agreed with this build against an opened source." },
     wiring: [
       { fromPin: 3, toPin: 3, desc: "Earphone Return (pin 3) to Sleeve" },
       { fromPin: 4, toPin: 1, desc: "Earphone Signal (pin 4) to Tip" },
@@ -1442,6 +1492,7 @@ const STANDARD_BUILDS = [
   {
     from: "xlr4", to: "rj45", status: "field_hack", title: "XLR4 to RJ45 \u2014 Intercom Headset over Cat5",
     use: "Source end of a 4-pin headset run over Cat5 \u2014 plugs into the beltpack (Clear-Com packs have a MALE XLR4 jack, so this XLR4 is FEMALE; RTS BP-325 has a female receptacle, so MALE there). Mic circuit on the orange pair, earphone circuit on the green pair.",
+    audit: { verified: false, date: "2026-11-09", note: "Round 4: documentation, power, red-team reviewers raised issues; fixed 2026-11-09 (face/solder guidance per variant; 12 V XLR4 power caution both genders; never-join-two-pack-ends) but not yet re-reviewed by all five angles." },
     wiring: [
       { fromPin: 2, toPin: 1, desc: "Mic Signal (pin 2) to RJ45 pin 1 (Wht/Org)" },
       { fromPin: 1, toPin: 2, desc: "Mic Ground (pin 1) to RJ45 pin 2 (Orange) \u2014 mic circuit on its own pair" },
@@ -1471,6 +1522,7 @@ const STANDARD_BUILDS = [
   {
     from: "xlr4", to: "xlr5", status: "standard", title: "XLR4 to XLR5 \u2014 Headset to Intercom Panel",
     use: "XLR4 intercom headset to a 5-pin Clear-Com or RTS panel or wallplate. Full 2-way intercom. XLR4 is mono \u2014 right earphone (XLR5 pin 5) is not present.",
+    audit: { verified: true, date: "2026-11-09", note: "Round 4: documentation, power, circuit, field-practice and red-team reviewers all agreed with this build against an opened source." },
     wiring: [
       { fromPin: 1, toPin: 1, desc: "Mic Ground to Mic Ground" },
       { fromPin: 2, toPin: 2, desc: "Mic Signal (+) to Mic Signal (pin 2)" },
@@ -1492,6 +1544,7 @@ const STANDARD_BUILDS = [
   {
     from: "xlr4", to: "xlr3", status: "partial", title: "XLR4 to XLR3 \u2014 Headset Mic to Balanced Input",
     use: "Route the mic signal from an XLR4 intercom headset to a balanced XLR3 mixer or recorder input.",
+    audit: { verified: true, date: "2026-11-09", note: "Round 4: documentation, power, circuit, field-practice and red-team reviewers all agreed with this build against an opened source." },
     wiring: [
       { fromPin: 1, toPin: 1, desc: "Mic Ground (pin 1) to Ground" },
       { fromPin: 2, toPin: 2, desc: "Mic Signal (pin 2) to Hot +" },
@@ -1511,6 +1564,7 @@ const STANDARD_BUILDS = [
   {
     from: "speakon", to: "speakon", status: "standard", title: "Speakon NL4 Straight-Through",
     use: "Standard speaker cable extension. For bi-amp use, 1+/1\u2212 typically carries LF/woofer and 2+/2\u2212 carries HF/tweeter (verify cabinet silkscreen).",
+    audit: { verified: false, date: "2026-11-09", note: "Round 4 review incomplete: the documentation, field-practice, red-team reviewers did not run (usage limit); power, circuit agreed." },
     wiring: [
       { fromPin: 1, toPin: 1, desc: "1+ to 1+ \u2014 Speaker + (LF)" },
       { fromPin: 2, toPin: 2, desc: "1\u2212 to 1\u2212 \u2014 Speaker \u2212 (LF)" },
@@ -1526,6 +1580,7 @@ const STANDARD_BUILDS = [
   {
     from: "speakon", to: "xlr3", status: "standard", title: "Speakon NL4 to XLR3 \u2014 Passive Speaker Adapter",
     use: "Passive speaker cable adapter \u2014 amp Speakon output to a passive speaker with XLR3 input (older PA cabinets). NOT for driving a powered monitor's line input.",
+    audit: { verified: false, date: "2026-11-09", note: "Round 4 review incomplete: the documentation, field-practice, red-team reviewers did not run (usage limit); power raised issues, fixed 2026-11-09." },
     wiring: [
       { fromPin: 1, toPin: 2, desc: "NL4 1+ to XLR3 pin 2 (+ Hot)" },
       { fromPin: 2, toPin: 1, desc: "NL4 1\u2212 to XLR3 pin 1 (Speaker Return)" },
@@ -1566,6 +1621,7 @@ const STANDARD_BUILDS = [
   {
     from: "speakon", to: "trs", status: "standard", title: "Speakon NL4 to 1/4\" TS \u2014 Passive Speaker Only",
     use: "Passive speaker cable adapter \u2014 amp Speakon output to a passive speaker with 1/4\" jack input (older PA cabinets and guitar-style speakers). NOT for powered monitors.",
+    audit: { verified: false, date: "2026-11-09", note: "Round 4 review incomplete: the documentation, field-practice, red-team reviewers did not run (usage limit); power raised issues, fixed 2026-11-09." },
     wiring: [
       { fromPin: 1, toPin: 1, desc: "NL4 1+ to Tip \u2014 Speaker +" },
       { fromPin: 2, toPin: 3, desc: "NL4 1\u2212 to Sleeve \u2014 Speaker Return" },
@@ -1604,6 +1660,7 @@ const STANDARD_BUILDS = [
   {
     from: "ts", to: "ts", status: "standard", title: "TS Straight-Through Patch Cable",
     use: "Unbalanced audio patch cable or instrument (guitar) cable",
+    audit: { verified: true, date: "2026-11-09", note: "Round 2: documentation, power, circuit, field-practice and red-team reviewers all agreed with this build against an opened source." },
     wiring: [
       { fromPin: 1, toPin: 1, desc: "Tip to Tip \u2014 Signal" },
       { fromPin: 2, toPin: 2, desc: "Sleeve to Sleeve \u2014 Ground" },
@@ -1616,6 +1673,7 @@ const STANDARD_BUILDS = [
   {
     from: "ts", to: "xlr3", status: "standard", title: "TS to XLR3 \u2014 Unbalanced Audio",
     use: "Guitar/keyboard to mixer XLR input. Use a proper DI box for long runs or HIGH-impedance passive instrument pickups.",
+    audit: { verified: true, date: "2026-11-09", note: "Round 2: documentation, power, circuit, field-practice and red-team reviewers all agreed with this build against an opened source; the round 3 power pass agreed too. Sentences an agreeing reviewer suggested were added afterwards." },
     wiring: [
       { fromPin: 1, toPin: 2, desc: "Tip to Hot (+) \u2014 Signal" },
       { fromPin: 2, toPin: 1, desc: "Sleeve to Ground" },
@@ -1630,6 +1688,7 @@ const STANDARD_BUILDS = [
   {
     from: "ts", to: "rj45", status: "standard", title: "TS to RJ45 \u2014 Unbalanced Audio over Cat5 (StudioHub+)",
     use: "Single unbalanced audio channel over Cat5, using the StudioHub+ ADAPT-RCA unbalanced convention (StudioHub sells no 1/4\" TS adapter; this is the RCA layout on a TS plug). Signal and ground share a twisted pair to preserve EMI rejection.",
+    audit: { verified: true, date: "2026-11-09", note: "Round 2: documentation, power, circuit, field-practice and red-team reviewers all agreed with this build against an opened source; the round 3 power pass agreed too. Sentences an agreeing reviewer suggested were added afterwards." },
     wiring: [
       { fromPin: 1, toPin: 1, desc: "Tip (Signal) to RJ45 pin 1 (Wht/Org)" },
       { fromPin: 2, toPin: 2, desc: "Sleeve (Ground) to RJ45 pin 2 (Orange)" },
@@ -1652,6 +1711,7 @@ const STANDARD_BUILDS = [
   {
     from: "ts", to: "mini_trs", status: "standard", title: "TS to 3.5mm \u2014 1/4\" Mono Out to a 3.5mm Stereo Input (Left Only)",
     use: "Adapting a 1/4\" mono OUTPUT to a 3.5mm stereo LINE/AUX INPUT (recorder, camera, IEM transmitter). Not for a phone or laptop headset jack \u2014 those are outputs.",
+    audit: { verified: false, date: "2026-11-09", note: "Round 4: power, red-team reviewers raised issues; fixed 2026-11-09 (speaker-output and camera MIC-mode cautions) but not yet re-reviewed by all five angles." },
     wiring: [
       { fromPin: 1, toPin: 1, desc: "Tip to Tip \u2014 Signal" },
       { fromPin: 2, toPin: 3, desc: "Sleeve to Sleeve \u2014 Ground" },
@@ -1670,6 +1730,7 @@ const STANDARD_BUILDS = [
   {
     from: "mini_trs", to: "mini_trs", status: "standard", title: "3.5mm TRS Straight-Through",
     use: "Headphone extension or aux cable. Can carry either stereo unbalanced (T=L, R=R) or balanced mono (T=Hot, R=Cold) \u2014 determined by source equipment, not the connector.",
+    audit: { verified: true, date: "2026-11-09", note: "Round 1: documentation, power, circuit, field-practice and red-team reviewers all agreed with this build against an opened source." },
     wiring: [
       { fromPin: 1, toPin: 1, desc: "Tip to Tip \u2014 Left / Hot" },
       { fromPin: 2, toPin: 2, desc: "Ring to Ring \u2014 Right / Cold" },
@@ -1682,6 +1743,7 @@ const STANDARD_BUILDS = [
   {
     from: "mini_trs", to: "xlr3", status: "partial", title: "3.5mm TRS to XLR3 \u2014 Phone / IFB Receiver to Balanced Input (Left Channel)",
     use: "Phone, laptop or IFB receiver headphone output into a mixer or recorder\u2019s balanced XLR3 input. Takes the LEFT channel; Right is dropped.",
+    audit: { verified: true, date: "2026-11-09", note: "Round 2: documentation, power, circuit, field-practice and red-team reviewers all agreed with this build against an opened source; the round 3 power pass agreed too. Sentences an agreeing reviewer suggested were added afterwards." },
     wiring: [
       { fromPin: 1, toPin: 2, desc: "Tip (Left) to Hot (+)" },
       { fromPin: 3, toPin: 1, desc: "Sleeve (Ground) to Ground (pin 1)" },
@@ -1701,6 +1763,7 @@ const STANDARD_BUILDS = [
   {
     from: "mini_trs", to: "xlr5", status: "standard", title: "3.5mm TRS to XLR5 \u2014 Intercom Listen-Only",
     use: "Connect a consumer headphone to a Clear-Com beltpack for listen-only monitoring.",
+    audit: { verified: true, date: "2026-11-09", note: "Round 2: documentation, power, circuit, field-practice and red-team reviewers all agreed with this build against an opened source; the round 3 power pass agreed too." },
     wiring: [
       { fromPin: 1, toPin: 4, desc: "Tip (Left +) to XLR5 pin 4 (Left Earphone +)" },
       { fromPin: 2, toPin: 5, desc: "Ring (Right +) to XLR5 pin 5 (Right Earphone +)" },
@@ -1720,6 +1783,7 @@ const STANDARD_BUILDS = [
   {
     from: "mini_trs", to: "xlr4", status: "partial", title: "3.5mm TRS to XLR4 \u2014 Consumer Headphones to Intercom",
     use: "Plug 3.5mm TRS headphones into an XLR4 intercom beltpack for listen-only monitoring. No mic \u2014 TRS has no mic circuit.",
+    audit: { verified: true, date: "2026-11-09", note: "Round 2: documentation, power, circuit, field-practice and red-team reviewers all agreed with this build against an opened source; the round 3 power pass agreed too. Sentences an agreeing reviewer suggested were added afterwards." },
     wiring: [
       { fromPin: 3, toPin: 3, desc: "Sleeve to Earphone Return (pin 3)" },
       { fromPin: 1, toPin: 4, desc: "Tip (Left +) to Earphone Signal (pin 4)" },
@@ -1740,6 +1804,7 @@ const STANDARD_BUILDS = [
   {
     from: "mini_trs", to: "rj45", status: "standard", title: "3.5mm TRS to RJ45 \u2014 Stereo Audio over Cat5 (StudioHub+)",
     use: "Stereo 3.5mm SOURCE (phone/player feed, aux send) into StudioHub+ inputs over Cat5, using the StudioHub+ ADAPT-MINIUNBAL layout. One stereo feed per Cat5.",
+    audit: { verified: false, date: "2026-11-09", note: "Round 4: field-practice reviewer raised issues; fixed 2026-11-09 (reverse-direction caution matched to StudioHub+'s own output-type rule) but not yet re-reviewed by all five angles." },
     wiring: [
       { fromPin: 1, toPin: 1, desc: "Tip (Left Audio) to RJ45 pin 1 (Wht/Org)" },
       { fromPin: 3, toPin: 2, desc: "Sleeve (Ground) to RJ45 pin 2 (Orange) \u2014 Left return on the same twisted pair as Left" },
@@ -1766,6 +1831,7 @@ const STANDARD_BUILDS = [
   {
     from: "mini_trs", to: "ts", status: "standard", title: "3.5mm to TS \u2014 Headphone to 1/4\" Mono",
     use: "Adapting a 3.5mm stereo output to a 1/4\" mono input (amp, mixer, unbalanced insert).",
+    audit: { verified: true, date: "2026-11-09", note: "Round 1: documentation, power, circuit, field-practice and red-team reviewers all agreed with this build against an opened source." },
     wiring: [
       { fromPin: 1, toPin: 1, desc: "Tip to Tip \u2014 Signal (Left)" },
       { fromPin: 3, toPin: 2, desc: "Sleeve to Sleeve \u2014 Ground" },
@@ -1781,6 +1847,7 @@ const STANDARD_BUILDS = [
   {
     from: "mini_trrs", to: "mini_trrs", status: "standard", title: "3.5mm TRRS Straight-Through",
     use: "Headset extension cable with mic (CTIA: Apple/Android)",
+    audit: { verified: true, date: "2026-11-09", note: "Round 2: documentation, power, circuit, field-practice and red-team reviewers all agreed with this build against an opened source; the round 3 power pass agreed too." },
     wiring: [
       { fromPin: 1, toPin: 1, desc: "Tip to Tip \u2014 Left Audio" },
       { fromPin: 2, toPin: 2, desc: "Ring 1 to Ring 1 \u2014 Right Audio" },
@@ -1795,6 +1862,7 @@ const STANDARD_BUILDS = [
   {
     from: "mini_trrs", to: "xlr5", status: "standard", title: "3.5mm TRRS to XLR5 \u2014 Intercom 2-Way",
     use: "Connect a CTIA TRRS headset (iPhone, modern Android) to a 5-pin beltpack for 2-way intercom. Talk works only on packs that supply electret bias (not the RTS BP-325 \u2014 listen-only there).",
+    audit: { verified: false, date: "2026-11-09", note: "Round 4: field-practice reviewer raised issues; fixed 2026-11-09 (BP-325 claim restated as the manual and Clear-Com actually say it; RS-700 no longer listed as a usable bias pack for a 5-pin cable; pack check widened to pin 3 = common; ROAMEO TR-1800 excluded; \u2026) but not yet re-reviewed by all five angles." },
     wiring: [
       { fromPin: 1, toPin: 4, desc: "Tip (Left Audio) to XLR5 pin 4 (Left Earphone +)" },
       { fromPin: 2, toPin: 5, desc: "Ring 1 (Right Audio) to XLR5 pin 5 (Right Earphone +)" },
@@ -1822,6 +1890,7 @@ const STANDARD_BUILDS = [
   {
     from: "mini_trrs", to: "xlr4", status: "standard", title: "3.5mm TRRS to XLR4 \u2014 CTIA Headset to Intercom",
     use: "Connect a CTIA TRRS headset (iPhone, modern Android) to a 4-pin intercom beltpack. 2-way on packs that supply electret bias and have no DC on the headset jack (see notes).",
+    audit: { verified: true, date: "2026-11-09", note: "Round 2: documentation, power, circuit, field-practice and red-team reviewers all agreed with this build against an opened source; the round 3 power pass agreed too. Sentences an agreeing reviewer suggested were added afterwards." },
     wiring: [
       { fromPin: 4, toPin: 2, desc: "Sleeve (Mic CTIA) to Mic Signal (pin 2)" },
       { fromPin: 3, toPin: 1, desc: "Ring 2 (Ground CTIA) to Mic Ground (pin 1)" },
@@ -1845,6 +1914,7 @@ const STANDARD_BUILDS = [
   {
     from: "mini_trrs", to: "rj45", status: "field_hack", title: "3.5mm TRRS to RJ45 \u2014 Headset over Cat5 (OHIS pinout)",
     use: "Run a CTIA TRRS headset (stereo audio + mic) over Cat5 using the OHIS (Open Headset Interconnect Standard) RJ45 pin table. Both ends of the run must use this build; the device end is a TRRS plug, the headset end a TRRS jack.",
+    audit: { verified: true, date: "2026-11-09", note: "Round 4: documentation, power, circuit, field-practice and red-team reviewers all agreed with this build against an opened source." },
     wiring: [
       { fromPin: 1, toPin: 4, desc: "Tip (Left Audio) to RJ45 pin 4 (Blue) \u2014 OHIS Headphone Left" },
       { fromPin: 3, toPin: 5, desc: "Ring 2 (Ground CTIA) to RJ45 pin 5 (Wht/Blue) \u2014 OHIS Headphone Ground, same pair as Left" },
@@ -1868,6 +1938,7 @@ const STANDARD_BUILDS = [
   {
     from: "rca", to: "rca", status: "standard", title: "RCA Straight-Through",
     use: "Consumer audio, composite video, or S/PDIF digital. For composite video or S/PDIF, use true 75\u03a9 coax (Belden 1505A / 1694A) with 75\u03a9 RCA connectors \u2014 most consumer RCA cables are not spec-compliant 75\u03a9.",
+    audit: { verified: true, date: "2026-11-09", note: "Round 1: documentation, power, circuit, field-practice and red-team reviewers all agreed with this build against an opened source." },
     wiring: [
       { fromPin: 1, toPin: 1, desc: "Center to Center \u2014 Signal" },
       { fromPin: 2, toPin: 2, desc: "Shell to Shell \u2014 Ground" },
@@ -1879,6 +1950,7 @@ const STANDARD_BUILDS = [
   {
     from: "rca", to: "xlr3", status: "standard", title: "RCA to XLR3 \u2014 Consumer to Pro",
     use: "Connecting consumer gear (laptop DAC, phone, DVD player) to a pro mixer, snake, or interface. Level mismatch is ~12 dB low \u2014 the pro input's gain will make it up.",
+    audit: { verified: true, date: "2026-11-09", note: "Round 2: documentation, power, circuit, field-practice and red-team reviewers all agreed with this build against an opened source; the round 3 power pass agreed too. Sentences an agreeing reviewer suggested were added afterwards." },
     wiring: [
       { fromPin: 1, toPin: 2, desc: "Center to Hot (+) \u2014 Signal" },
       { fromPin: 2, toPin: 1, desc: "Shell to Ground" },
@@ -1894,6 +1966,7 @@ const STANDARD_BUILDS = [
   {
     from: "rca", to: "ts", status: "standard", title: "RCA to TS \u2014 Consumer to 1/4\"",
     use: "Connecting consumer RCA output to a 1/4\" unbalanced input",
+    audit: { verified: true, date: "2026-11-09", note: "Round 1: documentation, power, circuit, field-practice and red-team reviewers all agreed with this build against an opened source." },
     wiring: [
       { fromPin: 1, toPin: 1, desc: "Center to Tip \u2014 Signal" },
       { fromPin: 2, toPin: 2, desc: "Shell to Sleeve \u2014 Ground" },
@@ -1905,6 +1978,7 @@ const STANDARD_BUILDS = [
   {
     from: "rca", to: "trs", status: "standard", title: "RCA to TRS \u2014 Consumer to Balanced",
     use: "Consumer RCA source to a balanced TRS input (mixer, interface, active speaker). Not for a console INSERT jack (a TRS there puts the insert send on Tip and grounds the return).",
+    audit: { verified: false, date: "2026-11-09", note: "Round 4: red-team reviewer raised issues; fixed 2026-11-09 (use: INSERT-jack caution) but not yet re-reviewed by all five angles." },
     wiring: [
       { fromPin: 1, toPin: 1, desc: "Center to Tip \u2014 Signal" },
       { fromPin: 2, toPin: 3, desc: "Shell to Sleeve \u2014 Ground" },
@@ -1921,6 +1995,7 @@ const STANDARD_BUILDS = [
   {
     from: "trs", to: "rca", status: "partial", title: "TRS to RCA \u2014 Balanced to Consumer",
     use: "Balanced TRS output to a consumer RCA input (amp, receiver, recording device). Requires level matching \u2014 a bare adapter will overdrive consumer inputs.",
+    audit: { verified: true, date: "2026-11-09", note: "Round 2: documentation, power, circuit, field-practice and red-team reviewers all agreed with this build against an opened source." },
     wiring: [
       { fromPin: 1, toPin: 1, desc: "Tip to Center \u2014 Signal" },
       { fromPin: 3, toPin: 2, desc: "Sleeve to Shell \u2014 Ground" },
@@ -1941,6 +2016,7 @@ const STANDARD_BUILDS = [
   {
     from: "powercon", to: "powercon", status: "standard", title: "PowerCON Daisy-Chain Jumper (OUT to IN)",
     use: "PowerCON jumper cable for daisy-chaining powered lighting, speakers, or distro. Cable has a BLUE NAC3FCA (power-in type, into the downstream device's IN chassis) on one end and a GREY NAC3FCB (power-out type, into the upstream device's OUT chassis) on the other. Neutrik calls both cable connectors \u2018female\u2019; the chassis parts are male. NEVER build grey\u2013grey (OUT-to-OUT): it parallels two live mains sources.",
+    audit: { verified: false, date: "2026-11-09", note: "Round 4 review incomplete: the documentation, field-practice, red-team reviewers did not run (usage limit); power, circuit agreed." },
     wiring: [
       { fromPin: 1, toPin: 1, desc: "Line (L) to Line \u2014 Brown (IEC) / Black (NEC)" },
       { fromPin: 2, toPin: 2, desc: "Neutral (N) to Neutral \u2014 Blue (IEC) / White (NEC)" },
@@ -1957,6 +2033,7 @@ const STANDARD_BUILDS = [
     from: "de9", to: "rj45", status: "standard", title: "Adam KP Black \u2014 Keypanel to Breakout",
     use: "Adam intercom keypanel data + matrix audio. Black shell adapter.",
     tag: "shell",
+    audit: { verified: true, date: "2026-11-09", note: "Round 2: documentation, power, circuit, field-practice and red-team reviewers all agreed with this build against an opened source; the round 3 power pass agreed too." },
     wiring: [
       { fromPin: 1, toPin: 1, desc: "DE-9 pin 1 (Data +) \u2192 RJ45 pin 1 (Wht/Org) \u2014 DATA +" },
       { fromPin: 2, toPin: 2, desc: "DE-9 pin 2 (Data \u2212) \u2192 RJ45 pin 2 (Orange) \u2014 DATA \u2212" },
@@ -1985,6 +2062,7 @@ const STANDARD_BUILDS = [
     from: "de9", to: "rj45", status: "standard", title: "Adam KP Yellow \u2014 CAM / IFB",
     use: "Adam intercom camera IFB adapter. Yellow shell. Matrix audio only, no data.",
     tag: "shell",
+    audit: { verified: false, date: "2026-11-09", note: "Round 4: documentation, field-practice, red-team reviewers raised issues; fixed 2026-11-09 (XCP-48 mismatch stated correctly (talk polarity, not data); mixed-convention consequence; face/solder sentence) but not yet re-reviewed by all five angles." },
     wiring: [
       { fromPin: 8, toPin: 3, desc: "DE-9 pin 8 (Audio in from matrix +) \u2192 RJ45 pin 3 (Wht/Grn) \u2014 FROM MTX + (listen)" },
       { fromPin: 5, toPin: 4, desc: "DE-9 pin 5 (Audio out to matrix \u2212) \u2192 RJ45 pin 4 (Blue) \u2014 TO MTX \u2212 (talk)" },
@@ -2017,6 +2095,7 @@ const STANDARD_BUILDS = [
     from: "de9", to: "rj45", status: "standard", title: "Serial Data Grey \u2014 RS-422 (Sony 9-pin) over Cat5",
     use: "Grey shell: carries the two RS-422 differential pairs of a Sony/SMPTE-207M-style 9-pin port (Kalypso: 2 RX\u2212, 7 RX+, 3 TX+, 8 TX\u2212) over Cat5. NOT usable for RS-232 \u2014 no signal ground (DE-9 pin 5) is carried.",
     tag: "shell",
+    audit: { verified: false, date: "2026-11-09", note: "Round 4: power, red-team reviewers raised issues; fixed 2026-11-09 (Kalypso Diagnostic-port mis-plug; straight Cat5 only) but not yet re-reviewed by all five angles." },
     wiring: [
       { fromPin: 8, toPin: 6, desc: "DE-9 pin 8 (TX\u2212) \u2192 RJ45 pin 6 (Green) \u2014 TX pair on the green pair" },
       { fromPin: 7, toPin: 5, desc: "DE-9 pin 7 (RX+) \u2192 RJ45 pin 5 (Wht/Blue) \u2014 RX pair on the blue pair" },
@@ -2046,6 +2125,7 @@ const STANDARD_BUILDS = [
     from: "de9", to: "rj45", status: "field_hack", title: "RS-422 \u2018Null\u2019 Shell \u2014 TSI to Kalypso (as found: NOT a working null)",
     use: "Recorded as an RS-422 null/crossover adapter, but as wired it is NOT a working null (see notes) \u2014 do not build it from this diagram; use the Kalypso's software RX/TX reversal or the pair-preserving map in the notes. TSI-1000 to Kalypso at the Kalypso end.",
     tag: "shell",
+    audit: { verified: false, date: "2026-11-09", note: "As recorded this shell does not do its stated job (round 4 circuit, documentation, field-practice and red-team reviewers); wiring left as found and retitled \u2014 see notes." },
     wiring: [
       { fromPin: 8, toPin: 6, desc: "DE-9 pin 8 \u2192 RJ45 pin 6 (Green)" },
       { fromPin: 7, toPin: 5, desc: "DE-9 pin 7 \u2192 RJ45 pin 5 (Wht/Blue)" },
@@ -2075,6 +2155,7 @@ const STANDARD_BUILDS = [
     from: "de9", to: "rj45", status: "field_hack", title: "RS-232 Straight Shell \u2014 TSI to Kalypso (as found: no signal ground)",
     use: "Recorded as an RS-232 straight adapter, but as wired it carries no RS-232 signal ground (DE-9 pin 5) \u2014 do not build it from this diagram until pin 5 is carried (see notes). TSI-1000 to Kalypso at the Kalypso end.",
     tag: "shell",
+    audit: { verified: false, date: "2026-11-09", note: "As recorded this shell does not do its stated job (round 4 circuit, documentation and field-practice reviewers); wiring left as found and retitled \u2014 see notes." },
     wiring: [
       { fromPin: 1, toPin: 8, desc: "DE-9 pin 1 \u2192 RJ45 pin 8 (Brown) \u2014 labelled DCD; on a Sony-style 9-pin port pin 1 is CHASSIS GROUND, which would make this the ground wire" },
       { fromPin: 2, toPin: 4, desc: "DE-9 pin 2 \u2192 RJ45 pin 4 (Blue) \u2014 RxD" },
@@ -2108,6 +2189,7 @@ const STANDARD_BUILDS = [
     from: "de9", to: "rj45", status: "field_hack", title: "RS-232 Null Shell \u2014 TSI to Kalypso (as found: no signal ground)",
     use: "Recorded as an RS-232 null/crossover adapter, but as wired it carries no RS-232 signal ground (DE-9 pin 5) \u2014 do not build it from this diagram until pin 5 is carried (see notes). TSI-1000 to Kalypso at the Kalypso end.",
     tag: "shell",
+    audit: { verified: false, date: "2026-11-09", note: "As recorded this shell does not do its stated job (round 4 circuit, documentation and field-practice reviewers); wiring left as found and retitled \u2014 see notes." },
     wiring: [
       { fromPin: 1, toPin: 8, desc: "DE-9 pin 1 \u2192 RJ45 pin 8 (Brown) \u2014 labelled DCD; on a Sony-style 9-pin port pin 1 is CHASSIS GROUND, which would make this the ground wire" },
       { fromPin: 2, toPin: 5, desc: "DE-9 pin 2 \u2192 RJ45 pin 5 (Wht/Blue) \u2014 crossed" },
@@ -2141,6 +2223,7 @@ const STANDARD_BUILDS = [
     from: "rj12", to: "rj45", status: "field_hack", title: "Cronus RJ12 to RJ45",
     use: "RTS Cronus matrix intercom RJ-12 port (keypanel RS-485 data + two balanced audio pairs) to RJ45 structured cabling. Not a timing or tally adapter.",
     tag: "shell",
+    audit: { verified: false, date: "2026-11-09", note: "Round 4 field-practice reviewer: Pair map inter-works with no documented far end. Left as recorded pending Jadon's decision (open question Q4)." },
     wiring: [
       { fromPin: 1, toPin: 3, desc: "RJ12 pin 1 (Data \u2212) \u2192 RJ45 pin 3 (Wht/Grn)" },
       { fromPin: 2, toPin: 5, desc: "RJ12 pin 2 (Audio Out + = FROM matrix) \u2192 RJ45 pin 5 (Wht/Blue)" },
