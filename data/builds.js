@@ -260,18 +260,22 @@ const STANDARD_BUILDS = [
   },
 
   {
-    from: "xlr3", to: "mini_trs", status: "standard", title: "XLR3 to 3.5mm TRS \u2014 Balanced to Headphone",
-    use: "Pro balanced XLR output to a 3.5mm input (field recorder, IFB receiver, phone).",
+    from: "xlr3", to: "mini_trs", status: "partial", title: "XLR3 to 3.5mm TRS \u2014 Mono Feed to a Stereo Input (Both Channels)",
+    use: "Balanced XLR3 output into a 3.5mm STEREO (unbalanced) input \u2014 phone, laptop, consumer recorder, IFB/IEM transmitter aux in, camera. The one mono signal lands on both Left and Right.",
     wiring: [
-      { fromPin: 2, toPin: 1, desc: "Hot (+) to Tip" },
-      { fromPin: 3, toPin: 2, desc: "Cold (\u2212) to Ring" },
+      { fromPin: 2, toPin: 1, desc: "Hot (+) to Tip (Left)" },
+      { fromPin: 2, toPin: 2, desc: "Hot (+) ALSO to Ring (Right) \u2014 same signal to both channels" },
       { fromPin: 1, toPin: 3, desc: "Ground to Sleeve" },
     ],
-    notes: "Ring carries Cold (\u2212) signal. If the destination device shorts Ring to Sleeve, tie XLR pin 3 to pin 1 for clean mono unbalanced.",
+    deadEnds: [{ connector: "from", pin: 3, desc: "XLR pin 3 (Cold \u2212) \u2014 leave floating (Rane Note 151: never short an active balanced output\u2019s cold leg to ground)" }],
+    notes: "A 3.5mm jack on consumer gear is a stereo UNBALANCED input: Tip = Left, Ring = Right, Sleeve = ground. The old PinRef wiring put Hot on Tip and Cold on Ring, which feeds the Right channel an inverted copy of the Left \u2014 the two channels are out of phase, there is no centre image, and a mono sum of the recording cancels to nothing. Feeding one source to two high-impedance INPUTS in parallel is fine (it is two OUTPUTS you must never tie together). Only if the device really has a balanced 3.5mm input (rare; check the manual) wire it T=Hot, R=Cold, S=Ground instead. Expect a ~12 dB level mismatch into consumer gear (+4 dBu vs \u221210 dBV) \u2014 turn the source down or pad.",
     sources: [
+      { label: "Rane Note 151 \u2014 Grounding & Shielding (Fig. 5: float cold on active balanced outputs; tie cold to ground at a balanced input fed unbalanced)", url: "https://www.ranecommercial.com/legacy/note151.html" },
+      { label: "Rane Note 109 \u2014 Why Not Wye? (never tie two outputs together; sum L+R with resistors)", url: "https://www.ranecommercial.com/legacy/note109.html" },
       { label: "Rane Note 110 \u2014 Sound System Interconnection", url: "https://www.ranecommercial.com/legacy/note110.html" },
     ],
   },
+
   {
     from: "xlr3", to: "ts", status: "standard", title: "XLR3 to TS \u2014 Balanced to Unbalanced",
     use: "Balanced XLR output to a 1/4\u201d unbalanced input (guitar amp, DI box, unbalanced insert).",
@@ -1151,7 +1155,7 @@ const STANDARD_BUILDS = [
       { fromPin: 2, toPin: 1, desc: "Sleeve to Ground" },
       { fromPin: 2, toPin: 3, desc: "Sleeve also tied to XLR3 pin 3 (Cold) \u2014 unbalanced termination at destination per Rane Note 151 Fig 5e" },
     ],
-    notes: "Per Rane Note 151 Figure 5 (column 2, row e \u2014 Unbalanced Output \u2192 Balanced Input, off-the-shelf-cable wiring), tie destination XLR3 pin 3 (Cold) to pin 1 (Ground) at the XLR3 connector by jumpering both to the TS Sleeve. This gives the balanced input's diff-amp a proper ground reference. For long runs or low-impedance instrument pickups, a passive DI box is still preferred over a bare adapter to avoid ground loops.",
+    notes: "Per Rane Note 151 Figure 5 (column 2, row e \u2014 Unbalanced Output \u2192 Balanced Input, off-the-shelf-cable wiring), tie destination XLR3 pin 3 (Cold) to pin 1 (Ground) at the XLR3 connector by jumpering both to the TS Sleeve. This gives the balanced input's diff-amp a proper ground reference. For long runs or low-impedance instrument pickups, a passive DI box is still preferred over a bare adapter to avoid ground loops. Turn 48 V phantom OFF on that input: with pin 3 grounded, phantom pushes DC through pin 2 into the instrument or keyboard output.",
     sources: [
       { label: "Rane Note 151 \u2014 Grounding & Shielding (Figure 5e: Unbalanced\u2192Balanced)", url: "https://www.ranecommercial.com/legacy/note151.html" },
       { label: "Rane Note 110 \u2014 Sound System Interconnection", url: "https://www.ranecommercial.com/legacy/note110.html" },
@@ -1198,18 +1202,22 @@ const STANDARD_BUILDS = [
     ],
   },
   {
-    from: "mini_trs", to: "xlr3", status: "standard", title: "3.5mm TRS to XLR3 \u2014 IFB / Phone Feed",
-    use: "Phone or laptop output to mixer. Stereo source is summed to mono at the XLR input.",
+    from: "mini_trs", to: "xlr3", status: "partial", title: "3.5mm TRS to XLR3 \u2014 Phone / IFB Receiver to Balanced Input (Left Channel)",
+    use: "Phone, laptop or IFB receiver headphone output into a mixer or recorder\u2019s balanced XLR3 input. Takes the LEFT channel; Right is dropped.",
     wiring: [
-      { fromPin: 1, toPin: 2, desc: "Tip to Hot (+) \u2014 Left / Signal" },
-      { fromPin: 2, toPin: 3, desc: "Ring to Cold (\u2212) \u2014 Right / Return" },
-      { fromPin: 3, toPin: 1, desc: "Sleeve to Ground" },
+      { fromPin: 1, toPin: 2, desc: "Tip (Left) to Hot (+)" },
+      { fromPin: 3, toPin: 1, desc: "Sleeve (Ground) to Ground (pin 1)" },
+      { fromPin: 3, toPin: 3, desc: "Sleeve (Ground) ALSO to Cold (pin 3) \u2014 unbalanced source into a balanced input: tie cold to ground at the XLR3 (Rane Note 151 Fig. 5e)" },
     ],
-    notes: "Stereo source is summed to mono at the balanced input. For stereo, use two separate XLR cables with a 3.5mm Y-split to individually carry L and R.",
+    deadEnds: [{ connector: "from", pin: 2, desc: "Ring (Right) \u2014 leave floating. Do NOT tie it to Tip (that shorts the two headphone-amp outputs together)" }],
+    notes: "A balanced input amplifies the DIFFERENCE between pins 2 and 3. The old PinRef wiring put Left on pin 2 and Right on pin 3, so anything panned centre (voices, the whole IFB programme) cancelled out and only the stereo difference got through. Tying Ring to Tip is not the fix either \u2014 that shorts the device\u2019s two output amplifiers together (Rane Note 109). To get a true L+R mono, use a resistive summing cable or box (Rane Note 109 Fig. 2), or take two XLR3s via a Y-split. Only if the 3.5mm source is a BALANCED mono output (rare; check the manual) wire it T\u2192pin 2, R\u2192pin 3, S\u2192pin 1 instead. Consumer level is ~12 dB below pro line \u2014 add gain at the input.",
     sources: [
+      { label: "Rane Note 151 \u2014 Grounding & Shielding (Fig. 5: float cold on active balanced outputs; tie cold to ground at a balanced input fed unbalanced)", url: "https://www.ranecommercial.com/legacy/note151.html" },
+      { label: "Rane Note 109 \u2014 Why Not Wye? (never tie two outputs together; sum L+R with resistors)", url: "https://www.ranecommercial.com/legacy/note109.html" },
       { label: "Rane Note 110 \u2014 Sound System Interconnection", url: "https://www.ranecommercial.com/legacy/note110.html" },
     ],
   },
+
   {
     from: "mini_trs", to: "xlr5", status: "standard", title: "3.5mm TRS to XLR5 \u2014 Intercom Listen-Only",
     use: "Connect a consumer headphone to a Clear-Com beltpack for listen-only monitoring.",
@@ -1367,9 +1375,9 @@ const STANDARD_BUILDS = [
     wiring: [
       { fromPin: 1, toPin: 2, desc: "Center to Hot (+) \u2014 Signal" },
       { fromPin: 2, toPin: 1, desc: "Shell to Ground" },
+      { fromPin: 2, toPin: 3, desc: "Shell ALSO to XLR3 pin 3 (Cold) \u2014 unbalanced source into a balanced input: tie cold to ground at the XLR3 (Rane Note 151 Fig. 5e)" },
     ],
-    deadEnds: [{ connector: "to", pin: 3, desc: "XLR pin 3 (Cold) \u2014 jumper to pin 1 for unbalanced termination" }],
-    notes: "Consumer \u221210 dBV to pro +4 dBu is ~12 dB low \u2014 push input trim up. Passive adapter is usually fine (pro mic preamps have plenty of gain headroom). If you hit a ground loop crossing AC mains, use a transformer DI (Jensen Iso-Max, Radial ProAV) instead of a passive adapter.",
+    notes: "Consumer \u221210 dBV to pro +4 dBu is ~12 dB low \u2014 push input trim up. Keep 48 V phantom OFF on that input (pin 3 is grounded here and the consumer output is not built for DC). Passive adapter is usually fine (pro mic preamps have plenty of gain headroom). If you hit a ground loop crossing AC mains, use a transformer DI (Jensen Iso-Max, Radial ProAV) instead of a passive adapter.",
     sources: [
       { label: "Rane Note 110 \u2014 Sound System Interconnection", url: "https://www.ranecommercial.com/legacy/note110.html" },
       { label: "Benchmark \u2014 Balanced vs. Unbalanced", url: "https://benchmarkmedia.com/blogs/application_notes/balanced-vs-unbalanced-analog-interfaces" },
@@ -1392,9 +1400,9 @@ const STANDARD_BUILDS = [
     wiring: [
       { fromPin: 1, toPin: 1, desc: "Center to Tip \u2014 Signal" },
       { fromPin: 2, toPin: 3, desc: "Shell to Sleeve \u2014 Ground" },
+      { fromPin: 2, toPin: 2, desc: "Shell ALSO to Ring (Cold \u2212) \u2014 unbalanced source into a balanced input: tie cold to ground at the TRS (Rane Note 151 Fig. 5e)" },
     ],
-    deadEnds: [{ connector: "to", pin: 2, desc: "TRS Ring (Cold \u2212) \u2014 tie to Sleeve for unbalanced termination" }],
-    notes: "Tie TRS Ring to Sleeve at the TRS end for proper unbalanced operation. ~12 dB level difference expected (consumer \u221210 dBV to pro +4 dBu); the balanced input's gain makes it up.",
+    notes: "Ring is tied to Sleeve at the TRS end for proper unbalanced operation. ~12 dB level difference expected (consumer \u221210 dBV to pro +4 dBu); the balanced input's gain makes it up.",
     sources: [
       { label: "Rane Note 110 \u2014 Sound System Interconnection", url: "https://www.ranecommercial.com/legacy/note110.html" },
     ],
