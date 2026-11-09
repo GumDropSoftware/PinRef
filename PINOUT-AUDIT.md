@@ -2,7 +2,7 @@
 
 Working doc for the 1-by-1 source verification pass. Update status + `Last verified` as we go.
 
-**Latest: Pass 2 circuit audit, 2026-11-09 — see Part B.** 7 builds had wrong wiring (4 seriously), 19 had wrong notes, 4 builds added net (83 total). Open questions for Jadon at the end of the Pass 2 section.
+**Latest: Pass 3 five-angle review (four rounds + final Fable audit), 2026-11-09 — see Part B.** 83 builds: 26 verified, 57 unverified (yellow banner in the app, reason on each). The final audit found no wrong pin map (rig shells #80–#83 stay as found and unverified) but did find the RJ45/RJ12 drawings mirrored in the default view (fixed). Open questions Q1–Q5 wait on Jadon. Not pushed.
 
 **Legend:** ✅ verified · ⚠ needs review · ❌ issue found · 🚩 flagged for change
 
@@ -146,7 +146,115 @@ Sources also merged from `data/signal-info.js` in the UI (both connector-level a
 
 ## Part B — Builds
 
-> **Read this first.** The Pass 1 table below (April–May 2026) checked that pin *labels* matched the cited sources. It did **not** check that each cable does the job its title promises. Pass 2 (below) did that circuit check. Where the two disagree, Pass 2 wins.
+> **Read this first.** The Pass 1 table below (April–May 2026) checked that pin *labels* matched the cited sources. It did **not** check that each cable does the job its title promises. Pass 2 did that circuit check, and Pass 3 (directly below) put every build through five independent reviews. Where they disagree, the later pass wins.
+
+### Pass 3 — Five-angle review, four rounds · 2026-11-09 (Fable rounds 1–4, Opus close-out, for Jadon via Sawyer)
+
+Jadon's brief: treat every build as if a wrong pin destroys gear. Each connector cluster got five independent reviewers: **Documentation** (pin for pin against a primary source, face vs solder side, male/female mirroring), **Power and damage** (every voltage that can appear, where it lands, what shorts), **Circuit** (direction, polarity, grounds, balanced↔unbalanced, pairing), **Field practice** (what manufacturers sell and engineers build) and **Red team** (how it kills gear or gets built wrong at 2 a.m.). Each saw only the build data, the connector pinouts and the list of opened sources, never each other's reasoning. The full per-build record (every disagreement from every angle, the fix and its source, and what was not applied and why) is `research/five-angle-review-2026-11-09.md`. The five open questions are written up in `research/open-questions-2026-11-09.md`.
+
+**Result: 83 builds. 26 verified, 57 unverified.** After round 4, 46 met the rule. The final Fable audit then found gaps in 20 of them. Those were fixed and are now unverified, because the new text has not had a five-angle review. Nothing has been pushed or deployed; Jadon decides.
+
+**Round 1** covered all 83 builds (55 agents). 17 were cleared by all five angles; 66 drew a disagreement (19 dangerous, 56 major and 95 minor angle-verdicts). Wiring changed on the builds in the table below; 76 had notes, labels, dead ends or sources changed.
+**Round 2** gave fresh agents every build that changed or drew a disagreement (76 builds, 50 agents). 25 were cleared; 51 drew a disagreement (1 dangerous, 21 major, 96 minor). No wiring fault was found in the round-1 changes; 55 builds had notes tightened.
+**Round 3** was a power-and-damage plus red-team pass over the 70 builds that carry or can meet real voltage (20 agents). 65 agreed; 5 disagreed (#3, #9, #4, #29, #49), all over missing cautions; 44 builds had cautions added and 11 "meter it" sentences were replaced by the documented voltage (Jadon: sources, not meters).
+**Round 4** gave fresh agents, with all five angles, every build that drew any disagreement in rounds 2 or 3 (55 builds, 50 agents; 47 returned). 20 were cleared by all five; 31 still drew a disagreement (13 major, 45 minor, none dangerous); 4 (#54, #55, #56, #76, the speakON and powerCON cluster) are incomplete because their documentation, field-practice and red-team agents hit the Fable usage limit. The Opus close-out applied round 4's fixes, each citing a source a round 4 reviewer opened. No pin maps changed in round 4.
+
+#### What "verified" means
+
+A build is **verified** when all of these hold:
+- its last five-angle review (round 4 if it was re-reviewed there, otherwise round 2, otherwise round 1) had all **five** angles present and agreeing;
+- the round 3 power pass agreed, unless round 4 re-reviewed the build afterwards;
+- it cites at least one opened source with a URL;
+- nothing changed after that review except sentences an agreeing reviewer suggested.
+
+Anything else is **UNVERIFIED**. It shows the yellow "UNVERIFIED — no opened source confirms this build yet. Do not trust it with powered gear." banner and a ⚠ in the build list, followed by a note saying why. The Fable chat's `set_audit.py` only checked the angles that were present, which would have verified #54 and #76 on two angles; the stamp that was committed requires all five.
+
+Verified (26): #7, #11, #17, #24, #25, #26, #27, #29, #30, #33, #37, #38, #39, #40, #41, #42, #48, #49, #52, #57, #59, #61, #67, #70, #71, #75. #11, #37 and #40 are verified as "cannot be adapted with a passive cable". Seven of them (#7, #24, #25, #37, #48, #49, #59) carry sentences an agreeing reviewer suggested after their review.
+
+Unverified (57), by reason:
+- **Round 4 disagreed; fixed, not yet re-reviewed by all five angles (27):** #2, #4, #6, #8, #10, #12, #13, #14, #15, #16, #18, #19, #23, #28, #34, #35, #36, #44, #45, #47, #51, #60, #65, #68, #74, #78, #79.
+- **Round 4 incomplete (usage limit) (4):** #54, #55, #56, #76. Power and circuit agreed on #54 and #76; #55 and #56 drew power cautions, which were added.
+- **Corrected after review (2):** #31, #32. Their face/solder sentence sent a FEMALE D-sub to the app's SOLDER SIDE view. The app draws D-subs as the MALE face and its SOLDER SIDE view mirrors that, so it shows a male shell's cups; a female shell's cups match the FACE VIEW (`components/connectors/DSubConnector.jsx`; the toggle's own caption says the same). Found while applying round 4; round 4's reviewers had proposed copying the wrong sentence onto #44 and #45.
+- **As recorded the cable does not do its job (3):** #80 (an RS-422 "null" that ties TX− to TX− through a grey far end), and #81 and #82 (RS-232 with no signal ground). These are rig shells, so the wiring was left as found. They are retitled "as found", and their use text says not to build from the diagram.
+- **Waiting on Jadon (1):** #83, Cronus RJ12 to RJ45, open question Q4.
+- **Changed by the final audit (20):** #1, #3, #5, #9, #20, #21, #22, #43, #46, #50, #53, #58, #62, #63, #64, #66, #69, #72, #73, #77. Each had all five angles agree, and each now carries an audit-driven change listed under "Final Fable audit" below. #77's talk-pair polarity is also open question Q4.
+
+#### Wiring changed in Pass 3 (against the end of Pass 2)
+
+| # | Build | Was → now | Why | Source |
+|---|---|---|---|---|
+| 10 | XLR3 → BNC | "Not compatible" → LTC / unbalanced audio adapter, pin 2 → centre, pin 1 → shell, pin 3 floated | LTC timecode is an audio-band unbalanced signal, so this is an ordinary balanced-to-unbalanced adapter | Sound Devices 970 p.60 |
+| 18, 34, 36, 51 | XLR5/XLR4 ↔ RJ45 headset over Cat5 | Mic signal shared a pair with the earphone return → mic pair 1/2, left ear + return 3/6, right ear 5 with a second return conductor on 4; brown unused; status field_hack | Clear-Com: mic and earphone circuits on separate shielded pairs, never join the grounds | Clear-Com SF 158845384 / 158748532 (Q2) |
+| 39, 41 | BNC ↔ Triax (triax as coax) | BNC shell → outer only → shell → inner AND outer | The inner shield is the coax return (centre + inner = the 75 Ω line) | Wikipedia Triaxial cable; Sony HXCU-100 p.8; Canare 75 Ω triax |
+| 50 | XLR4 → TRS | Ring floated → Ring tied to Sleeve | Unbalanced earphone feed into a balanced input: tie cold at the destination | Rane 151 Fig 5e |
+| 65 | 3.5 mm TRS → RJ45 (StudioHub+) | Sleeve → RJ45 4 (StudioHub+ DC GND) → sleeve → 2 and 6 | StudioHub+'s own unbalanced adapter returns on the cold legs | StudioHub+ Adapter Pinout Guide (Q3) |
+| 70 | 3.5 mm TRRS → RJ45 | A one-off map with mic on 7 and ground on 2/6/8 → OHIS §3.2 | A published headset-over-8P8C standard exists; the old map put the mic on StudioHub+'s ±15 V pins | OHIS PDF §3.2 |
+| 56, 80–83 | status only | #56 field_hack → standard; #80–#83 standard → field_hack | Neutrik sells this exact speaker wiring (NA4LJX); the rig shells are unverified or non-working as recorded | Neutrik NA4LJX; Kalypso p.67–68; Q4 |
+
+#### Connector-level changes
+
+- **Triax**: the DC supply rides on the CENTRE conductor with the inner shield as return, and the outer shield is protective earth (Wikipedia Triaxial cable; Sony HXCU-100 p.8, 180 V DC). Before Pass 3 the labels put the supply on the outer shield.
+- **DE-9**: pinout variants added: RS-232 (default), Sony 9-pin RS-422 (Kalypso p.68), and RTS keypanel matrix (KP-32 data sheet; the variant now notes that the older KP98-7 table differs on pins 3/6/9). **DB25**: an RS-232 variant added (TI SNLA039). The build page still shows the default names; the Pinouts tab switches between variants.
+- **XLR3**: the Wikimedia XLR pinouts face diagram is now cited for the face. The Sescom PDF (kept for pin functions) draws the mirror image.
+
+#### What could have damaged gear in the live version (origin/main, 3d4499a, 2026-05-10)
+
+The live site says "all 79 builds verified" and shows no warnings. Compared with it:
+1. **RJ45 and RJ12 drawings (every Cat5 build).** The default "Solder Side" view drew pins 8→1 with the clip down, which is the plug's contact face. A builder feeding wires into a plug (clip down, cable toward them) in the order drawn crimps it reversed. On the StudioHub+ audio builds (#6, #27, #33, #35) that puts hot and cold on pins 7/8, StudioHub+'s ±15 V rails; on the headset builds it swaps the mic and earphone circuits. Same-type builds (#1, #43, #47 and others) also labelled two identical drawings "MALE end" and "FEMALE end". On #1, the XLR3 mic and party-line cable, that put pins 1 and 2 swapped on the male end. Found by the final audit and fixed in the UI.
+2. **Headset over Cat5 (#18, #34, #36, #51).** Mic signal and earphone return shared a pair, which is a sidetone howl loop. The PoE caution named only the Mode B pins, which these builds leave open, while the Mode A pins 1/2 and 3/6, where the headset sits, went unwarned. HelixNet's ±30 V on RJ45 3–8 was not mentioned.
+3. **TRRS headset to RJ45 (#70).** The live map put the phone-headset mic on RJ45 7 and its ground on 8. On a powered StudioHub+ panel those pins carry 15 V− and 15 V+, which is 30 V across an electret capsule. It is now the OHIS map with a never-plug list.
+4. **Triax (#39, #41, #42 and the connector).** The live labels said the 120–170 V supply was on the outer shield and the centre carried signal only. It is the other way round: up to 180 V DC rides on the centre. The triax-as-coax builds now say never to connect them to a CCU or camera port and to disconnect both ends first.
+5. **XLR3 to XLR5 "Intercom / Audio" (now #2, #3, #4).** One straight cable was sold for three jobs: into a beltpack mic input it put cold on the earphone return, and the "return" channel used an unbalanced L/R pair on an XLR3. It is now three builds with 30 V party-line cautions. Beltpack breakout #20 had the same earphone-return-into-mic fault.
+6. **Rig shells (#80–#83)** were shown as standard, working adapters. #80 ties two RS-422 drivers together through a grey far end, #81 and #82 carry no RS-232 ground, and #83 meets the Black and Yellow shells output to output (Rane 109). All four are now field_hack and unverified, and #80–#82 are retitled "as found".
+7. **Cautions the live data lacked everywhere:** 30 V party line on every XLR3 end that fits an intercom jack; 48 V phantom on anything that meets a mic input; the Clear-Com RS-700's 15 V on headset pin 4; 12 V XLR4 camera power (both genders); HelixNet ±30 V; PoE Mode A; 1/4" speaker-level outputs; speakON and powerCON with no breaking capacity. Round 4 added the RTS ROAMEO TR-1800 exclusion on the TRRS ↔ XLR5 builds (its pin 3 is Headphone +, so those cables short its amplifier) and the Kalypso Diagnostic RS-232 port (±12 V) on the RS-422 shells.
+
+#### Round 4 suggestions not applied
+
+Each item is logged per build in the review file:
+- #80: not rewired to the pair-preserving null, and #81/#82 not given the pin 5 ground, because they are as-found rig shells. They were retitled instead, and the corrected maps stay in the notes. #81/#82's proposed ground on RJ45 7 would sit on StudioHub+'s 15 V− rail, so StudioHub+ is now on their never-plug list.
+- #83: not rewired (open question Q4).
+- #10: the proposal to rename XLR3 pin 1 to "Ground / Shield" was not applied. PinRef deliberately lands the drain on the shell and draws any pin 1↔shell bond as a jumper (comment in `data/connectors.js`), so this is Jadon's call.
+- #23, #44, #45, #68: two reviewer-proposed face/solder sentences were not used. One described the male pin face as the solder side; the other would have mirrored female D-subs.
+- #76: the NAC3MM-1 coupler is mentioned, not given as an instruction. The direction was ambiguous and coupler use on mains was not otherwise sourced.
+- #78: the DE-9 "RTS keypanel" variant is not drawn on the build page. That is UI work, deferred.
+- #5 still says the app draws a female end's "mating face". The conclusion, solder a female end from the SOLDER SIDE view, is correct. #64 and #69 were rewritten by the final audit.
+
+#### Source disagreements logged (the manual wins)
+
+- Clear-Com HelixNet pin polarity: the clearcom.com tip and Solution Finder 158723949 disagree on which RJ45 pins carry +30 V and which −30 V. Both agree that 1/2 is ground and 3–8 carry ±30 V. #6, #18 and #34 are now worded so the hazard holds under either table.
+- RTS KP-32 data sheet vs the KP98-7 table (plsystem.com) on DE-9 pins 3/6/9 (noted in the variant).
+- Sescom's XLR3 face drawing is the mirror of Wikimedia's and of Jadon's physical check in Pass 1; the data follows the latter.
+- Daktronics All Sport: the computer port is J5 on the 5100/5500 and J6 on the 5010 (KB 000029017). KB DD2180294 gives the J-box wiring, not the console's J6 pinout.
+- Cisco web doc 12223 vs Cisco 1750 manual Table 3: the manual wins and matches #31.
+- Sony HXCU-100 p.8 does not contain a "shorted sheaths = shock hazard" sentence that a round-1 agent attributed to it. The triax notes say what p.8 says.
+
+#### Sources opened for this pass (in addition to Pass 2's)
+
+Rounds 1–3: RTS BP-325 manual p.7 and p.13; Clear-Com Solution Finder 158845384 / 158755357 / 158748532 (headset extensions), 158784598 (3-pin PL), 158841161 (4-to-5 pin), 158723949 (HelixNet RJ45); Clear-Com HelixNet Tip; Clear-Com RS-701 Quick Reference; Grass Valley Kalypso HD/Duo manual v15.0 p.67–68; RTS KP-5032 Technical Manual p.19; RTS XCP-48-RJ45 manual p.3; Sony HXCU-100 p.8; OHIS §3.2/§3.3; StudioHub+ Adapter Pinout Guide and SH-RACK4 manual; Telos phantom-over-RJ45; Sound Devices 970 p.60; Daktronics KB DD2557298; Lammert Bies null modem; Yamaha "Phantom Power"; Neutrik NAC3FCB, NA4FX-M and NL4FX pages; Canare triax page; Sennheiser HMS 27 cable sheet; beyerdynamic DT 290 MK II; Wikipedia (PoE, XLR connector, DMX512, Triaxial cable).
+Added by round 4: Bosch/RTS ROAMEO TR-1800 manual F.01U.343.141 p.13–14; Point Source Audio headset accessories; H2X XLR-4F to 3.5 mm; Sescom SMARTCOM and JK Audio Outerloop 3.5 guides; Sound On Sound (transformer winding with no ground return); TASCAM DB-25 Pinout (live URL); Hosa "DB-25 Enigma" and NA4LJX; Neutrik drawing ST-NA4FX-M and BDA 452 V4; Hy-Tek serial cables guide; Wikipedia Null modem; StarTech SCNM9FF2MBK listing; Daktronics KB 000029017 and DD2557278; TI SN75176B and SNLA039; StudioHub+ ADAPT-RS specifications; Whirlwind DT-12 PDF; Wikimedia XLR pinouts.
+
+#### Final Fable audit (read-only, one pass over `origin/main..HEAD`)
+
+One Fable agent audited the full diff. It focused on every build that carries power and on anything that could damage gear. It edited nothing; the Opus chat applied the fixes. **It found no wrong pin map in any of the 83 builds.** Its findings, all checked against the code and sources and all accepted:
+1. **RJ45/RJ12 drawn mirrored in the default view** (major; dangerous on the StudioHub+ builds; also live). Fixed in `RJ45Connector.jsx`, `RJ12Connector.jsx` and `WiringDiagram.jsx`. Both views now draw pin 1 on the left, captioned WIRE-ENTRY SIDE / JACK FACE, with a line under the toggle (Wikipedia, Modular connector).
+2. **Same-type builds labelled two identical drawings "MALE end" / "FEMALE end"** (major; also live). The labels are now "end A" / "end B". Face/solder sentences added to #1, #43 and #47.
+3. **#77 should not be verified.** Its talk polarity is Q4, and it lacked #78's mixed-convention and face/solder cautions. Both added; now unverified.
+4. **#69 kept the BP-325 overstatement** that round 4 corrected on #23/#68, and lacked the pin-3 check and Clear-Com's never-join rule. All three ported.
+5. **The 1/4" speaker-output caution was missing on #5, #58, #66 and #73.** Round 4 had un-verified #28, #35 and #60 for the same gap. Added.
+6. **RS-700 DC statements on #50 and #64 go beyond the RS-701 quick reference**, which does not say where pin 3 sits. Qualified; the advice is now an isolation transformer only. The pin 3 potential on an RS-700 remains unconfirmed, and a schematic or a measurement would settle it.
+7. **#64/#69's face/solder sentence called the drawing the pack jack**, which is male on Clear-Com. It is the female cable end's front. Replaced with the two-variant sentence, which adds the RTS male variant.
+8. **Verified gendered builds with no face/solder sentence** (#22, #46, #53, #63, #77). Added.
+9. **HelixNet's −30 V on pin 3 was not named** on the builds whose 3→1 tie would short it (#3, #9, #20, #21, #53, #58, #62, #72). Added (Clear-Com HelixNet Tip).
+10. **The D-sub outline was drawn upside down** (minor). Fixed.
+
+None was rejected. Where the audit offered two fixes, PinRef took the simpler one: it relabelled the ends rather than drawing each end per gender, and it marked #64's claim unconfirmed rather than deleting it. The audit did not check the Yamaha AES DB25 variant or the speakON and powerCON face geometry against a source; both stay open.
+
+#### Waiting on Jadon
+
+1. Open questions Q1–Q5 (`research/open-questions-2026-11-09.md`). No build was changed for them in this pass.
+2. Rig shells #80–#82: rebuild them to the corrected maps in their notes (#80 pair-preserving null; #81/#82 with DE-9 pin 5 carried), or retire #80 in favour of the Kalypso's software RX/TX swap. Until then they stay "as found" and unverified.
+3. A fresh five-angle round on the 57 unverified builds. #54, #55, #56 and #76 (speakON and powerCON) still lack three angles. Fable is the limited resource; Sonnet could run the routine angles.
+4. Whether to push. Pushing main triggers the Vercel deploy, and nothing has been pushed.
 
 ### Pass 2 — Circuit audit · 2026-11-09 (Fable, for Jadon via Sawyer)
 
