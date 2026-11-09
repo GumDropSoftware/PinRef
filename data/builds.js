@@ -4,7 +4,7 @@ const STANDARD_BUILDS = [
   // XLR3 combos
   {
     from: "xlr3", to: "xlr3", status: "standard", title: "XLR3 Mic Cable (Straight-Through)",
-    use: "Standard microphone or balanced audio cable. Also carries SMPTE LTC timecode and AES3 digital audio over the same wiring (AES3 requires true 110\u03A9 cable for spec compliance).",
+    use: "Standard microphone or balanced audio cable. Also carries SMPTE LTC timecode, AES3 digital audio (AES3 wants true 110\u03A9 cable) and the Clear-Com / RTS 2-wire intercom party line (pin 1 common, pin 2 +30 VDC + channel 1 audio, pin 3 channel 2 audio) over the same wiring.",
     wiring: [
       { fromPin: 1, toPin: 1, desc: "Ground / Shield to Ground / Shield" },
       { fromPin: 2, toPin: 2, desc: "Hot (+) to Hot (+)" },
@@ -14,44 +14,71 @@ const STANDARD_BUILDS = [
     sources: [
       { label: "AES14-1992 XLR Standard", url: "https://www.aes.org/publications/standards/search.cfm?docID=36" },
       { label: "ETC SMPTE LTC Pinout &amp; Wiring", url: "https://support.etcconnect.com/ETC/Networking/Show_Control_and_IO_Control/SMPTE_Pinout_and_Wiring" },
+      { label: "Telex/RTS pinouts (plsystem.com) \u2014 BP-325 line = 30 VDC on pin 2; KP-32 \u201ctie mic \u2212 to ground to unbalance a dynamic mic\u201d", url: "https://www.plsystem.com/pinout1.htm" },
     ],
   },
   {
-    from: "xlr3", to: "xlr5", status: "standard", title: "XLR3 to XLR5 \u2014 Intercom / Audio",
-    use: "Adapt XLR3 mic cable(s) into an XLR5 intercom connector. One cable = unbalanced mic send only; two cables = mic send + stereo earphone return.",
-    multiChannel: {
-      max: 2,
-      multiSide: "from",
-      channelLabels: ["Send \u2014 Mic (XLR5 Pin 2)", "Return \u2014 Earphone (XLR5 Pins 4/5)"],
-      perChannel: [
-        {
-          wiring: [
-            { fromPin: 2, toPin: 2, desc: "XLR3 pin 2 (Hot +) to XLR5 pin 2 (Mic Signal) \u2014 intercom mic is unbalanced" },
-            { fromPin: 3, toPin: 3, desc: "XLR3 pin 3 (Cold) to XLR5 pin 3 (Earphone Return / Ground) \u2014 ties cold to ground at the XLR5 end" },
-            { fromPin: 1, toPin: 1, desc: "XLR3 pin 1 (Shield) to XLR5 pin 1 (Mic Screen / Ground)" },
-          ],
-        },
-        {
-          wiring: [
-            { fromPin: 2, toPin: 4, desc: "XLR3 pin 2 to XLR5 pin 4 (Left Earphone +) \u2014 unbalanced L signal" },
-            { fromPin: 3, toPin: 5, desc: "XLR3 pin 3 to XLR5 pin 5 (Right Earphone +) \u2014 unbalanced R signal" },
-            { fromPin: 1, toPin: 1, desc: "XLR3 pin 1 (Shield) to XLR5 pin 1 (Mic Screen / Ground) \u2014 common return for both earphone signals" },
-          ],
-        },
-      ],
-    },
+    from: "xlr3", to: "xlr5", status: "standard", title: "XLR3 to XLR5 \u2014 Pass-Through (XLR3 Signal over an XLR5 Run)",
+    use: "Carry an ordinary XLR3 balanced signal down a spare 5-pin cable (intercom headset extension or DMX cable). Build TWO of these \u2014 one at each end \u2014 and the 5-pin run becomes a plain XLR3 extension.",
     wiring: [
-      { fromPin: 1, toPin: 1, desc: "XLR3 pin 1 (Shield) to XLR5 pin 1 (Mic Screen / Ground)" },
-      { fromPin: 2, toPin: 2, desc: "XLR3 pin 2 (Hot +) to XLR5 pin 2 (Mic Signal) \u2014 intercom mic is unbalanced" },
-      { fromPin: 3, toPin: 3, desc: "XLR3 pin 3 (Cold) to XLR5 pin 3 (Earphone Return / Ground) \u2014 ties cold to ground at the XLR5 end" },
+      { fromPin: 1, toPin: 1, desc: "XLR3 pin 1 (Ground / Shield) to XLR5 pin 1" },
+      { fromPin: 2, toPin: 2, desc: "XLR3 pin 2 (Hot +) to XLR5 pin 2" },
+      { fromPin: 3, toPin: 3, desc: "XLR3 pin 3 (Cold \u2212) to XLR5 pin 3" },
     ],
-    deadEnds: [{ connector: "to", pin: 4, desc: "Pin 4 \u2014 unused (add 2nd XLR3 for earpiece return)" }, { connector: "to", pin: 5, desc: "Pin 5 \u2014 unused (add 2nd XLR3 for earpiece return)" }],
-    notes: "Use 1 cable for mic send only. Add a 2nd XLR3 for the stereo earpiece return to fully wire the XLR5 intercom connector. The return cable uses XLR3 unbalanced: pins 2/3 as independent L/R signals sharing pin 1 ground \u2014 keep the return cable short to avoid crosstalk.",
+    deadEnds: [
+      { connector: "to", pin: 4, desc: "XLR5 pin 4 \u2014 unused (just a spare conductor on this run)" },
+      { connector: "to", pin: 5, desc: "XLR5 pin 5 \u2014 unused" },
+    ],
+    notes: "Pass-through ONLY. Pins 1/2/3 of the XLR5 are used purely as three wires \u2014 the headset meanings of those pins (mic ground, mic, earphone return) do not apply. This is NOT a headset or beltpack adapter: plugging one end of a 1-1/2-2/3-3 adapter into a 5-pin headset puts your XLR3 cold on the earphone return and feeds nothing to the earphones. For a headset or a beltpack use the two builds below. Works for mic, line, AES3 and the Clear-Com/RTS party line (which carries 30 VDC on pin 2 \u2014 a straight wire passes it fine).",
     sources: [
-      { label: "Clear-Com V-Series Headset Connectors", url: "https://www.clearcom.com/DownloadCenter/manuals/V-Series_Iris_Online_Manual/Content/Common%20Topics/Headset%20connectors.htm" },
-      { label: "Clear-Com Miscellaneous Pin-Outs (Solution Finder)", url: "https://clear-com.atlassian.net/wiki/spaces/SF/pages/511475872/Miscellaneous+Pin-Outs" },
+      { label: "AES14-1992 XLR Standard", url: "https://www.aes.org/publications/standards/search.cfm?docID=36" },
+      { label: "Clear-Com V-Series Headset Connectors (XLR-4M / XLR-5F pin functions)", url: "https://www.clearcom.com/DownloadCenter/manuals/V-Series_Iris_Online_Manual/Content/Common%20Topics/Headset%20connectors.htm" },
+      { label: "Telex/RTS pinouts (plsystem.com) \u2014 BP-325 line = 30 VDC on pin 2; KP-32 \u201ctie mic \u2212 to ground to unbalance a dynamic mic\u201d", url: "https://www.plsystem.com/pinout1.htm" },
     ],
   },
+  {
+    from: "xlr3", to: "xlr5", status: "partial", title: "XLR3 to XLR5 \u2014 Mic into Intercom Beltpack (Mic Input)",
+    use: "Plug an ordinary XLR3 dynamic microphone into the headset jack of a 5-pin Clear-Com / RTS beltpack or panel. Mic only \u2014 the earphone pins are left empty, so you hear nothing (use a separate listen feed or the pack's speaker).",
+    wiring: [
+      { fromPin: 2, toPin: 2, desc: "XLR3 pin 2 (Hot +) to XLR5 pin 2 (Mic Input)" },
+      { fromPin: 1, toPin: 1, desc: "XLR3 pin 1 (Ground / Shield) to XLR5 pin 1 (Mic Ground)" },
+      { fromPin: 3, toPin: 1, desc: "XLR3 pin 3 (Cold \u2212) ALSO to XLR5 pin 1 \u2014 ties the mic's cold leg to mic ground, which unbalances a dynamic mic into the pack's unbalanced input" },
+    ],
+    deadEnds: [
+      { connector: "to", pin: 3, desc: "XLR5 pin 3 (Earphone Return) \u2014 unused; do NOT use it as the mic ground" },
+      { connector: "to", pin: 4, desc: "XLR5 pin 4 (Left Earphone) \u2014 unused" },
+      { connector: "to", pin: 5, desc: "XLR5 pin 5 (Right Earphone) \u2014 unused" },
+    ],
+    notes: "The beltpack mic input is UNBALANCED: Clear-Com states that pin 1 \u201cmic signal low\u201d is actually signal ground, and RTS/Telex tie the dynamic-mic \u2212 leg to ground to unbalance it \u2014 that is what the pin 3 \u2192 pin 1 jumper does. The mic ground is pin 1, never pin 3 (pin 3 is the earphone return \u2014 grounding the mic there injects the earphone return current into the mic circuit). Dynamic mics only: intercom headset mics are often electrets powered by a DC bias the pack puts on pin 2 \u2014 set the pack's mic switch to DYNAMIC for an XLR3 dynamic mic, and never expect a phantom-powered condenser to work here. The pack's headset jack is a female XLR5, so this cable needs a MALE XLR5 and a FEMALE XLR3. Never plug this into the pack's 3-pin intercom LINE jack \u2014 that one carries 30 VDC on pin 2.",
+    sources: [
+      { label: "Clear-Com Solution Finder \u2014 4-pin to 5-pin headset adaptor (mic input is unbalanced, pin 1 = signal ground; never short pins 4 and 5)", url: "https://clear-com.atlassian.net/wiki/spaces/SF/pages/158841161/How+can+I+make+an+adaptor+from+a+4+pin+to+a+5+pin+headset" },
+      { label: "Clear-Com V-Series Headset Connectors (XLR-4M / XLR-5F pin functions)", url: "https://www.clearcom.com/DownloadCenter/manuals/V-Series_Iris_Online_Manual/Content/Common%20Topics/Headset%20connectors.htm" },
+      { label: "RTS BP-325 User Manual \u2014 Specifications (headset, line and program connector pinouts)", url: "https://products.rtsintercoms.com/binary/F01U382482.pdf" },
+      { label: "Telex/RTS pinouts (plsystem.com) \u2014 BP-325 line = 30 VDC on pin 2; KP-32 \u201ctie mic \u2212 to ground to unbalance a dynamic mic\u201d", url: "https://www.plsystem.com/pinout1.htm" },
+    ],
+  },
+  {
+    from: "xlr3", to: "xlr5", status: "partial", title: "XLR3 to XLR5 \u2014 Balanced Feed to Both Ears of a Headset",
+    use: "Drive BOTH earpieces of a 5-pin intercom headset from one balanced XLR3 source (mixer headphone/aux out, IFB feed). Listen-only \u2014 the headset mic is not connected.",
+    wiring: [
+      { fromPin: 2, toPin: 4, desc: "XLR3 pin 2 (Hot +) to XLR5 pin 4 (Left Earphone)" },
+      { fromPin: 2, toPin: 5, desc: "XLR3 pin 2 (Hot +) ALSO to XLR5 pin 5 (Right Earphone) \u2014 same mono signal to both ears" },
+      { fromPin: 1, toPin: 3, desc: "XLR3 pin 1 (Ground) to XLR5 pin 3 (Earphone Return) \u2014 the return for BOTH earpieces" },
+    ],
+    deadEnds: [
+      { connector: "from", pin: 3, desc: "XLR3 pin 3 (Cold \u2212) \u2014 leave floating (Rane Note 151: never short an active balanced output's cold leg to ground)" },
+      { connector: "to", pin: 1, desc: "XLR5 pin 1 (Mic Ground) \u2014 unused, mic not connected" },
+      { connector: "to", pin: 2, desc: "XLR5 pin 2 (Mic Input) \u2014 unused, mic not connected" },
+    ],
+    notes: "The earphones are passive transducers, so one source can drive both in parallel \u2014 the load halves (two 150 \u03A9 earpieces look like 75 \u03A9), which a headphone amp drives happily but a line output may not. Ground goes to pin 3 (earphone return), NOT pin 1 (mic ground) \u2014 pins 1 and 3 are separate returns in the headset. Cold floats; level is ~6 dB below a true balanced drive. The XLR5 end must be FEMALE (it accepts the headset's male plug). DO NOT plug this cable into a beltpack: on a beltpack pins 4 and 5 are amplifier OUTPUTS, and bridging them shorts two outputs together \u2014 Clear-Com warns this distorts the whole PL channel. Same wiring idea as the XLR3 \u2192 XLR4 build, with the second earpiece added.",
+    sources: [
+      { label: "Clear-Com V-Series Headset Connectors (XLR-4M / XLR-5F pin functions)", url: "https://www.clearcom.com/DownloadCenter/manuals/V-Series_Iris_Online_Manual/Content/Common%20Topics/Headset%20connectors.htm" },
+      { label: "Clear-Com Solution Finder \u2014 4-pin to 5-pin headset adaptor (mic input is unbalanced, pin 1 = signal ground; never short pins 4 and 5)", url: "https://clear-com.atlassian.net/wiki/spaces/SF/pages/158841161/How+can+I+make+an+adaptor+from+a+4+pin+to+a+5+pin+headset" },
+      { label: "Rane Note 151 \u2014 Grounding & Shielding (Fig. 5: float cold on active balanced outputs; tie cold to ground at a balanced input fed unbalanced)", url: "https://www.ranecommercial.com/legacy/note151.html" },
+      { label: "Rane Note 109 \u2014 Why Not Wye? (never tie two outputs together)", url: "https://www.ranecommercial.com/legacy/note109.html" },
+    ],
+  },
+
   {
     from: "xlr3", to: "trs", status: "standard", title: "XLR3 to 1/4\" TRS \u2014 Balanced Audio",
     use: "Balanced line-level audio between XLR and TRS gear",
@@ -156,12 +183,31 @@ const STANDARD_BUILDS = [
       { connector: "to", pin: 1, desc: "XLR4 pin 1 (Mic Ground) \u2014 unused, no mic circuit on this listen-only feed" },
       { connector: "to", pin: 2, desc: "XLR4 pin 2 (Mic Signal) \u2014 unused, listen-only feed" },
     ],
-    notes: "Single-ended drive: XLR3 Hot drives the earphone signal, Ground ties to the earphone-return node at the XLR4 end. Output level is ~6 dB lower than a true balanced drive because Cold is floated. Per Rane Note 151, do NOT tie Cold to the earphone return \u2014 that node is chassis-grounded inside Clear-Com / RTS panels and would short a transformerless active XLR3 output stage. Listen-only \u2014 mic side is unused.",
+    notes: "Single-ended drive: XLR3 Hot drives the earphone signal, Ground ties to the earphone-return node at the XLR4 end. Output level is ~6 dB lower than a true balanced drive because Cold is floated. Per Rane Note 151, do NOT tie Cold to the earphone return \u2014 that node is chassis-grounded inside Clear-Com / RTS panels and would short a transformerless active XLR3 output stage. Listen-only \u2014 mic side is unused. This feeds a HEADSET (the XLR4 end is male, mating the Clear-Com headset\u2019s female XLR4). Never plug it into a beltpack: pin 4 on a beltpack is the earphone amplifier OUTPUT and your XLR3 source would be driving an output.",
     sources: [
       { label: "Clear-Com V-Series Headset Connectors (XLR-4M pin functions)", url: "https://www.clearcom.com/DownloadCenter/manuals/V-Series_Iris_Online_Manual/Content/Common%20Topics/Headset%20connectors.htm" },
       { label: "Rane Note 151 \u2014 Grounding & Shielding (don't short cold to ground)", url: "https://www.ranecommercial.com/legacy/note151.html" },
     ],
+  },  {
+    from: "xlr3", to: "xlr4", status: "partial", title: "XLR3 to XLR4 \u2014 Mic into Intercom Beltpack (Mic Input)",
+    use: "Plug an ordinary XLR3 dynamic microphone into the headset jack of a 4-pin Clear-Com / RTS beltpack or panel. Mic only \u2014 no earphone, so you hear nothing (use the pack speaker or a separate listen feed).",
+    wiring: [
+      { fromPin: 2, toPin: 2, desc: "XLR3 pin 2 (Hot +) to XLR4 pin 2 (Mic Input)" },
+      { fromPin: 1, toPin: 1, desc: "XLR3 pin 1 (Ground / Shield) to XLR4 pin 1 (Mic Ground)" },
+      { fromPin: 3, toPin: 1, desc: "XLR3 pin 3 (Cold \u2212) ALSO to XLR4 pin 1 \u2014 unbalances the dynamic mic into the pack's unbalanced input" },
+    ],
+    deadEnds: [
+      { connector: "to", pin: 3, desc: "XLR4 pin 3 (Earphone Return) \u2014 unused; not the mic ground" },
+      { connector: "to", pin: 4, desc: "XLR4 pin 4 (Earphone Signal) \u2014 unused" },
+    ],
+    notes: "Same circuit as the XLR3 \u2192 XLR5 mic-input build. The pack's mic input is unbalanced with pin 1 as signal ground (Clear-Com); tying the mic's cold leg to pin 1 is the RTS/Telex way to unbalance a dynamic mic. Dynamic mics only \u2014 set the pack's mic switch to DYNAMIC; electret headset mics rely on the pack's DC bias on pin 2 and a phantom-powered condenser will not work. The beltpack jack is a male XLR4 (Clear-Com), so this cable needs a FEMALE XLR4 and a FEMALE XLR3. Never plug this into the 3-pin intercom LINE jack (30 VDC on pin 2).",
+    sources: [
+      { label: "Clear-Com Solution Finder \u2014 4-pin to 5-pin headset adaptor (mic input is unbalanced, pin 1 = signal ground; never short pins 4 and 5)", url: "https://clear-com.atlassian.net/wiki/spaces/SF/pages/158841161/How+can+I+make+an+adaptor+from+a+4+pin+to+a+5+pin+headset" },
+      { label: "Clear-Com V-Series Headset Connectors (XLR-4M / XLR-5F pin functions)", url: "https://www.clearcom.com/DownloadCenter/manuals/V-Series_Iris_Online_Manual/Content/Common%20Topics/Headset%20connectors.htm" },
+      { label: "Telex/RTS pinouts (plsystem.com) \u2014 BP-325 line = 30 VDC on pin 2; KP-32 \u201ctie mic \u2212 to ground to unbalance a dynamic mic\u201d", url: "https://www.plsystem.com/pinout1.htm" },
+    ],
   },
+
   {
     from: "xlr3", to: "bnc", status: "not_possible", title: "XLR3 to BNC \u2014 Not Compatible",
     use: "XLR carries balanced audio; BNC carries 75\u03A9 video / digital. Different impedance (110\u03A9 vs 75\u03A9), different signal type. Cannot be adapted with a passive cable.",
@@ -258,7 +304,8 @@ const STANDARD_BUILDS = [
   // XLR5 combos
   {
     from: "xlr5", to: "xlr5", status: "standard", title: "XLR5 Straight-Through",
-    use: "Clear-Com / RTS intercom extension, stereo audio, or DMX512 extension",
+    use: "Clear-Com / RTS 5-pin headset extension, stereo audio, or DMX512 extension \u2014 all five conductors straight through.",
+    notes: "All 5 pins straight through, so it is agnostic to what the pins mean: headset (mic ground / mic / ear return / L / R), DMX (common / data\u2212 / data+ / spare / spare) or audio. A headset extension passes the pack\u2019s mic DC bias on pin 2 as a matter of course. Keep both grounds (pins 1 and 3) as separate conductors \u2014 do not bond them in the extension.",
     wiring: [
       { fromPin: 1, toPin: 1, desc: "Mic Ground to Mic Ground" },
       { fromPin: 2, toPin: 2, desc: "Mic Signal to Mic Signal" },
@@ -280,10 +327,12 @@ const STANDARD_BUILDS = [
       { fromPin: 3, toPin: 3, desc: "Earphone Return to Earphone Return (pin 3)" },
       { fromPin: 4, toPin: 4, desc: "Left Earphone (+) to Earphone Signal (pin 4)" },
     ],
-    deadEnds: [{ connector: "from", pin: 5, desc: "XLR5 pin 5 (Right Earphone) \u2014 XLR4 is mono, right channel not present" }],
+    deadEnds: [{ connector: "from", pin: 5, desc: "XLR5 pin 5 (Right Earphone) \u2014 leave FLOATING. Never bridge it to pin 4 to get sound in a mono headset" }],
+    notes: "Leave pin 5 floating \u2014 Clear-Com warns that shorting pins 4 and 5 together (to get the second ear) shorts two amplifier outputs and distorts the whole PL channel. To hear both intercom channels in a mono headset, set the pack to mono instead (RTS BP-325: jumper W5 = MONO). Genders: a 5-pin RTS pack has a female XLR5 jack and a Clear-Com headset has a female XLR4 plug, so this cable is MALE XLR5 to MALE XLR4. Pin 2 carries the pack\u2019s mic DC bias \u2014 harmless, straight through.",
     sources: [
-      { label: "Clear-Com V-Series Headset Connectors", url: "https://www.clearcom.com/DownloadCenter/manuals/V-Series_Iris_Online_Manual/Content/Common%20Topics/Headset%20connectors.htm" },
-      { label: "RTS BP-325 User Manual", url: "https://products.rtsintercoms.com/binary/F01U382482.pdf" },
+      { label: "Clear-Com V-Series Headset Connectors (XLR-4M / XLR-5F pin functions)", url: "https://www.clearcom.com/DownloadCenter/manuals/V-Series_Iris_Online_Manual/Content/Common%20Topics/Headset%20connectors.htm" },
+      { label: "Clear-Com Solution Finder \u2014 4-pin to 5-pin headset adaptor (mic input is unbalanced, pin 1 = signal ground; never short pins 4 and 5)", url: "https://clear-com.atlassian.net/wiki/spaces/SF/pages/158841161/How+can+I+make+an+adaptor+from+a+4+pin+to+a+5+pin+headset" },
+      { label: "RTS BP-325 User Manual \u2014 Specifications (headset, line and program connector pinouts)", url: "https://products.rtsintercoms.com/binary/F01U382482.pdf" },
     ],
   },
   {
@@ -338,43 +387,69 @@ const STANDARD_BUILDS = [
   },
 
   {
-    from: "xlr5", to: "xlr3", status: "partial", title: "XLR5 to XLR3 \u2014 Intercom Breakout",
-    use: "Tap one or both balanced channels from an XLR5 intercom line. One cable = send only; two cables = full send + return.",
+    from: "xlr5", to: "xlr3", status: "partial", title: "XLR5 to XLR3 \u2014 Beltpack Breakout (Mic In + Ear Out)",
+    use: "Plug into a 5-pin beltpack\u2019s headset jack and break it out to XLR3s: one FEMALE XLR3 to take an ordinary dynamic mic INTO the pack, and one MALE XLR3 carrying the pack\u2019s earphone audio OUT to a mixer or recorder\u2019s balanced input. One cable = mic in only; two = mic in + ear out.",
     multiChannel: {
       max: 2,
       multiSide: "to",
-      channelLabels: ["Send \u2014 Mic (Pin 2)", "Return \u2014 Earphone (Pins 4/5)"],
+      channelLabels: ["Mic IN \u2014 XLR3 mic into pack (XLR5 pins 1/2)", "Ear OUT \u2014 pack earphone to balanced input (XLR5 pins 3/4)"],
       perChannel: [
         {
           wiring: [
-            { fromPin: 2, toPin: 2, desc: "XLR5 pin 2 (Mic Signal) to XLR3 pin 2 (Hot +)" },
-            { fromPin: 3, toPin: 3, desc: "XLR5 pin 3 (Earphone Return/Ground) to XLR3 pin 3 (Cold)" },
-            { fromPin: 1, toPin: 1, desc: "XLR5 pin 1 (Ground) to XLR3 pin 1 (Ground)" },
+            { fromPin: 2, toPin: 2, desc: "XLR5 pin 2 (Mic Input) to XLR3 pin 2 (Hot +) \u2014 mic signal into the pack" },
+            { fromPin: 1, toPin: 1, desc: "XLR5 pin 1 (Mic Ground) to XLR3 pin 1 (Ground)" },
+            { fromPin: 1, toPin: 3, desc: "XLR5 pin 1 (Mic Ground) ALSO to XLR3 pin 3 (Cold) \u2014 unbalances the dynamic mic into the pack\u2019s unbalanced mic input" },
           ],
         },
         {
           wiring: [
-            { fromPin: 4, toPin: 2, desc: "XLR5 pin 4 (Left Earphone +) to XLR3 pin 2 (Hot +)" },
-            { fromPin: 5, toPin: 3, desc: "XLR5 pin 5 (Right Earphone +) to XLR3 pin 3 (Cold/Ring conductor)" },
-            { fromPin: 1, toPin: 1, desc: "XLR5 pin 1 (Ground) to XLR3 pin 1 (Ground)" },
+            { fromPin: 4, toPin: 2, desc: "XLR5 pin 4 (Left Earphone out) to XLR3 pin 2 (Hot +)" },
+            { fromPin: 3, toPin: 1, desc: "XLR5 pin 3 (Earphone Return) to XLR3 pin 1 (Ground)" },
+            { fromPin: 3, toPin: 3, desc: "XLR5 pin 3 (Earphone Return) ALSO to XLR3 pin 3 (Cold) \u2014 unbalanced source into a balanced input: tie cold to ground at the XLR3 (Rane Note 151 Fig. 5e)" },
           ],
         },
       ],
     },
     wiring: [
-      { fromPin: 1, toPin: 1, desc: "Mic Ground to Ground" },
-      { fromPin: 2, toPin: 2, desc: "Mic Signal (pin 2) to Hot (+)" },
-      { fromPin: 3, toPin: 3, desc: "Earphone Return (pin 3) to Cold" },
+      { fromPin: 2, toPin: 2, desc: "XLR5 pin 2 (Mic Input) to XLR3 pin 2 (Hot +) \u2014 mic signal into the pack" },
+      { fromPin: 1, toPin: 1, desc: "XLR5 pin 1 (Mic Ground) to XLR3 pin 1 (Ground)" },
+      { fromPin: 1, toPin: 3, desc: "XLR5 pin 1 (Mic Ground) ALSO to XLR3 pin 3 (Cold) \u2014 unbalances the dynamic mic into the pack\u2019s unbalanced mic input" },
     ],
     deadEnds: [
-      { connector: "from", pin: 4, desc: "XLR5 pin 4 (Left Earphone) \u2014 unused (add 2nd XLR3 for earphone)" },
-      { connector: "from", pin: 5, desc: "XLR5 pin 5 (Right Earphone) \u2014 unused (add 2nd XLR3 for earphone)" },
+      { connector: "from", pin: 3, desc: "XLR5 pin 3 (Earphone Return) \u2014 unused on the mic-only cable (add the 2nd XLR3 for ear out)" },
+      { connector: "from", pin: 4, desc: "XLR5 pin 4 (Left Earphone) \u2014 unused (add the 2nd XLR3 for ear out)" },
+      { connector: "from", pin: 5, desc: "XLR5 pin 5 (Right Earphone) \u2014 unused; never bridge to pin 4" },
     ],
-    notes: "Use 1 cable for mic send only. Add a 2nd XLR3 on pins 4/5 for earphone return \u2014 all 5 pins used, nothing wasted. NOTE: this is a custom field-rig pattern, NOT a published Clear-Com / RTS standard. The XLR3 connectors are used as 3-conductor pass-throughs, not as balanced audio cables in the conventional sense \u2014 pin 3 carries the ear-return rather than a true cold/inverted signal. Treat it as a tap solution, not a balanced extension.",
+    notes: "Two separate circuits with two separate grounds \u2014 keep them apart. MIC IN uses pins 1/2 (pin 1 is the mic signal ground \u2014 Clear-Com), with the XLR3 cold tied to pin 1 so a dynamic mic works into the pack\u2019s unbalanced input (dynamic mics only; set the pack\u2019s mic switch to DYNAMIC). EAR OUT uses pins 3/4 (pin 3 is the earphone return \u2014 NOT pin 1), left ear only; the pack\u2019s earphone output is unbalanced, so the XLR3 cold is tied to ground at the XLR3 per Rane Note 151 Fig. 5e. The earphone output is headphone level \u2014 pad or trim at the mixer. Pin 5 (right ear) is left alone: never short it to pin 4 (Clear-Com). Earlier PinRef versions of this build put the ear return on pin 1 and the mic cold on pin 3; both were wrong. The pack jack is a female XLR5, so the cable\u2019s XLR5 is male.",
     sources: [
-      { label: "Clear-Com V-Series Headset Connectors (XLR-5F pin functions)", url: "https://www.clearcom.com/DownloadCenter/manuals/V-Series_Iris_Online_Manual/Content/Common%20Topics/Headset%20connectors.htm" },
+      { label: "Clear-Com V-Series Headset Connectors (XLR-4M / XLR-5F pin functions)", url: "https://www.clearcom.com/DownloadCenter/manuals/V-Series_Iris_Online_Manual/Content/Common%20Topics/Headset%20connectors.htm" },
+      { label: "Clear-Com Solution Finder \u2014 4-pin to 5-pin headset adaptor (mic input is unbalanced, pin 1 = signal ground; never short pins 4 and 5)", url: "https://clear-com.atlassian.net/wiki/spaces/SF/pages/158841161/How+can+I+make+an+adaptor+from+a+4+pin+to+a+5+pin+headset" },
+      { label: "RTS BP-325 User Manual \u2014 Specifications (headset, line and program connector pinouts)", url: "https://products.rtsintercoms.com/binary/F01U382482.pdf" },
+      { label: "Telex/RTS pinouts (plsystem.com) \u2014 BP-325 line = 30 VDC on pin 2; KP-32 \u201ctie mic \u2212 to ground to unbalance a dynamic mic\u201d", url: "https://www.plsystem.com/pinout1.htm" },
+      { label: "Rane Note 151 \u2014 Grounding & Shielding (Fig. 5: float cold on active balanced outputs; tie cold to ground at a balanced input fed unbalanced)", url: "https://www.ranecommercial.com/legacy/note151.html" },
     ],
   },
+  {
+    from: "xlr5", to: "xlr3", status: "partial", title: "XLR5 to XLR3 \u2014 Headset Mic to Balanced Input",
+    use: "Use the mic of a 5-pin intercom headset (RTS / Telex) as a mic into a mixer or recorder\u2019s balanced XLR3 input. Mic only \u2014 the earphones are not connected.",
+    wiring: [
+      { fromPin: 2, toPin: 2, desc: "XLR5 pin 2 (Mic) to XLR3 pin 2 (Hot +)" },
+      { fromPin: 1, toPin: 1, desc: "XLR5 pin 1 (Mic Ground) to XLR3 pin 1 (Ground)" },
+      { fromPin: 1, toPin: 3, desc: "XLR5 pin 1 (Mic Ground) ALSO to XLR3 pin 3 (Cold) \u2014 unbalanced mic into a balanced input: tie cold to ground at the XLR3 (Rane Note 151 Fig. 5e)" },
+    ],
+    deadEnds: [
+      { connector: "from", pin: 3, desc: "XLR5 pin 3 (Earphone Return) \u2014 unused" },
+      { connector: "from", pin: 4, desc: "XLR5 pin 4 (Left Earphone) \u2014 unused" },
+      { connector: "from", pin: 5, desc: "XLR5 pin 5 (Right Earphone) \u2014 unused" },
+    ],
+    notes: "Same circuit as the XLR4 \u2192 XLR3 headset-mic build. Works with DYNAMIC headset mics (e.g. Telex PH-88 dynamic). Many intercom headset mics are electrets that need the DC bias a beltpack supplies on pin 2 \u2014 a mixer does not supply that, so an electret headset will be silent; and never turn on 48 V phantom into this cable (pin 3 is grounded here, and the electret capsule is not built for it). The XLR5 end is FEMALE to accept the headset\u2019s male plug.",
+    sources: [
+      { label: "Clear-Com V-Series Headset Connectors (XLR-4M / XLR-5F pin functions)", url: "https://www.clearcom.com/DownloadCenter/manuals/V-Series_Iris_Online_Manual/Content/Common%20Topics/Headset%20connectors.htm" },
+      { label: "RTS BP-325 User Manual \u2014 Specifications (headset, line and program connector pinouts)", url: "https://products.rtsintercoms.com/binary/F01U382482.pdf" },
+      { label: "Rane Note 151 \u2014 Grounding & Shielding (Fig. 5: float cold on active balanced outputs; tie cold to ground at a balanced input fed unbalanced)", url: "https://www.ranecommercial.com/legacy/note151.html" },
+    ],
+  },
+
   {
     from: "xlr5", to: "mini_trs", status: "standard", title: "XLR5 to 3.5mm TRS \u2014 Intercom Earpiece Feed",
     use: "Taking the earpiece output from a Clear-Com beltpack to drive a 3.5mm consumer headphone.",
@@ -387,7 +462,7 @@ const STANDARD_BUILDS = [
       { connector: "from", pin: 1, desc: "XLR5 pin 1 (Mic Ground) \u2014 unused, no mic circuit on TRS" },
       { connector: "from", pin: 2, desc: "XLR5 pin 2 (Mic Signal) \u2014 unused, no mic circuit on TRS" },
     ],
-    notes: "Listen-only. No talkback. For 2-way use a TRRS headset. Sleeve uses XLR5 pin 3 (Earphone Return), per Clear-Com V-Series spec \u2014 that's the dedicated return for the ear amplifiers. Pin 1 (Mic Ground) is left floating since there's no mic circuit on a 3.5mm TRS.",
+    notes: "Listen-only. No talkback. For 2-way use a TRRS headset. Sleeve uses XLR5 pin 3 (Earphone Return), per Clear-Com V-Series spec \u2014 that's the dedicated return for the ear amplifiers. Pin 1 (Mic Ground) is left floating since there's no mic circuit on a 3.5mm TRS. On a stereo pack each ear gets its own channel; if one ear is silent, set the pack to MONO (RTS BP-325 jumper W5) \u2014 do NOT bridge pins 4 and 5 in the cable, that shorts two amplifier outputs (Clear-Com). The pack jack is a female XLR5, so this cable needs a male XLR5.",
     sources: [
       { label: "Clear-Com V-Series Headset Connectors", url: "https://www.clearcom.com/DownloadCenter/manuals/V-Series_Iris_Online_Manual/Content/Common%20Topics/Headset%20connectors.htm" },
     ],
@@ -402,10 +477,11 @@ const STANDARD_BUILDS = [
       { fromPin: 1, toPin: 3, desc: "XLR5 pin 1 (Mic Ground) to Ring 2 (Ground CTIA)" },
       { fromPin: 3, toPin: 3, desc: "XLR5 pin 3 (Earphone Return) to Ring 2 (Ground CTIA)" },
     ],
-    notes: "CTIA (Apple/Android) wiring: mic on Sleeve, ground on Ring 2. TRRS only has one ground pin so both XLR5 returns (pin 1 Mic Ground and pin 3 Earphone Return) must converge on Ring 2 \u2014 bond them at the TRRS end. If mic and earphone are swapped when tested, the headset uses OMTP \u2014 reverse Ring 2 and Sleeve.",
+    notes: "CTIA (Apple/Android) wiring: mic on Sleeve, ground on Ring 2 \u2014 matches Clear-Com\u2019s own iPhone TRRS note (T=L, R1=R, R2=common, S=mic+). TRRS only has one ground pin so both XLR5 returns (pin 1 Mic Ground and pin 3 Earphone Return) must converge on Ring 2 \u2014 bond them at the TRRS end. Phone-headset mics are electrets: set the pack\u2019s mic switch to ELECTRET so pin 2 supplies bias, or the mic is dead. If the mic is dead and the audio is faint/distorted even so, the headset is OMTP \u2014 swap Ring 2 and Sleeve. Pack jack is female XLR5, so the cable\u2019s XLR5 is male.",
     sources: [
       { label: "Android AOSP 3.5mm Headset Jack Spec (LRGM)", url: "https://source.android.com/docs/core/interaction/accessories/headset/plug-headset-spec" },
-      { label: "Clear-Com V-Series Headset Connectors", url: "https://www.clearcom.com/DownloadCenter/manuals/V-Series_Iris_Online_Manual/Content/Common%20Topics/Headset%20connectors.htm" },
+      { label: "Clear-Com Solution Finder \u2014 iPhone TRRS connector (T=L, R1=R, R2=common, S=mic+)", url: "https://clear-com.atlassian.net/wiki/spaces/SF/pages/513770329/iPhone+TRRS+Connector" },
+      { label: "Clear-Com V-Series Headset Connectors (XLR-4M / XLR-5F pin functions)", url: "https://www.clearcom.com/DownloadCenter/manuals/V-Series_Iris_Online_Manual/Content/Common%20Topics/Headset%20connectors.htm" },
     ],
   },
 
@@ -939,10 +1015,11 @@ const STANDARD_BUILDS = [
       { fromPin: 4, toPin: 4, desc: "Earphone Signal (+) to Left Earphone (pin 4)" },
     ],
     deadEnds: [{ connector: "to", pin: 5, desc: "XLR5 pin 5 (Right Earphone) \u2014 XLR4 is mono, right channel not present" }],
-    notes: "XLR4 headsets are mono \u2014 right earphone not present. Both mic and earphone pass through correctly.",
+    notes: "XLR4 headsets are mono \u2014 right earphone not present. Both mic and earphone pass through correctly. Leave XLR5 pin 5 floating: Clear-Com warns that bridging pins 4 and 5 shorts two amplifier outputs and distorts the whole PL channel \u2014 set the panel/pack to mono instead if you need both channels in one ear. This is the same cable as XLR5 \u2192 XLR4 seen from the headset end (female XLR4 on the headset, female XLR5 on the panel, so the cable is male to male).",
     sources: [
-      { label: "Clear-Com V-Series Headset Connectors", url: "https://www.clearcom.com/DownloadCenter/manuals/V-Series_Iris_Online_Manual/Content/Common%20Topics/Headset%20connectors.htm" },
-      { label: "RTS BP-325 User Manual", url: "https://products.rtsintercoms.com/binary/F01U382482.pdf" },
+      { label: "Clear-Com V-Series Headset Connectors (XLR-4M / XLR-5F pin functions)", url: "https://www.clearcom.com/DownloadCenter/manuals/V-Series_Iris_Online_Manual/Content/Common%20Topics/Headset%20connectors.htm" },
+      { label: "Clear-Com Solution Finder \u2014 4-pin to 5-pin headset adaptor (mic input is unbalanced, pin 1 = signal ground; never short pins 4 and 5)", url: "https://clear-com.atlassian.net/wiki/spaces/SF/pages/158841161/How+can+I+make+an+adaptor+from+a+4+pin+to+a+5+pin+headset" },
+      { label: "RTS BP-325 User Manual \u2014 Specifications (headset, line and program connector pinouts)", url: "https://products.rtsintercoms.com/binary/F01U382482.pdf" },
     ],
   },
   {
@@ -957,7 +1034,7 @@ const STANDARD_BUILDS = [
       { connector: "from", pin: 3, desc: "XLR4 pin 3 (Earphone Return) \u2014 unused" },
       { connector: "from", pin: 4, desc: "XLR4 pin 4 (Earphone Signal) \u2014 unused, mic-only output" },
     ],
-    notes: "XLR4 mic is unbalanced. Per Rane Note 151 Figure 5 (column 2, row e \u2014 Unbalanced Output \u2192 Balanced Input, off-the-shelf-cable wiring), tie the destination XLR3 pin 3 (Cold) to pin 1 (Ground) at the XLR3 connector. This gives the balanced input's diff-amp a proper ground reference. Earphone signal is not tapped here \u2014 mic-only.",
+    notes: "XLR4 mic is unbalanced. Per Rane Note 151 Figure 5 (column 2, row e \u2014 Unbalanced Output \u2192 Balanced Input, off-the-shelf-cable wiring), tie the destination XLR3 pin 3 (Cold) to pin 1 (Ground) at the XLR3 connector. This gives the balanced input's diff-amp a proper ground reference. Earphone signal is not tapped here \u2014 mic-only. Works with DYNAMIC headset mics; electret headset mics need the DC bias a beltpack puts on pin 2 and will be silent into a mixer. Never turn on 48 V phantom into this cable \u2014 pin 3 is grounded here and the capsule is not built for it.",
     sources: [
       { label: "Clear-Com V-Series Headset Connectors (XLR-4M pin functions)", url: "https://www.clearcom.com/DownloadCenter/manuals/V-Series_Iris_Online_Manual/Content/Common%20Topics/Headset%20connectors.htm" },
       { label: "Rane Note 151 \u2014 Grounding & Shielding (Figure 5e: Unbalanced\u2192Balanced)", url: "https://www.ranecommercial.com/legacy/note151.html" },
@@ -1145,7 +1222,7 @@ const STANDARD_BUILDS = [
       { connector: "to", pin: 1, desc: "Pin 1 (Mic Ground) \u2014 unused, no mic circuit on TRS" },
       { connector: "to", pin: 2, desc: "Pin 2 (Mic Signal) \u2014 unused, no mic on TRS" },
     ],
-    notes: "Listen-only \u2014 no talkback. Sleeve uses XLR5 pin 3 (Earphone Return) per Clear-Com V-Series spec \u2014 that's the dedicated return for the ear amplifiers. Pin 1 (Mic Ground) is left floating since there's no mic circuit. For 2-way, use a TRRS headset or separate mic feed. Beltpack has female XLR5, so cable needs male XLR5.",
+    notes: "Listen-only \u2014 no talkback. Sleeve uses XLR5 pin 3 (Earphone Return) per Clear-Com V-Series spec \u2014 that's the dedicated return for the ear amplifiers. Pin 1 (Mic Ground) is left floating since there's no mic circuit. For 2-way, use a TRRS headset or separate mic feed. Beltpack has female XLR5, so cable needs male XLR5. If one ear is silent on a mono pack, set the pack to MONO (RTS BP-325 jumper W5) \u2014 never bridge pins 4 and 5 in the cable, that shorts two amplifier outputs (Clear-Com).",
     sources: [
       { label: "Clear-Com V-Series Headset Connectors", url: "https://www.clearcom.com/DownloadCenter/manuals/V-Series_Iris_Online_Manual/Content/Common%20Topics/Headset%20connectors.htm" },
     ],
@@ -1227,10 +1304,11 @@ const STANDARD_BUILDS = [
       { fromPin: 3, toPin: 1, desc: "Ring 2 (Ground CTIA) to XLR5 pin 1 (Ground)" },
       { fromPin: 3, toPin: 3, desc: "Ring 2 (Ground CTIA) to XLR5 pin 3 (Earphone Return)" },
     ],
-    notes: "CTIA (Apple/Android) wiring: mic is on Sleeve, audio ground is on Ring 2. Tie Ring 2 to BOTH XLR5 pin 1 (ground) and pin 3 (earphone return). Beltpack has female XLR5, so cable needs male XLR5. If mic and earphone are swapped when tested, the headset uses OMTP \u2014 reverse Ring 2 and Sleeve.",
+    notes: "CTIA (Apple/Android) wiring: mic is on Sleeve, audio ground is on Ring 2 \u2014 matches Clear-Com\u2019s own iPhone TRRS note. Tie Ring 2 to BOTH XLR5 pin 1 (ground) and pin 3 (earphone return). Beltpack has female XLR5, so cable needs male XLR5. Phone-headset mics are electrets: set the pack\u2019s mic switch to ELECTRET so pin 2 supplies bias. If the mic is dead and audio is faint/distorted even so, the headset is OMTP \u2014 swap Ring 2 and Sleeve.",
     sources: [
       { label: "Android AOSP 3.5mm Headset Jack Spec (LRGM)", url: "https://source.android.com/docs/core/interaction/accessories/headset/plug-headset-spec" },
-      { label: "Clear-Com V-Series Headset Connectors", url: "https://www.clearcom.com/DownloadCenter/manuals/V-Series_Iris_Online_Manual/Content/Common%20Topics/Headset%20connectors.htm" },
+      { label: "Clear-Com Solution Finder \u2014 iPhone TRRS connector (T=L, R1=R, R2=common, S=mic+)", url: "https://clear-com.atlassian.net/wiki/spaces/SF/pages/513770329/iPhone+TRRS+Connector" },
+      { label: "Clear-Com V-Series Headset Connectors (XLR-4M / XLR-5F pin functions)", url: "https://www.clearcom.com/DownloadCenter/manuals/V-Series_Iris_Online_Manual/Content/Common%20Topics/Headset%20connectors.htm" },
     ],
   },
 
@@ -1246,7 +1324,7 @@ const STANDARD_BUILDS = [
     deadEnds: [
       { connector: "from", pin: 2, desc: "Ring 1 (Right Audio) \u2014 XLR4 earphone is mono, right channel dropped" },
     ],
-    notes: "CTIA (Apple/Android) wiring: mic is on Sleeve, audio ground is on Ring 2. Tie Ring 2 to BOTH XLR4 pin 1 (mic ground) and pin 3 (earphone return). If mic and earphone are swapped when tested, the headset uses OMTP wiring \u2014 reverse Ring 2 and Sleeve.",
+    notes: "CTIA (Apple/Android) wiring: mic is on Sleeve, audio ground is on Ring 2 \u2014 matches Clear-Com\u2019s own iPhone TRRS note. Tie Ring 2 to BOTH XLR4 pin 1 (mic ground) and pin 3 (earphone return). Phone-headset mics are electrets: set the pack\u2019s mic switch to ELECTRET so pin 2 supplies bias. If the mic is dead and audio is faint/distorted even so, the headset is OMTP \u2014 swap Ring 2 and Sleeve. Right audio (Ring 1) is dropped; do not bridge it to Tip.",
     sources: [
       { label: "Android AOSP 3.5mm Headset Jack Spec (LRGM)", url: "https://source.android.com/docs/core/interaction/accessories/headset/plug-headset-spec" },
       { label: "Clear-Com V-Series Headset Connectors", url: "https://www.clearcom.com/DownloadCenter/manuals/V-Series_Iris_Online_Manual/Content/Common%20Topics/Headset%20connectors.htm" },
