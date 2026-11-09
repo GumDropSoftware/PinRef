@@ -194,11 +194,15 @@ export default function WiringDiagram({ build }) {
   const toSide = side;
   // Modular plugs (RJ45/RJ12) are never mirrored: their two views are the plug's wire-entry side and the jack face.
   const isModular = (c) => c?.type === "rj45" || c?.type === "rj12";
+  // Jack plugs are drawn side-on, so the solder/face toggle does not apply to them.
+  const isPlugSideView = (c) => ["trs", "ts", "mini_trs", "mini_trrs"].includes(c?.type);
   const viewLabelFor = (c) => isModular(c)
     ? (side === "solder" ? "WIRE-ENTRY SIDE (clip down)" : "JACK FACE (clip down)")
+    : isPlugSideView(c) ? "PLUG — SIDE VIEW"
     : (side === "solder" ? "SOLDER SIDE" : "FACE VIEW");
   const genderedConns = [...new Set([fromConn, toConn])].filter(c => c?.faceGender);
   const modularConn = [fromConn, toConn].find(isModular);
+  const powerConn = [fromConn, toConn].find(c => c?.type === "speakon" || c?.type === "powercon");
 
   // Both ends of a same-type build are drawn from the same face data, so neither picture is a
   // particular gender; the build's gender note says which view each end needs.
@@ -307,7 +311,7 @@ export default function WiringDiagram({ build }) {
       ) : (
         <>
           {/* Solder/Face toggle — hide for DT12 and coax-only builds */}
-          {fromConn.type !== "dt12" && toConn.type !== "dt12" && (fromConn.type !== "coax" || toConn.type !== "coax") && (
+          {fromConn.type !== "dt12" && toConn.type !== "dt12" && !([fromConn, toConn].every(c => c.type === "coax" || isPlugSideView(c))) && (
             <div style={{ display: "flex", gap: 4, marginBottom: 12 }}>
               {["solder", "face"].map((s) => (
                 <button key={s} onClick={() => setSide(s)} style={{
@@ -331,6 +335,13 @@ export default function WiringDiagram({ build }) {
           {modularConn && (
             <div style={{ fontSize: 10, color: T.textDim, fontFamily: "monospace", marginTop: genderedConns.length > 0 ? -8 : -6, marginBottom: 12, lineHeight: 1.4 }}>
               {modularConn.short}: pin 1 is on the LEFT with the clip down, both looking into a jack and looking at the back of a plug where the wires go in. Feed the plug in the order drawn.
+            </div>
+          )}
+          {powerConn && (
+            <div style={{ fontSize: 10, color: T.textDim, fontFamily: "monospace", marginTop: -8, marginBottom: 12, lineHeight: 1.4 }}>
+              {powerConn.type === "powercon"
+                ? "powerCON: the solder side matches Neutrik's wiring view for the cable connector (N, earth, L from left to right; BDA 452). Wire by the L / N / earth marks on the insert."
+                : "speakON: the pin positions are schematic. Wire by the 1+ / 1− / 2+ / 2− marks on the insert."}
             </div>
           )}
 
