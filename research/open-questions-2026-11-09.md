@@ -22,6 +22,7 @@ The five angles. Documentation: no manual or standard defines it; where stereo e
 
 Recommendation. Do not bring it back. If a stereo feed must ride a 3-pin shell, build it only as a labelled pair with the matching breakout (the way the XLR3-to-XLR5 Pass-Through already works) and never let it near an intercom or IFB jack. Confidence: high that no convention exists; high on the risk.
 What changed in PinRef: nothing new this pass; the stereo-on-XLR3 wiring was removed in Pass 2 and the Pass-Through build now says why.
+Decision (Jadon, 2026-11-09): leave it out. PinRef has no stereo-on-XLR3 build and will not add one; stereo stays on XLR5 or a jack.
 
 ---
 
@@ -43,6 +44,7 @@ The five angles. Documentation: no manufacturer pinout exists; the sources that 
 
 Recommendation. Keep the new pairing. Re-terminate any existing headset-over-Cat5 cables at BOTH ends or keep them as a labelled matched pair, and never mix old and new on one run. Mark both RJ45 plugs HEADSET ONLY. Keep runs short (Clear-Com says 15 ft for its own headset extensions) and use shielded Cat5 with the drain on the XLR shell at the pack end. Confidence: high on the theory and the manufacturer rule; the decision to re-pin cables already in the kit is Jadon's.
 What changed in PinRef: builds 18, 34, 36 and 51 re-pinned as above, genders stated per end, PoE and HelixNet cautions corrected, cross-reference numbers fixed.
+Decision (Jadon, 2026-11-09): keep the new separate-pair layout. He has no cables built to the old one, so the "re-terminate existing cables" sentence was removed from builds 18, 34, 36 and 51.
 
 ---
 
@@ -62,6 +64,7 @@ The five angles. Documentation: the sheet says shield; the SH-RACK4 manual shows
 
 Recommendation. For any cable that will plug into Axia, Telos or StudioHub boxes: follow the sheet, pin 1 to the shield, and buy shielded Cat5 with shielded plugs. For PinRef's "unshielded Cat5 works" variant: land pin 1 on pin 4 ONLY (StudioHub's own jumper position), leave pin 5 open, and label the cable as not for powered StudioHub runs or for Radial, Whirlwind or RAT snake boxes. PinRef's two-channel XLR3 and TRS builds currently put the second channel's ground on pin 5; the clean fix is to return channel 2's ground to pin 4 as well (two XLR pin 1s on one RJ45 pin) and leave pin 5 open. Confidence: high.
 What changed in PinRef: 3.5 mm TRS to RJ45 re-pinned to the official 2/6 returns; the balanced XLR3 and TRS builds got explicit "PinRef variant, not interoperable with official StudioHub adapters for ground or phantom, never into a powered panel, PoE or other makers' snake boxes" notes. Moving channel 2's ground off pin 5 is proposed above and will be done if Jadon agrees (it is a wiring change to builds 6, 33, 27 and 35).
+Decision (Jadon, 2026-11-09): apply the recommendation if it checks out. It does: the StudioHub+ Adapter Pinout Guide's universal pinout lists RJ45 pin 4 as DC GND and pin 5 as nc, and the SH-RACK4 manual p.15 (SH-2XLRMF panel, jumper JU2) reads "Install to connect XLR(s) pin 1 to StudioHub+ RJ45 power ground (RJ-45 pin 4)". Builds 6, 33, 27 and 35 now put BOTH channels' ground on RJ45 pin 4 and leave pin 5 open. Pins moved: channel 2's ground went from RJ45 pin 5 (White/Blue) to pin 4 (Blue); any two-channel cable built before needs channel 2's XLR pin 1 / TRS sleeve moved onto the Blue conductor at the breakout, at both ends of a run.
 
 ---
 
@@ -83,6 +86,7 @@ The five angles. Documentation: the DB-9 side is backed by the KP-32 sheet; the 
 
 Recommendation. Keep the shells as recorded, relabel them in the notes as "RTS keypanel RJ-45 (568B data) with the talk pair polarity inverted" rather than "this rig's own", and meter one known-good Black shell to confirm the talk polarity. Decide whether the inversion is deliberate (a house convention that is also on the matrix end) or an error; if it is an error on one shell only, swapping pins 4 and 5 at the RJ45 makes it a true RTS KP-5032 layout. For the Cronus adapter, record what it actually mates with; a compatible rewire is in its notes. Confidence: high on the conventions, medium on which one the physical shells follow until one is metered.
 What changed in PinRef: KP-32 signal names added to every Adam shell wire; the KP-5032 comparison and talk-polarity note added; the Cronus adapter's use text corrected and flagged unverified; DE-9 gained an "RTS keypanel" pinout variant in the Pinouts tab so its face no longer shows RS-232 names for these builds.
+Decision (Jadon, 2026-11-09): follow RTS. The Adam KP Black and Yellow shells and the Cronus adapter now use RTS's KP-5032 keypanel RJ-45 layout (1 RS485+, 2 RS485−, 3 FROM MATRIX+, 4 TO MATRIX+, 5 TO MATRIX−, 6 FROM MATRIX−; KP-5032 Technical Manual p.19), with the DE-9 per the KP-32 data sheet. Pins moved: on both shells DE-9 pin 4 went from RJ45 pin 5 to pin 4 and DE-9 pin 5 from RJ45 pin 4 to pin 5 (swap the two leads in DE-9 positions 4 and 5). On the Cronus adapter every RJ-12 pin moved: 1 from RJ45 3 to 2, 2 from 5 to 3, 3 from 1 to 4, 4 from 2 to 5, 5 from 4 to 6, 6 from 6 to 1. Data rides on RJ45 1/2, the only pair a DE-9 shell can carry; the KP-5032's own jack also repeats RS-485 on 7/8, but an RTS XCP-48-RJ45 breakout (data on 2/7 only) will not bring a panel up through these shells.
 
 ---
 
@@ -102,6 +106,7 @@ The five angles. Documentation: the manuals settle the pinouts, the bias values 
 
 Recommendation. Keep the two mic-into-beltpack builds dynamic-only as written, keep the "phantom off" lines on every headset-mic cable, state the element type and required bias on any headset-specific build, mark Sennheiser HME/HMDC as P48-only, and carry the "never short 4 and 5" warning on every 4-to-5-pin adapter. Confidence: high.
 What changed in PinRef: the TRRS builds restrict talk to bias-supplying packs and carry the RS-700 DC warning; the XLR3-into-pack builds state genders per brand (Clear-Com packs have a male jack, the BP-325 a female receptacle); the party-line, phantom and 12 V XLR4 power mis-plug cautions were added across the intercom family.
+Decision (Jadon, 2026-11-09): his headsets are Clear-Com and Sennheiser, very seldom RTS. From the makers' pages: Clear-Com CC-110, CC-220, CC-300 and CC-400 are dynamic (200 Ω); CC-15/CC-30 are electret (about 1.5 V); Sennheiser HMD 26/27 are dynamic (300 Ω); HME 26/27 are condensers on P48 and HMDC 27's noise compensation runs on P12–P48, and Sennheiser sells XLR-4F/XLR-5 intercom cables for the HMD only. Pack settings: RS-700 DIP 1 ON = Dynamic (default); HelixNet HBP-2X menu, 1.7 V in Electret; FreeSpeak II Auto (90–320 Ω = dynamic) or 2.5 V via 1 kΩ in Electret; V-Series software, about 1.5 V; party-line stations and the FreeSpeak II base are dynamic-only. The mic-into-pack builds (3, 9, 20) and headset-mic-to-mixer builds (21, 53) now say this; the phantom warnings stay. Nothing to re-pin.
 
 ---
 

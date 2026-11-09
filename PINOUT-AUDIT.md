@@ -2,7 +2,7 @@
 
 Working doc for the 1-by-1 source verification pass. Update status + `Last verified` as we go.
 
-**Latest: Pass 3 five-angle review (four rounds + final Fable audit), 2026-11-09 — see Part B.** 83 builds: 26 verified, 57 unverified (yellow banner in the app, reason on each). The final audit found no wrong pin map (rig shells #80–#83 stay as found and unverified) but did find the RJ45/RJ12 drawings mirrored in the default view (fixed). Open questions Q1–Q5 wait on Jadon. Not pushed.
+**Latest: Pass 3 five-angle review (four rounds + final Fable audit), 2026-11-09 — see Part B.** 83 builds: 24 verified, 59 unverified (yellow banner in the app, reason on each). The final audit found no wrong pin map (rig shells #80–#82 stay as found and unverified) but did find the RJ45/RJ12 drawings mirrored in the default view (fixed). Jadon answered Q1–Q5 the same day (see "Jadon's decisions"): StudioHub+ two-channel grounds and the RTS keypanel shells were re-pinned.
 
 **Legend:** ✅ verified · ⚠ needs review · ❌ issue found · 🚩 flagged for change
 
@@ -152,7 +152,7 @@ Sources also merged from `data/signal-info.js` in the UI (both connector-level a
 
 Jadon's brief: treat every build as if a wrong pin destroys gear. Each connector cluster got five independent reviewers: **Documentation** (pin for pin against a primary source, face vs solder side, male/female mirroring), **Power and damage** (every voltage that can appear, where it lands, what shorts), **Circuit** (direction, polarity, grounds, balanced↔unbalanced, pairing), **Field practice** (what manufacturers sell and engineers build) and **Red team** (how it kills gear or gets built wrong at 2 a.m.). Each saw only the build data, the connector pinouts and the list of opened sources, never each other's reasoning. The full per-build record (every disagreement from every angle, the fix and its source, and what was not applied and why) is `research/five-angle-review-2026-11-09.md`. The five open questions are written up in `research/open-questions-2026-11-09.md`.
 
-**Result: 83 builds. 26 verified, 57 unverified.** After round 4, 46 met the rule. The final Fable audit then found gaps in 20 of them. Those were fixed and are now unverified, because the new text has not had a five-angle review. Nothing has been pushed or deployed; Jadon decides.
+**Result: 83 builds. 24 verified, 59 unverified.** After round 4, 46 met the rule. The final Fable audit then found gaps in 20 of them, which were fixed and are now unverified because the new text has not had a five-angle review. Jadon's answers to Q1–Q5 then changed two more verified builds (#27, #33). The audit work was pushed on 2026-11-09 with Jadon's permission; the decision changes follow it.
 
 **Round 1** covered all 83 builds (55 agents). 17 were cleared by all five angles; 66 drew a disagreement (19 dangerous, 56 major and 95 minor angle-verdicts). Wiring changed on the builds in the table below; 76 had notes, labels, dead ends or sources changed.
 **Round 2** gave fresh agents every build that changed or drew a disagreement (76 builds, 50 agents). 25 were cleared; 51 drew a disagreement (1 dangerous, 21 major, 96 minor). No wiring fault was found in the round-1 changes; 55 builds had notes tightened.
@@ -169,14 +169,14 @@ A build is **verified** when all of these hold:
 
 Anything else is **UNVERIFIED**. It shows the yellow "UNVERIFIED — no opened source confirms this build yet. Do not trust it with powered gear." banner and a ⚠ in the build list, followed by a note saying why. The Fable chat's `set_audit.py` only checked the angles that were present, which would have verified #54 and #76 on two angles; the stamp that was committed requires all five.
 
-Verified (26): #7, #11, #17, #24, #25, #26, #27, #29, #30, #33, #37, #38, #39, #40, #41, #42, #48, #49, #52, #57, #59, #61, #67, #70, #71, #75. #11, #37 and #40 are verified as "cannot be adapted with a passive cable". Seven of them (#7, #24, #25, #37, #48, #49, #59) carry sentences an agreeing reviewer suggested after their review.
+Verified (24): #7, #11, #17, #24, #25, #26, #29, #30, #37, #38, #39, #40, #41, #42, #48, #49, #52, #57, #59, #61, #67, #70, #71, #75. #11, #37 and #40 are verified as "cannot be adapted with a passive cable". Seven of them (#7, #24, #25, #37, #48, #49, #59) carry sentences an agreeing reviewer suggested after their review.
 
-Unverified (57), by reason:
+Unverified (59), by reason:
 - **Round 4 disagreed; fixed, not yet re-reviewed by all five angles (27):** #2, #4, #6, #8, #10, #12, #13, #14, #15, #16, #18, #19, #23, #28, #34, #35, #36, #44, #45, #47, #51, #60, #65, #68, #74, #78, #79.
 - **Round 4 incomplete (usage limit) (4):** #54, #55, #56, #76. Power and circuit agreed on #54 and #76; #55 and #56 drew power cautions, which were added.
 - **Corrected after review (2):** #31, #32. Their face/solder sentence sent a FEMALE D-sub to the app's SOLDER SIDE view. The app draws D-subs as the MALE face and its SOLDER SIDE view mirrors that, so it shows a male shell's cups; a female shell's cups match the FACE VIEW (`components/connectors/DSubConnector.jsx`; the toggle's own caption says the same). Found while applying round 4; round 4's reviewers had proposed copying the wrong sentence onto #44 and #45.
 - **As recorded the cable does not do its job (3):** #80 (an RS-422 "null" that ties TX− to TX− through a grey far end), and #81 and #82 (RS-232 with no signal ground). These are rig shells, so the wiring was left as found. They are retitled "as found", and their use text says not to build from the diagram.
-- **Waiting on Jadon (1):** #83, Cronus RJ12 to RJ45, open question Q4.
+- **Changed for Jadon's answers (Q2–Q5):** #6, #18, #27, #33, #34, #35, #36, #51 (Q2/Q3), #77, #78, #83 (Q4), #3, #9, #20, #21, #53 (Q5). #27 and #33 were verified before; the others were already unverified for the reasons above.
 - **Changed by the final audit (20):** #1, #3, #5, #9, #20, #21, #22, #43, #46, #50, #53, #58, #62, #63, #64, #66, #69, #72, #73, #77. Each had all five angles agree, and each now carries an audit-driven change listed under "Final Fable audit" below. #77's talk-pair polarity is also open question Q4.
 
 #### Wiring changed in Pass 3 (against the end of Pass 2)
@@ -249,12 +249,26 @@ One Fable agent audited the full diff. It focused on every build that carries po
 
 None was rejected. Where the audit offered two fixes, PinRef took the simpler one: it relabelled the ends rather than drawing each end per gender, and it marked #64's claim unconfirmed rather than deleting it. The audit did not check the Yamaha AES DB25 variant or the speakON and powerCON face geometry against a source; both stay open.
 
-#### Waiting on Jadon
+#### Jadon's decisions (2026-11-09)
 
-1. Open questions Q1–Q5 (`research/open-questions-2026-11-09.md`). No build was changed for them in this pass.
-2. Rig shells #80–#82: rebuild them to the corrected maps in their notes (#80 pair-preserving null; #81/#82 with DE-9 pin 5 carried), or retire #80 in favour of the Kalypso's software RX/TX swap. Until then they stay "as found" and unverified.
-3. A fresh five-angle round on the 57 unverified builds. #54, #55, #56 and #76 (speakON and powerCON) still lack three angles. Fable is the limited resource; Sonnet could run the routine angles.
-4. Whether to push. Pushing main triggers the Vercel deploy, and nothing has been pushed.
+The full reasoning for each is under the question in `research/open-questions-2026-11-09.md`.
+- **Q1, stereo on XLR3:** leave it out. PinRef has no stereo-on-XLR3 build and will not add one.
+- **Q2, headset over Cat5:** keep the separate-pair layout. Jadon has no cables built to the old one, so the "re-terminate existing cables" sentence was removed from #18, #34, #36 and #51.
+- **Q3, StudioHub+ grounds:** applied after checking it against StudioHub's documents. The Adapter Pinout Guide's universal pinout lists RJ45 4 as DC GND and 5 as nc. The SH-RACK4 manual p.15 (SH-2XLRMF panel, jumper JU2) reads "Install to connect XLR(s) pin 1 to StudioHub+ RJ45 power ground (RJ-45 pin 4)". **Re-pin:** #6, #33, #27 and #35 moved channel 2's ground from RJ45 pin 5 (White/Blue) to pin 4 (Blue). Both channels' grounds now share pin 4, and pin 5 is open.
+- **Q4, RTS keypanel shells:** follow RTS. Both shells and the adapter use the KP-5032 keypanel RJ-45 (Technical Manual p.19), with the DE-9 per the KP-32 data sheet. **Re-pin:**
+  - #77 Black and #78 Yellow: DE-9 pin 4 moved from RJ45 5 to 4, and DE-9 pin 5 from RJ45 4 to 5. Swap the leads in DE-9 positions 4 and 5.
+  - #83 Cronus: every RJ-12 pin moved (1: 3→2, 2: 5→3, 3: 1→4, 4: 2→5, 5: 4→6, 6: 6→1). It is now titled for the RTS layout, with status standard.
+  - Data stays on RJ45 1/2. An RTS XCP-48-RJ45 breakout (data on 2/7) will not bring a panel up through these shells.
+- **Q5, headsets:** Jadon's headsets are Clear-Com and Sennheiser, very seldom RTS.
+  - From the makers' pages: Clear-Com CC-110, CC-220, CC-300 and CC-400 are dynamic, and CC-15/CC-30 are electret. Sennheiser HMD 26/27 are dynamic. HME 26/27 and HMDC 27 need P48 and have no intercom cable.
+  - #3, #9 and #20 say how each pack is set to Dynamic: RS-700 DIP 1 ON, HelixNet and V-Series in the menu, FreeSpeak II on Auto. They also say what Electret mode puts on the coil.
+  - #21 and #53 name which headsets work into a mixer. The phantom warnings stay. Nothing to re-pin.
+
+#### Still open
+
+1. Rig shells #80–#82: rebuild them to the corrected maps in their notes (#80 pair-preserving null; #81/#82 with DE-9 pin 5 carried), or retire #80 in favour of the Kalypso's software RX/TX swap. Until then they stay "as found" and unverified.
+2. A fresh five-angle round on the 59 unverified builds. #54, #55, #56 and #76 (speakON and powerCON) still lack three angles. Fable is the limited resource; Sonnet could run the routine angles.
+3. Meter one rebuilt Black shell against the matrix after the Q4 re-pin, and ring out any two-channel StudioHub+ cable re-pinned for Q3.
 
 ### Pass 2 — Circuit audit · 2026-11-09 (Fable, for Jadon via Sawyer)
 
@@ -314,7 +328,7 @@ Sources opened in Chrome for this pass:
 
 `components/BuildsTab.jsx` hid every reverse-direction build whenever a forward build existed for the pair, assuming reverses are mirrors. They often are not (ts→xlr3 jumpers cold, xlr3→ts floats it; headset-mic→XLR3 vs XLR3-mic→beltpack). Now only a true mirror (same short title, same wiring read backwards) is hidden.
 
-#### Open questions for Jadon
+#### Open questions for Jadon (answered 2026-11-09 — see Pass 3, "Jadon's decisions")
 
 1. The old xlr3→xlr5 "return" channel used an XLR3 as an unbalanced stereo pair (L on 2, R on 3, ground on 1). No source supports it, so it was dropped. Do you actually build that cable? If so it can come back as an explicitly non-standard build.
 2. XLR4/XLR5-over-Cat5 (#15/30/47/32): the current pairing puts mic signal with ear return on pair 1. Re-pairing so mic signal shares a pair with mic ground would be quieter, but would break any cables already built to the old map. Keep or change?
