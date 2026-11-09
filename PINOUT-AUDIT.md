@@ -2,7 +2,7 @@
 
 Working doc for the 1-by-1 source verification pass. Update status + `Last verified` as we go.
 
-**Latest: Pass 3 five-angle review (four rounds + final Fable audit), 2026-11-09 — see Part B.** 83 builds: 24 verified, 59 unverified (yellow banner in the app, reason on each). The final audit found no wrong pin map (rig shells #80–#82 stay as found and unverified) but did find the RJ45/RJ12 drawings mirrored in the default view (fixed). Jadon answered Q1–Q5 the same day (see "Jadon's decisions"): StudioHub+ two-channel grounds and the RTS keypanel shells were re-pinned.
+**Latest: Pass 4 Sonnet review round (round 5) + one Fable audit, 2026-11-09 — see Part B.** 83 builds: 80 verified, 3 unverified (the Kalypso shells #80–#82, left for Jadon). No pin map changed in Pass 4; cautions on powerCON, headphone outputs, phantom and the phone-headset adapters were tightened, and three drawing captions corrected. Not pushed.
 
 **Legend:** ✅ verified · ⚠ needs review · ❌ issue found · 🚩 flagged for change
 
@@ -147,6 +147,65 @@ Sources also merged from `data/signal-info.js` in the UI (both connector-level a
 ## Part B — Builds
 
 > **Read this first.** The Pass 1 table below (April–May 2026) checked that pin *labels* matched the cited sources. It did **not** check that each cable does the job its title promises. Pass 2 did that circuit check, and Pass 3 (directly below) put every build through five independent reviews. Where they disagree, the later pass wins.
+
+### Pass 4 — Sonnet review round (round 5) · 2026-11-09 (Opus edits, Sonnet reviewers, one Fable audit; for Jadon via Sawyer)
+
+Jadon's brief was to run a Sonnet review round on the unverified builds, with one Fable audit. This pass covers the 56 unverified builds; the three Kalypso shells #80–#82 were left as they are, since that question is still open with Jadon.
+
+**Result:** before the pass, 24 builds were verified and 59 unverified. Now 80 are verified and 3 unverified (#80–#82 only). Nothing has been pushed; Jadon decides. The per-build record is the "Round 5" section of `research/five-angle-review-2026-11-09.md`.
+
+#### Method
+- **Ten Sonnet reviewers, one per connector family.** The families were intercom XLR, intercom-to-consumer, headset over Cat5, analog pro, analog consumer, Cat5 audio, snake/video, speaker/power, serial and keypanel shells.
+- **What each reviewer checked, on every build.** It checked the build against manufacturer manuals and standards, citing page and table:
+  - the pin map;
+  - direction and polarity;
+  - where grounds, shields and returns land;
+  - every voltage present, and what happens if the cable is plugged in reversed or into the other device it fits;
+  - every factual claim in the notes.
+- **What the reviewers saw.** Only the build data, the pinouts and the sources, not earlier rounds' reasoning. Sources came through WebFetch and the PDFs saved by earlier rounds. Clear-Com Solution Finder pages were read through the wiki's REST API. No reviewer drove Chrome.
+- **Fixes and re-checks.** The Opus chat made every edit, each citing a source the reviewer opened, and sent each changed build back to the same reviewer. A second pass fixed what the re-checks still found, and those builds went back again.
+- **The rule.** A build is verified only when its reviewer agreed with the final text and cited at least one opened source with a URL. Its stamp says how many it cited.
+- **What the reviewers found.** First pass: 11 agreed and 45 disagreed, with nothing dangerous and no wrong pin map. Majors were on #1, #60, #76 and #23/#68/#69. After two re-check passes all 56 agreed.
+
+#### What the app draws: one look per connector type
+- **Correct:** XLR3/4/5 and D-sub gender toggles in the Pinouts tab map face and mirror correctly. RJ45/RJ12 were already fixed in Pass 3. Coax is drawn as a cross-section and DT12 as a table.
+- **Fixed — jack plugs (1/4" TRS/TS, 3.5 mm TRS/TRRS):** these are drawn side-on but were captioned "SOLDER SIDE" / "FACE VIEW". They now read "SIDE VIEW (plug or jack)", and the toggle is hidden when no end has a face.
+- **Fixed — speakON:** no Neutrik drawing ties the diamond to a part. The caption now says the positions are schematic and to wire by the 1+ / 1− / 2+ / 2− marks on the insert.
+- **Fixed — powerCON:** Neutrik's BDA 452 wiring view reads N, earth, L from left to right, and the app's solder side matches it. The drawn latch position is not from Neutrik. The caption now says both, and to wire only by the L / N / earth marks.
+
+#### What changed that could damage gear
+No pin map changed this pass. The cautions that changed:
+- **#76 powerCON jumper.**
+  - The jumper carries the combined current of every device downstream of it.
+  - Ratings: NAC3FCA/FCB are 20 A 250 V AC. NAC3FXXA/B are 16 A 250 V AC, and 20 A only at 127 V (UL).
+  - Only TRUE1, or XX mated with XX, may be mated live.
+  - Isolate the supply before mating or unmating, and wire by the L / N / earth marks.
+- **#60 TS to 3.5 mm.** The notes had offered a headphone output as a source. A TS plug in a stereo headphone jack shorts its right-channel amplifier to ground, so that source is gone.
+- **#1 XLR3 mic cable.** It now has the phantom caution its siblings had.
+- **#23 #68 #69 phone-headset adapters.** These had called V-Series, FreeSpeak II and Tempest safe without a source. They now say this is not confirmed and to check the pack's manual, cite Clear-Com's never-join-grounds rule, and have status partial.
+- **#3 #9 #20 mic-into-pack adapters.** The 48 V claim is limited to the packs checked. They now say never to feed phantom into the adapter, which can only happen through a gender changer or a male-to-male turnaround.
+- **#4 #8 headset feeds.** A 30 V party-line mis-plug drives up to about 1 A into Sennheiser HMD 64 Ω earphones, not the 150 mA stated before. The Clear-Com -Y5 and Telex PH-88R gender cases are now covered.
+- **#19 XLR5 to DB25.** Clear-Com V-Series panels have two rear DB25s, GPIO and Auxiliary Audio (which carries Headset 2); never plug into either.
+- **#27 TRS to RJ45.** The TS-jack damage case was the wrong way round. It is now: harmless from a mono output; the risk is the cable used backwards.
+- **#32 #46.** The DB25 shell is also the Tascam audio snake, so never put RS-232 into it. #46 is a straight DTE-to-DCE adapter only.
+- **#79 #83.** Where RS-232, PoE and HelixNet voltages actually land is now stated per pin.
+- **#55 speakON to XLR3.** Both genders exist (NA4FX-M male, NA4FC-F female). A female end fits mixer outputs. Never plug it into inputs, DMX ports or party-line sockets.
+
+#### Final Fable audit (read-only, `4c4fe44..HEAD`)
+- **Overall:** no dangerous or major finding, no wrong pin map, and no verified stamp it would pull. It confirmed that the final text of all 56 builds is the text their last reviewer pass agreed to.
+- **Five minor findings, all accepted:** the #76 mating sentence could read as a live procedure; #55's gender and DMX wording; the plug caption on jack ends; the powerCON latch position; and the #3/#9/#20 phantom example was backwards.
+- **Follow-up:** each build change went back to its reviewer, who agreed. Nothing was rejected.
+
+#### Not applied, or still open
+- #83's suggested source, the RTS ADAM Breakout Panel Resource Guide, was not cited: the URL inferred from the saved file returns 404. The port is described by the cited KP-32/KP-5032 RJ-12 pinout instead.
+- "Check with a meter" wording proposed for #20 was not used, per Jadon's "sources, not meters".
+- #6: the reviewer's proposal to weaken the HelixNet 60 V statement was not taken. With channel 2's ground on RJ45 4, 60 V appears under both Clear-Com tables, and the reviewer agreed on re-check.
+- Optional wording ideas that reviewers left non-blocking stay in the review file. Examples: the Telex PH-88 data sheet as an extra source on #21/#53, a breaker-sizing line on #76, and "Tempest is discontinued".
+- The DT12 face is still schematic; Clark's table is an image the audit did not read.
+- The Kalypso shells #80–#82 wait on Jadon.
+
+#### Re-pin or meter
+Nothing new to re-pin this pass. The Q3 and Q4 re-pins recorded under "Jadon's decisions" (Pass 3) still apply to any cable built before them.
 
 ### Pass 3 — Five-angle review, four rounds · 2026-11-09 (Fable rounds 1–4, Opus close-out, for Jadon via Sawyer)
 

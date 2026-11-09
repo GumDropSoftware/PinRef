@@ -1,6 +1,6 @@
 # Five-angle review of every PinRef build — 2026-11-09
 
-Companion to PINOUT-AUDIT.md (Pass 3). Five independent subagents per connector cluster — Documentation, Power and damage, Circuit, Field practice, Red team — each saw only the build data, the connector pinouts and the list of sources opened in Chrome. Every disagreement they raised is listed here, build by build, with the fix applied (or the reason none was) and the source behind each fix. Round 1 reviewed all 83 builds (55 agents). Round 2 re-reviewed every build that changed or drew a disagreement with fresh agents. Round 3 was a final independent pass over every build that carries power. Round 4 re-reviewed, with all five angles, every build that drew a disagreement in round 2 or 3 (55 builds); its section, at the end, also says what was not applied and why.
+Companion to PINOUT-AUDIT.md (Pass 3). Five independent subagents per connector cluster — Documentation, Power and damage, Circuit, Field practice, Red team — each saw only the build data, the connector pinouts and the list of sources opened in Chrome. Every disagreement they raised is listed here, build by build, with the fix applied (or the reason none was) and the source behind each fix. Round 1 reviewed all 83 builds (55 agents). Round 2 re-reviewed every build that changed or drew a disagreement with fresh agents. Round 3 was a final independent pass over every build that carries power. Round 4 re-reviewed, with all five angles, every build that drew a disagreement in round 2 or 3 (55 builds); its section, at the end, also says what was not applied and why. Round 5 put the 56 builds still unverified (all but the Kalypso shells) through one Sonnet reviewer per connector family, with re-checks after every fix and one Fable audit at the end; its section follows round 4.
 
 ## Round 1 (all 83 builds)
 
@@ -2015,3 +2015,411 @@ Found while applying round 4 (not raised by any reviewer): #31 and #32 told the 
 **#83 Cronus RJ12 to RJ45** — D:ok P:ok C:ok F:major R:ok — UNVERIFIED
 - [F] Pair map inter-works with no documented far end. On a straight Cat5 to the rig's Black shell (data 1/2, listen 3/6, talk 4/5) the Cronus audio output (RJ45 5/4) meets the keypanel's talk output (two balanced line drivers tied together), the Cronus RS-485 pair …
 - **Not applied / handled elsewhere:** [F] rewire to RTS's RJ-12-in-RJ-45 map or to the Black-shell map — not applied: open question Q4 (Jadon decides). Stays UNVERIFIED.
+
+## Round 5 (56 builds: every unverified build except the Kalypso shells #80–#82; one Sonnet reviewer per connector family, re-checked after fixes)
+
+Ten Sonnet reviewers, one per connector family, each checked every build in the family against manufacturer manuals and standards: pin map, direction and polarity, grounds/shields/returns, every voltage and what happens on a reversed or wrong-device plug, and every factual claim. They saw only the build data, the connector pinouts and the sources. The Opus chat applied every fix (each citing a source the reviewer opened) and sent the changed builds back to the same reviewer; a second pass fixed the re-checks' leftovers and went back again. A build is verified only when its reviewer agreed with the final text and cited opened sources.
+
+First pass: 11 agreed, 45 disagreed, none dangerous; majors on #1 (no phantom caution), #60 (headphone output as a source), #76 (no powerCON rating / combined current) and #23 #68 #69 (packs called safe without a source). No pin map was wrong. After two re-checks all 56 agreed; the round's one Fable audit then found five minor issues (none dangerous or major), which were fixed and re-checked, so the arrows below can run to four verdicts.
+
+### intercom-xlr
+
+**#2 XLR3 to XLR5 — Pass-Through (XLR3 Signal over an XLR5 Run)** — agree — verified
+- **Fix:** none needed
+
+**#3 XLR3 to XLR5 — Mic into Intercom Beltpack (Mic Input)** — disagree → agree → agree — verified
+- [minor] Universal claim 'no intercom pack supplies 48 V' is not supported by any opened source. The opened sources show only dynamic-only jacks (BP-325) and low electret bias (1.5-2.5 V); they do not cover every pack/panel (e.g. RTS BTR-800 is docu…
+- [minor] Live 48 V phantom into the pack's mic pin is not warned. The female XLR3 fits the male end of any live phantom source (mixer-side end of a mic snake channel, inline phantom supply, a phantom-powered mic cable). With pin 3 tied to pin 1, the…
+- [minor] Two electret/auto-detect facts cite Solution Finder pages whose body I could not open: FreeSpeak II 'dynamic 90-320 ohm / electret 1.3-6.5 kohm' (page 158692914) and V-Series 'roughly 1.5 Vdc' (page 158691386). They are not in the transcrip…
+- **Fix:** 48 V claim limited to packs checked; live-phantom mis-plug added — *source:* BP-325 manual; RS-701, HBP-2X, FreeSpeak II datasheets
+- **Fix:** phantom example corrected (final audit) — *source:* build genders; Yamaha phantom article
+
+**#4 XLR3 to XLR5 — Balanced Feed to Both Ears of a Headset** — disagree → agree — verified
+- [minor] The fault-current figure '(100-150 ohm, 200-300 mA, several watts)' does not match the headset impedances in the opened datasheets: Clear-Com CC-110 earphones 400 ohm, CC-220 200 ohm; Telex PH-88 300 ohm (transcription); Sennheiser HMD 26/2…
+- [minor] 'The XLR5 end must be FEMALE (it accepts the headset's male plug)' is not universal: Clear-Com sells 5-pin FEMALE headsets (CC-110-Y5 / CC-220-Y5), which need a MALE XLR5 on this adapter.
+- [minor] The transformer-source advice cites Sound On Sound, but that passage is about an UNBALANCED source feeding a transformer-balanced INPUT, not a transformer output feeding a load. The conclusion is plausible (a floating winding with an unrefe…
+- **Fix:** fault current for the headsets in use — *source:* Clear-Com CC-110/220 datasheet; Sennheiser HMD 26 specification
+- **Fix:** load example per CC-220 — *source:* Clear-Com CC-110/220 datasheet
+- **Fix:** Y5 headsets need a male end — *source:* Clear-Com CC-110 product page
+- **Fix:** transformer case cited to Benchmark — *source:* Benchmark
+- **Fix:** Sound On Sound source relabelled (it is about a transformer input) — *source:* Sound On Sound
+
+**#8 XLR3 to XLR4 — Balanced Feed to Headset Earphone** — disagree → agree — verified
+- [minor] '75-150 mA through a 200-400 ohm coil' matches Clear-Com/Telex earphones (CC-110 400 ohm, CC-220 200 ohm, PH-88 300 ohm) but not the Sennheiser HMD 26/27 earphones (64 ohm, about 470 mA at 30 V), which fit this cable through the Sennheiser …
+- [minor] 'The XLR4 end is male, mating the Clear-Com headset's female XLR4' omits headsets with a male XLR4 plug (Telex PH-88R, XLR-4M), which need a FEMALE XLR4 end (build 9 and 53 say this; this build does not). Also the Telex BTR-800 pinout claim…
+- [minor] Same transformer-source inference as build 4: the Sound On Sound quote is about an unbalanced source into a transformer INPUT, not a transformer output into an earphone.
+- **Fix:** transformer case cited to Benchmark — *source:* Benchmark
+- **Fix:** Sennheiser fault current — *source:* Sennheiser HMD 26 specification
+- **Fix:** PH-88R gender — *source:* Telex PH-88 data
+- **Fix:** Sound On Sound source relabelled (it is about a transformer input) — *source:* Sound On Sound
+
+**#9 XLR3 to XLR4 — Mic into Intercom Beltpack (Mic Input)** — disagree → agree → agree — verified
+- [minor] Universal claim 'no intercom pack supplies 48 V' is not supported by any opened source. The opened sources show only dynamic-only jacks (BP-325) and low electret bias (1.5-2.5 V); they do not cover every pack/panel (e.g. RTS BTR-800 is docu…
+- [minor] Live 48 V phantom into the pack's mic pin is not warned. The female XLR3 fits the male end of any live phantom source (mixer-side end of a mic snake channel, inline phantom supply, a phantom-powered mic cable). With pin 3 tied to pin 1, the…
+- [minor] Two electret/auto-detect facts cite Solution Finder pages whose body I could not open: FreeSpeak II 'dynamic 90-320 ohm / electret 1.3-6.5 kohm' (page 158692914) and V-Series 'roughly 1.5 Vdc' (page 158691386). They are not in the transcrip…
+- **Fix:** 48 V claim limited to packs checked; live-phantom mis-plug added — *source:* BP-325 manual; RS-701, HBP-2X, FreeSpeak II datasheets
+- **Fix:** phantom example corrected (final audit) — *source:* build genders; Yamaha phantom article
+
+**#20 XLR5 to XLR3 — Beltpack Breakout (Mic In + Ear Out)** — disagree → disagree → agree → agree — verified
+- [minor] 'the RTS BP-325's XLR-5-31 jack carries no DC (manual p.13)' is not stated on that page. The page lists the pinout and calls it a 'Stereo Dynamic-mic Headset Connector' with a headphone amplifier output (8 V p-p); it says nothing about DC o…
+- [minor] Universal claim 'no intercom pack supplies 48 V' is not supported by any opened source. The opened sources show only dynamic-only jacks (BP-325) and low electret bias (1.5-2.5 V); they do not cover every pack/panel (e.g. RTS BTR-800 is docu…
+- [minor] Live 48 V phantom into the pack's mic pin is not warned. The female XLR3 fits the male end of any live phantom source (mixer-side end of a mic snake channel, inline phantom supply, a phantom-powered mic cable). With pin 3 tied to pin 1, the…
+- [minor] Two electret/auto-detect facts cite Solution Finder pages whose body I could not open: FreeSpeak II 'dynamic 90-320 ohm / electret 1.3-6.5 kohm' (page 158692914) and V-Series 'roughly 1.5 Vdc' (page 158691386). They are not in the transcrip…
+- [minor] Rane Note 151 Fig. 5e is cited for 'tie cold to ground at the XLR3'. In Fig. 5e (unbalanced output to balanced input) the cold conductor is connected to the unbalanced source's signal ground at the SOURCE end and runs to the balanced input'…
+- [minor] The Ear OUT leg takes pin 4 (left) only. On a BP-325 left in its factory default W5 = STEREO, 'intercom channel 1 will be heard in the left headphone only, and channel 2 only in the right', so the Ear OUT leg carries channel 1 only. Not men…
+- [minor] perChannel[1] wiring desc for XLR5 pin 3 -> XLR3 pin 3 still reads 'tie cold to ground at the XLR3 (Rane Note 151 Fig. 5e)'. Fig. 5e grounds the cold conductor at the unbalanced source end.
+- **Fix:** 48 V claim limited to packs checked; live-phantom mis-plug added — *source:* BP-325 manual; RS-701, HBP-2X, FreeSpeak II datasheets
+- **Fix:** BP-325 DC claim stated as the manual has it — *source:* RTS BP-325 manual
+- **Fix:** Rane 5e wording — *source:* Rane Note 151
+- **Fix:** BP-325 W5 stereo jumper — *source:* RTS BP-325 manual (W5 note)
+- **Fix:** wiring desc: Rane 5e wording — *source:* Rane Note 151
+- **Fix:** phantom example corrected (final audit) — *source:* build genders; Yamaha phantom article
+
+**#21 XLR5 to XLR3 — Headset Mic to Balanced Input** — disagree → disagree → agree — verified
+- [minor] Rane Note 151 Fig. 5e is cited for 'tie cold to ground at the XLR3'. In Fig. 5e (unbalanced output to balanced input) the cold conductor is connected to the unbalanced source's signal ground at the SOURCE end and runs to the balanced input'…
+- [minor] 'Clear-Com CC-15 / CC-30 are electret' - the opened transcription of the Solution Finder page names CC-15 / HS-15 only; CC-30 is not confirmed.
+- [minor] XLR gender is stated only for the XLR5 end ('FEMALE to accept the headset's male plug'). The XLR3 end is not stated: a mixer mic input is female, so it must be MALE, and that male end also fits a female intercom LINE jack (the note warns ab…
+- [minor] 'Sennheiser sells no XLR-4/XLR-5 intercom cable for them' is stronger than the opened overview, which shows X4F and X5 marked incompatible (red cross, 'no P48 supply for the microphone') for HME 46/26/27 and HMDC 27.
+- [minor] Wiring desc for 1->3 still says 'tie cold to ground at the XLR3 (Rane Note 151 Fig. 5e)'.
+- **Fix:** CC-30 not confirmed — *source:* Clear-Com SF 158754006
+- **Fix:** Sennheiser wording as the overview has it — *source:* Sennheiser cable overview
+- **Fix:** genders for both ends — *source:* Clear-Com CC-110 product page
+- **Fix:** wiring desc: Rane 5e wording — *source:* Rane Note 151
+
+**#53 XLR4 to XLR3 — Headset Mic to Balanced Input** — disagree → disagree → agree — verified
+- [minor] The notes say Fig. 5e means 'tie the destination XLR3 pin 3 (Cold) to pin 1 (Ground) at the XLR3 connector. This gives the balanced input's diff-amp a proper ground reference.' Fig. 5e actually grounds the cold conductor at the unbalanced S…
+- [minor] 'Clear-Com CC-15 / CC-30 are electret' - CC-30 not confirmed (opened source names CC-15 / HS-15).
+- [minor] 'Sennheiser sells no XLR-4/XLR-5 intercom cable for them' is stronger than the overview, which marks X4F/X5 as incompatible with HME 46/26/27 and HMDC 27 ('no P48 supply for the microphone').
+- [minor] Wiring desc for 1->3 still says 'unbalanced termination at destination per Rane Note 151 Fig 5e', contradicting the corrected notes.
+- **Fix:** CC-30 not confirmed — *source:* Clear-Com SF 158754006
+- **Fix:** Sennheiser wording as the overview has it — *source:* Sennheiser cable overview
+- **Fix:** Rane 5e wording — *source:* Rane Note 151
+- **Fix:** wiring desc: Rane 5e wording — *source:* Rane Note 151
+
+### intercom-consumer
+
+**#22 XLR5 to 3.5mm TRS — Intercom Earpiece Feed** — disagree → agree → agree — verified
+- [minor] Unsupported claim: 'Some single-channel packs leave XLR5 pin 5 unconnected, so the right ear is silent regardless of the mono jumper.'
+- **Fix:** unsourced claim replaced — *source:* —
+
+**#23 XLR5 to 3.5mm TRRS — Intercom to Consumer Headset** — disagree → disagree → agree — verified
+- [major] The notes name V-Series, FreeSpeak II and Tempest as packs that supply bias 'and have no DC on the headset jack' (and, by implication, have pin 3 as a common safe to bond to pin 1). No opened source states that. The Solution Finder pages on…
+- [minor] 'Commercial equivalents' sentence is partly unsupported: (a) Point Source ADP-PHx5M 'is passive but labelled mono': the cited page says only 'Adapter Cable 3.5mm to 5-Pin Male' - neither 'passive' nor 'mono' appears; (b) 'Sescom SMARTCOM an…
+- [minor] Residual unsupported assertion that contradicts the new wording: 'On packs with no DC on those pins (V-Series, FreeSpeak II) the consequence is HF loss or a howl'. The same note now says those packs' headset-pin voltages are not confirmed, …
+- **Fix:** unsupported safe-pack claim replaced (major) — *source:* Clear-Com SF 158789540; SF 158845384
+- **Fix:** commercial-equivalents claims narrowed — *source:* H2X; Sescom; JK Audio; Point Source
+- **Fix:** status standard → partial (Clear-Com: never join mic and earphone grounds) — *source:* Clear-Com SF 158845384
+- **Fix:** leftover safe-pack list removed — *source:* Clear-Com SF 158789540
+
+**#50 XLR4 to TRS — Earphone Feed Out** — disagree → agree → agree — verified
+- [minor] 'Level: the pack output is a headphone amp (~8 V p-p)' attributes a BP-325 figure to every pack. RS-701 and V-Series sources give no 8 V p-p figure.
+- [minor] Gender note covers only Clear-Com packs even though the BP-325 manual is cited as a source; the BP-325 headset receptacle needs a male plug.
+- **Fix:** 8 V p-p tied to the BP-325 — *source:* RTS BP-325 p.13
+- **Fix:** BP-325 gender added — *source:* RTS BP-325 p.13
+
+**#63 3.5mm TRS to XLR5 — Intercom Listen-Only** — disagree → agree → agree — verified
+- [minor] Unsupported claim: 'Some single-channel packs leave XLR5 pin 5 unconnected, so the right ear is silent regardless of the mono jumper.'
+- **Fix:** unsourced claim replaced — *source:* —
+
+**#64 3.5mm TRS to XLR4 — Consumer Headphones to Intercom** — disagree → agree → agree — verified
+- [minor] RS-700 warning is soft ('whether the earphone pair itself carries DC ... is unconfirmed — on RS-700 packs use an isolation transformer') and the wiring has no transformer. The RS-701 data sheet lists pin 4 as 'Spkr+ (&0.5*VCC DC ...)'.
+- [minor] Unsupported claim: 'field adapters often strap Tip and Ring so both ears hear the mono channel'.
+- **Fix:** RS-700 caution made firm — *source:* RS-701 data sheet
+- **Fix:** unsourced field claim removed — *source:* RTS BP-325 p.13
+
+**#68 3.5mm TRRS to XLR5 — Intercom 2-Way** — disagree → disagree → agree — verified
+- [major] The notes name V-Series, FreeSpeak II and Tempest as packs that supply bias 'and have no DC on the headset jack' (and, by implication, have pin 3 as a common safe to bond to pin 1). No opened source states that. The Solution Finder pages on…
+- [minor] 'Commercial equivalents' sentence is partly unsupported: (a) Point Source ADP-PHx5M 'is passive but labelled mono': the cited page says only 'Adapter Cable 3.5mm to 5-Pin Male' - neither 'passive' nor 'mono' appears; (b) 'Sescom SMARTCOM an…
+- [minor] Residual unsupported assertion that contradicts the new wording: 'On packs with no DC on those pins (V-Series, FreeSpeak II) the consequence is HF loss or a howl'. The same note now says those packs' headset-pin voltages are not confirmed, …
+- **Fix:** unsupported safe-pack claim replaced (major) — *source:* Clear-Com SF 158789540; SF 158845384
+- **Fix:** commercial-equivalents claims narrowed — *source:* H2X; Sescom; JK Audio; Point Source
+- **Fix:** status standard → partial (Clear-Com: never join mic and earphone grounds) — *source:* Clear-Com SF 158845384
+- **Fix:** leftover safe-pack list removed — *source:* Clear-Com SF 158789540
+
+**#69 3.5mm TRRS to XLR4 — CTIA Headset to Intercom** — disagree → agree → agree — verified
+- [major] The notes name V-Series, FreeSpeak II and Tempest as packs that supply bias 'and have no DC on the headset jack' (and, by implication, have pin 3 as a common safe to bond to pin 1). No opened source states that. The Solution Finder pages on…
+- [minor] BP-325 XLR-4-31 gender 'FEMALE receptacle (cable needs MALE)' is not stated in the opened manual.
+- **Fix:** unsupported safe-pack claim replaced (major) — *source:* Clear-Com SF 158789540; SF 158845384
+- **Fix:** BP-325 gender stated as inferred — *source:* RTS BP-325 p.13
+- **Fix:** status standard → partial — *source:* Clear-Com SF 158845384
+
+### headset-cat5-ext
+
+**#16 XLR5 Straight-Through** — agree — verified
+- **Fix:** none needed
+
+**#18 XLR5 to RJ45 — Intercom Headset over Cat5** — disagree → agree → agree — verified
+- [minor] 'treat 15 ft (5 m) TOTAL as the limit' rounds Clear-Com's 15 ft limit up: 15 ft is 4.57 m, so 5 m exceeds the published limit.
+- [minor] 'on Clear-Com RS-700 packs ~15 V DC between pin 4 and pin 1' is stated as always present, and attributed to the RS-700 series. The only source (RS-701 quick reference) labels pin 1 'Mic - / DC-' and pin 4 'Spkr+ / DC+ (15V nom 20mA)' with n…
+- **Fix:** 15 ft is 4.5 m — *source:* Clear-Com SF 158845384
+- **Fix:** RS-700 DC stated as the source has it — *source:* RS-701 quick reference
+
+**#19 XLR5 to DB25 — Single Headset Channel over DB25 (Field Hack)** — disagree → disagree → agree — verified
+- [minor] False claim: 'Clear-Com V-Series panels do have a rear DB25, but it is the GPIO connector, not a headset port'. V-Series panels have TWO rear DB25s: a female GPIO (relays, opto inputs, 5 V on pins 20/21) and a male 'Auxiliary audio' DB25 th…
+- [minor] Trunk construction sentence is ambiguous and inconsistent with builds 16/18: 'two individually shielded pairs (mic on pins 1/2 ...; earphones on 4/5 with that pair's shield to pin 3 only)'. Pins 3/4/5 are three conductors and two pairs hold…
+- [minor] RS-232 line 'put +/-12 V on pins 2 and 4 -- across the headset mic and the left earphone' is imprecise: mic is pins 1/2 (DB25 pin 1 = protective ground, pin 2 = TxD, so +/-12 V across the mic is right), but the left earphone is pins 4/3 and…
+- [minor] '(snake plugs are male, chassis ports female)' is not supported by any opened source and is contradicted by the V-Series male Auxiliary Audio DB25 chassis port named elsewhere in the same note.
+- **Fix:** V-Series DB25s corrected — *source:* V-Series Panels User Guide 399G301B
+- **Fix:** both V-Series DB25s named — *source:* V-Series Panels User Guide 399G301B Tables 7/8
+- **Fix:** trunk construction made consistent — *source:* Clear-Com SF 158845384; build 16
+- **Fix:** RS-232 exposure stated per pin — *source:* TI SNLA039
+- **Fix:** unsourced gender parenthetical removed — *source:* —
+
+**#34 RJ45 to XLR5 — Intercom Headset over Cat5** — disagree → agree → agree — verified
+- [minor] 'treat 15 ft (5 m) TOTAL as the limit' rounds Clear-Com's 15 ft limit up: 15 ft is 4.57 m, so 5 m exceeds the published limit.
+- [minor] 'on Clear-Com RS-700 packs ~15 V DC between pin 4 and pin 1' is stated as always present, and attributed to the RS-700 series. The only source (RS-701 quick reference) labels pin 1 'Mic - / DC-' and pin 4 'Spkr+ / DC+ (15V nom 20mA)' with n…
+- **Fix:** 15 ft is 4.5 m — *source:* Clear-Com SF 158845384
+- **Fix:** RS-700 DC stated as the source has it — *source:* RS-701 quick reference
+
+**#36 RJ45 to XLR4 — Intercom Headset over Cat5** — disagree → agree → agree — verified
+- [minor] 'treat 15 ft (5 m) TOTAL as the limit' rounds Clear-Com's 15 ft limit up: 15 ft is 4.57 m, so 5 m exceeds the published limit.
+- [minor] 'on Clear-Com RS-700 packs ~15 V DC between pin 4 and pin 1' is stated as always present, and attributed to the RS-700 series. The only source (RS-701 quick reference) labels pin 1 'Mic - / DC-' and pin 4 'Spkr+ / DC+ (15V nom 20mA)' with n…
+- [minor] 'that would put up to 60 V (HelixNet +/-30 V rails) or 44-57 V (PoE) across the headset mic and earphones' is inaccurate: on HelixNet RJ45 1/2 are the ground pair (so 0 V across the mic), and on PoE Mode A pins 1/2 are one polarity and 3/6 …
+- **Fix:** 15 ft is 4.5 m — *source:* Clear-Com SF 158845384
+- **Fix:** RS-700 DC stated as the source has it — *source:* RS-701 quick reference
+- **Fix:** where the voltage actually lands — *source:* Clear-Com HelixNet Tip; Wikipedia PoE
+
+**#51 XLR4 to RJ45 — Intercom Headset over Cat5** — disagree → agree → agree — verified
+- [minor] 'treat 15 ft (5 m) TOTAL as the limit' rounds Clear-Com's 15 ft limit up: 15 ft is 4.57 m, so 5 m exceeds the published limit.
+- [minor] 'on Clear-Com RS-700 packs ~15 V DC between pin 4 and pin 1' is stated as always present, and attributed to the RS-700 series. The only source (RS-701 quick reference) labels pin 1 'Mic - / DC-' and pin 4 'Spkr+ / DC+ (15V nom 20mA)' with n…
+- [minor] Same inaccurate 'across the headset mic and earphones' wording as build 36 for the HelixNet/PoE sentence.
+- [minor] 'the Clear-Com (FEMALE) variant of this end also accepts a 12 V camera-power cable's male plug' is unsupported and runs against the gender convention Wikipedia gives (DC sources are female outlets; a cable's male plug is the end that goes i…
+- **Fix:** 15 ft is 4.5 m — *source:* Clear-Com SF 158845384
+- **Fix:** RS-700 DC stated as the source has it — *source:* RS-701 quick reference
+- **Fix:** where the voltage actually lands — *source:* Clear-Com HelixNet Tip; Wikipedia PoE
+- **Fix:** unsupported female-end 12 V claim removed — *source:* Wikipedia XLR connector (DC outlets female)
+
+### analog-pro
+
+**#1 XLR3 Mic Cable (Straight-Through)** — disagree → agree — verified
+- [major] No phantom-power caution. A straight XLR cable from a phantom-powered mic input to a line output, ribbon mic, recorder or any non-condenser device puts up to 48 V on pins 2 and 3 of that device. Builds 5, 28, 58 and 62 warn; this build does…
+- [minor] 'Clear-Com single-channel: pin 1 ground, pin 2 DC only, pin 3 audio' and 'Clear-Com's 3-pin line pinout' as a source for the pin-2 voltage: the Clear-Com page lists only 'Voltage', no 'DC only' and no value. The voltage is supported by RTS …
+- [minor] 'LTC is ~0.5-2 V p-p audio-band' is not on the cited ETC page (no voltage figure there). Also 'AES3 wants true 110 ohm cable' has no cited source on this build.
+- **Fix:** phantom caution (major) — *source:* Yamaha phantom article
+- **Fix:** Clear-Com pin 2 wording as the source has it — *source:* Clear-Com SF 158784598
+- **Fix:** unsourced LTC level removed — *source:* —
+
+**#5 XLR3 to 1/4" TRS — Balanced Audio** — disagree → agree — verified
+- [minor] The phantom note says the DC arrives 'via 6.8 kΩ'. No opened source gives that resistor value (the Yamaha article gives only 'The standard is 48V'; Wikipedia XLR gives 'nominal 48 volts DC', 'applied equally through the two signal lines'). …
+- **Fix:** unsourced 6.8 kΩ removed — *source:* Yamaha phantom article
+
+**#13 XLR3 to 3.5mm TRS — Mono Feed to a Stereo Input (Both Channels)** — disagree → disagree → agree — verified
+- [minor] The Sound On Sound citation is used for 'a transformer output with pin 3 open has no return and the signal is lost'. The SOS article (Hugh Robjohns reply on unbalanced mics into transformer-input preamps) is about a transformer INPUT, not a…
+- [minor] 'A camera's 3.5 mm MIC input is mic level with plug-in power DC on Tip/Ring ... or a -40 dB pad': no opened source says plug-in power sits on Tip and Ring of a camera jack or gives -40 dB. Sources opened only show 2.2 V bias via 2.2 kΩ (AOS…
+- [minor] The notes now cite Benchmark for the transformer-output sentence (resolved), but the Sound On Sound entry is still in the sources list with the old label ('with pin 3 of a transformer winding unconnected ...'). The SOS article is about a tr…
+- [minor] '(RTS BP-325 J10, Clear-Com)': gender of Clear-Com jacks is now supportable because the Clear-Com RS-701 datasheet lists 'Intercom Line: (2) 3-pin XLR-M-F' and the quick reference shows male and female intercom receptacles, but the RS-701 i…
+- **Fix:** transformer citation — *source:* Benchmark
+- **Fix:** plug-in power claim narrowed — *source:* Wikipedia Phone connector
+- **Fix:** Sound On Sound source relabelled (it is about a transformer input) — *source:* Sound On Sound
+
+**#14 XLR3 to TS — Balanced to Unbalanced** — disagree → disagree → agree — verified
+- [minor] The Sound On Sound citation is used for 'a transformer output with pin 3 open has no return and the signal is lost'. The SOS article (Hugh Robjohns reply on unbalanced mics into transformer-input preamps) is about a transformer INPUT, not a…
+- [minor] 'An XLR3 end that fits a Clear-Com / RTS party-line jack' - the gender of Clear-Com line jacks is not confirmed by any opened source. The RTS BP-325 manual does give genders: LINE INPUT J11 is a female receptacle and LINE LOOP is male (a fe…
+- [minor] The notes now cite Benchmark for the transformer-output sentence (resolved), but the Sound On Sound entry is still in the sources list with the old label ('with pin 3 of a transformer winding unconnected ...'). The SOS article is about a tr…
+- **Fix:** transformer-output case cited to Benchmark — *source:* Benchmark XLR-F to RCA (pin 3 floating)
+- **Fix:** party-line jack gender per the BP-325 manual — *source:* RTS BP-325 p.13
+- **Fix:** Sound On Sound source relabelled (it is about a transformer input) — *source:* Sound On Sound
+
+**#15 XLR3 to RCA — Pro to Consumer** — disagree → disagree → agree — verified
+- [minor] The Sound On Sound citation is used for 'a transformer output with pin 3 open has no return and the signal is lost'. The SOS article (Hugh Robjohns reply on unbalanced mics into transformer-input preamps) is about a transformer INPUT, not a…
+- [minor] 'An XLR3 end that fits a Clear-Com / RTS party-line jack' - the gender of Clear-Com line jacks is not confirmed by any opened source. The RTS BP-325 manual does give genders: LINE INPUT J11 is a female receptacle and LINE LOOP is male (a fe…
+- [minor] 'an isolation transformer with a level drop (Jensen/Radial Iso-Max)' is not confirmed: the Radial Iso-Max URL I tried (radialeng.com/product/iso-max-pro-av1) returned 404 and no opened source describes a Jensen or Iso-Max level-dropping XLR…
+- [minor] The notes now cite Benchmark for the transformer-output sentence (resolved), but the Sound On Sound entry is still in the sources list with the old label ('with pin 3 of a transformer winding unconnected ...'). The SOS article is about a tr…
+- **Fix:** transformer-output case cited to Benchmark — *source:* Benchmark XLR-F to RCA (pin 3 floating)
+- **Fix:** party-line jack gender per the BP-325 manual — *source:* RTS BP-325 p.13
+- **Fix:** unsourced product names removed — *source:* —
+- **Fix:** Sound On Sound source relabelled (it is about a transformer input) — *source:* Sound On Sound
+
+**#28 TRS to XLR3 — Balanced Audio** — disagree → agree — verified
+- [minor] The phantom note says the DC arrives 'via 6.8 kΩ'. No opened source gives that resistor value (the Yamaha article gives only 'The standard is 48V'; Wikipedia XLR gives 'nominal 48 volts DC', 'applied equally through the two signal lines'). …
+- [minor] '... and any Clear-Com line jack, which carry +30 V DC on pin 2': Clear-Com jack gender and the +30 V figure for 'any' Clear-Com line jack are not confirmed (Clear-Com page says only 'Pin 2 = Voltage'; RS-701 quick ref says 15-30 V).
+- **Fix:** unsourced 6.8 kΩ removed — *source:* Yamaha phantom article
+- **Fix:** party-line jack claim limited to what the sources show — *source:* RTS BP-325 p.13; RS-701 quick reference
+
+**#58 TS to XLR3 — Unbalanced Audio** — agree — verified
+- **Fix:** none needed
+
+**#62 3.5mm TRS to XLR3 — Phone / IFB Receiver to Balanced Input (Left Channel)** — disagree → agree — verified
+- [minor] 'Consumer level is ~12 dB below pro line - add gain at the input' is wrong advice if the XLR input is a MIC input (the phantom warning in the same note assumes it is): a phone or IFB headphone output is far hotter than mic level, so the inp…
+- **Fix:** level advice corrected — *source:* —
+
+### analog-consumer
+
+**#60 TS to 3.5mm — 1/4" Mono Out to a 3.5mm Stereo Input (Left Only)** — disagree → disagree → agree — verified
+- [major] The note says the 1/4" end can come from a 'LINE / AUX / headphone OUTPUT'. A 1/4" headphone output is a 3-conductor jack; this cable's TS plug shorts its Ring (right-channel amplifier output) to Sleeve. That damage path is not warned, and …
+- [minor] 'use a proper Y-split with series summing resistors (Rolls SUM, Hosa stereo breakout)': feeding one mono output to two inputs needs a plain Y (a wye used to split is correct per Rane 109); resistors are for summing two outputs into one. The…
+- [minor] 'MIC mode is mic level with plug-in-power DC on Tip/Ring' is only partly supported: Wikipedia says plug-in power rides on the signal line, typically ~1.5 V, and some computers put ~5 V on the Ring. Which contact a given camera uses is not c…
+- [minor] Notes still contain 'or use a resistive Y-split for both channels' (feeding one mono output to both inputs), which contradicts the added sentence that a plain Y is fine and that resistors are only for combining two outputs.
+- **Fix:** headphone-output source removed (major) — *source:* Wikipedia Phone connector
+- **Fix:** Y-split advice corrected — *source:* Rane Note 109
+- **Fix:** plug-in power wording — *source:* Wikipedia Phone connector
+- **Fix:** leftover resistive-Y advice removed — *source:* Rane Note 109
+
+**#66 3.5mm to TS — Headphone to 1/4" Mono** — disagree → agree — verified
+- [minor] Use line says the 1/4" mono input can be an 'unbalanced insert'. An insert jack is a TRS send/return jack; a TS plug puts the headphone output on the insert's Tip (the send on many mixers, the return on others) and shorts the other contact …
+- **Fix:** insert jack removed from targets — *source:* Wikipedia Phone connector
+
+**#72 RCA to XLR3 — Consumer to Pro** — disagree → agree — verified
+- [minor] Notes say the male XLR3 fits 'any Clear-Com line jack'. No opened source gives the gender of Clear-Com party-line jacks in general (only the RTS BP-325 line input, female, and the HelixNet beltpack powerline XLR-F are confirmed). The same s…
+- [minor] Wiring description for pin 3 says 'tie cold to ground at the XLR3 (Rane Note 151 Fig. 5e)'. In Fig. 5e and Note 110 diagram 17 the pin 3 conductor is the unbalanced source's signal ground (RCA sleeve), run from the RCA end; and Note 151 is …
+- [minor] 'Jensen Iso-Max, Radial ProAV' and 'pro mic preamps have plenty of gain headroom' have no opened source.
+- **Fix:** unsourced headroom claim removed — *source:* —
+- **Fix:** unsourced product names removed — *source:* Rane Note 110
+- **Fix:** Clear-Com 'any line jack' claim removed — *source:* RTS BP-325 p.13; HelixNet beltpack datasheet
+- **Fix:** wiring desc: Rane citation corrected — *source:* Rane 110 diagram 17; Rane 151 Fig 5e
+
+**#73 RCA to TS — Consumer to 1/4"** — agree → agree — verified
+- **Fix:** agreeing reviewer's caution — *source:* Wikipedia Phone connector
+
+**#74 RCA to TRS — Consumer to Balanced** — disagree → agree — verified
+- [minor] Use line says a TRS on a console INSERT jack 'puts the insert send on Tip and grounds the return'. That holds for tip-send mixers only; on ring-send/tip-return mixers this cable would ground the SEND output instead.
+- [minor] No phantom-power caution, although the cable is meant for mixer and interface inputs (often mic/combo inputs) and is electrically the same as build 72 (hot to a consumer output, cold grounded). Whether 48 V reaches the TRS contacts of a com…
+- **Fix:** insert send/return depends on the mixer — *source:* Wikipedia Phone connector
+- **Fix:** phantom precaution — *source:* Yamaha phantom article
+
+### cat5-audio
+
+**#6 XLR3 to RJ45 — Audio over Cat5** — disagree → agree — verified
+- [minor] Note says HelixNet 'ch2 sees 60 V between its pins'. Under Clear-Com's Tip table RJ45 3 and 6 are both on the +30 V rail (XLR 2 = RJ45 6, 3 & 7), so ch2 Tip/Ring see 30 V common-mode, 0 V differential, and 60 V only against ch1's pin-1 leg …
+- [minor] The channel-order warnings (Radial orange pair = ch 4; RAT/ETS orange = ch 2, blue = ch 1; Whirlwind/Radial signal pair on 4/5) are true per the transcribed Radial Catapult Rack spec, Whirlwind Catdusa manual p.2 and CatPatch, but none of t…
+- **Fix:** HelixNet ch2 case stated for both tables — *source:* Clear-Com HelixNet Tip; SF 158723949
+
+**#27 TRS to RJ45 — Balanced Audio over Cat5** — disagree → disagree → agree — verified
+- [minor] 'A TS plug in the TRS jack shorts Ring to Sleeve, i.e. RJ45 pin 2 (cold) to pin 4 ...' describes a TS plug in a TRS jack, but this cable's TRS end is a plug. The real case is this TRS plug going into a TS (mono) jack, which the next sentenc…
+- [minor] The only jumper quote cited is for XLR pin 1 (SH-2XLRMF). StudioHub's SH-1/4BAL panel (printed p.22) states the TRS case directly.
+- [minor] 'Into a TS (mono) jack this plug's Ring touches the jack's ground, so RJ45 pin 2 (cold) is shorted to ground ... it can damage a plain 5532-type op-amp balanced output.' In this build the plug is on the SOURCE side: a TS jack is an unbalanc…
+- **Fix:** TS-jack case corrected — *source:* StudioHub+ ADAPT-RS spec
+- **Fix:** other makers' snake boxes — *source:* Radial Catapult; Whirlwind Catdusa; CatPatch
+- **Fix:** TS-jack case put the right way round — *source:* StudioHub+ ADAPT-RS spec
+
+**#33 RJ45 to XLR3 — Audio over Cat5** — agree → agree — verified
+- **Fix:** agreeing reviewer's HelixNet consequence — *source:* Clear-Com HelixNet Tip
+
+**#35 RJ45 to TRS — Balanced Audio over Cat5** — agree → agree — verified
+- **Fix:** agreeing reviewer's snake-box line — *source:* Radial Catapult; Whirlwind Catdusa; CatPatch
+
+**#65 3.5mm TRS to RJ45 — Stereo Audio over Cat5 (StudioHub+)** — agree → agree — verified
+- **Fix:** agreeing reviewer: internal history removed — *source:* —
+
+### snake-video
+
+**#10 XLR3 to BNC — LTC Timecode / Unbalanced Audio Only (not SDI, not AES3)** — disagree → agree — verified
+- [minor] The dead-end text says 'Cross-coupled outputs lose ~6 dB with pin 3 floated'. Rane's chart assigns the 6 dB loss to the OTHER row: an ordinary (electronically balanced) XLR output into an unbalanced input with pin 3 N/C (diagrams 3/4, note …
+- [minor] Sound On Sound source is cited for transformer-output behaviour, but the article is about an unbalanced mic feeding a transformer-INPUT preamp. The physics is the same (no return path through an unconnected winding), but the cited text does…
+- [minor] Reverse job (BNC out -> male XLR into a recorder/camera input): the note calls pin 3 FLOATED the 'safe default'. Rane's unbalanced-output-to-XLR-input drawings tie the cold (pin 3) to the source sleeve/ground, and a floated cold on a transf…
+- [minor] 'LTC is ~0.5–2 V p-p' and 'Some devices put unbalanced timecode on pin 3 instead of pin 2' are not in any cited source and I did not find a source for the pin-3 claim.
+- **Fix:** 6 dB loss put on the right row; transformer cited to Benchmark — *source:* Rane 110 Fig 4; Benchmark
+- **Fix:** unsourced LTC level removed — *source:* —
+- **Fix:** reverse job follows Rane — *source:* Rane 110 Fig 4
+- **Fix:** unsourced pin-3 claim removed — *source:* —
+- **Fix:** Sound On Sound source relabelled (it is about a transformer input) — *source:* Sound On Sound
+
+**#12 XLR3 to DT12 — Channel Breakout** — disagree → agree — verified
+- [minor] Unsupported claim: '37-pin FK-37 shells are also used for 16-channel snakes with other pinouts'. Neither the Clark table nor the Whirlwind page says this; a web search found no 16-channel pinout on a 37-pin shell (16 channels is normally a …
+- **Fix:** unsupported 16-channel claim removed — *source:* Clark Wire DT12
+- **Fix:** agreeing note: HelixNet tail — *source:* Clear-Com HelixNet Tip
+
+**#47 DB25 Straight-Through** — disagree → agree — verified
+- [minor] Unsupported/overreaching sentence: 'a straight cable is the one thing that lets a phantom-powered analog mic pre meet a digital card'. No cited source describes phantom on a DB25 or this scenario, and the sentence reads as if a DB25 analog …
+- [minor] The Yamaha crossover pin numbers in the notes are not supported by the build's listed sources (Hosa says only that the layouts differ). Add the Yamaha datasheet as a source.
+- [minor] 'Tascam/AES59 analog' labels the Tascam pinout as AES59. I could not open AES59 (aes.org returns 403) so the equivalence is not confirmed.
+- **Fix:** unconfirmed AES59 label removed — *source:* —
+- **Fix:** phantom sentence reworded — *source:* Hosa DB-25 Enigma
+
+### speaker-power
+
+**#54 Speakon NL4 Straight-Through** — agree → agree — verified
+
+**#55 Speakon NL4 to XLR3 — Passive Speaker Adapter** — disagree → disagree → agree → agree — verified
+- [minor] The party-line sentence asserts the male XLR3 'fits a party-line jack (+30 V DC on pin 2...)'. Jack gender and the 30 V figure are not in any opened source.
+- [minor] 'Other XLR speaker conventions exist in the field: 2+/3- and 1+/2-' has no source.
+- [minor] Source/claim cites 'NA4FC-M' which could not be opened (404). Only NA4FX-M is confirmed male.
+- [minor] '3-pin DMX outputs/thrus' gender and the bridged 'reduced level' effect are stated as fact without a source.
+- [minor] The list in the party-line sentence is ambiguous: 'pin 2 carries DC power (15-30 V on a Clear-Com RS-701 line) that lands on the amp output, every mic/line input on the stage, and DMX (XLR) output/thru sockets' reads as if the DC lands on m…
+- [minor] RS-701 source label describes the headset connector pins ('headset connector: 1 Mic-/DC-, ...'), but the fact used is the intercom connector ('Pin 1 Common, Pin 2 Power 15V-30V, Pin 3 Signal').
+- **Fix:** party-line and DMX claims narrowed to sources — *source:* RS-701 quick reference
+- **Fix:** unsourced conventions removed — *source:* —
+- **Fix:** dead NA4FC-M reference removed — *source:* Neutrik NA4FX-M page
+- **Fix:** bridged wording per Neutrik — *source:* Neutrik speakON wiring suggestion
+- **Fix:** party-line sentence untangled — *source:* RS-701 quick reference
+- **Fix:** both genders exist (final audit) — *source:* Neutrik NA4FX-M and NA4FC-F pages
+- **Fix:** consequence restored for inputs and DMX ports (final audit) — *source:* —
+
+**#56 Speakon NL4 to 1/4" TS — Passive Speaker Only** — disagree → agree — verified
+- [minor] Source label cites the Hosa page for '+1 = Tip, -1 = Sleeve', which that page does not state.
+- [minor] 'Commercial equivalents (Hosa NA4LJX etc.) are all sold for passive-speaker use only' overstates the Hosa text.
+- [minor] Rane Note 109 is cited for the amp-output-to-amp-output case but it concerns line-level outputs.
+- **Fix:** commercial claim per Hosa's text — *source:* Hosa NA4LJX
+- **Fix:** Rane 109 scope — *source:* Rane Note 109
+
+**#76 PowerCON Daisy-Chain Jumper (OUT to IN)** — disagree → agree → agree — verified
+- [major] The build gives no current/voltage rating for the connectors it names and says the chain limit is the 'lowest-rated link' without saying that every downstream device's current adds up through the jumper. A builder reading only 'XXA 16 A 250…
+- [minor] 'TRUE1 (different shell, mechanically incompatible with standard PowerCON)' is not supported by the TRUE1 pages opened; only the hot-plug capability is.
+- [minor] Free-end hazard and wiring-by-marks not stated: the jumper's blue end is live whenever the upstream device's OUT is energised and the lead is plugged into it; and powerCON contacts are marked L / N / earth, not numbered 1/2/3.
+- [minor] Wire-colour and IEC 60446 sentences are unsourced.
+- **Fix:** combined downstream current and connector ratings (major) — *source:* Neutrik NAC3FCA/FCB and NAC3FXXA-W-S pages
+- **Fix:** TRUE1 claim narrowed to the source — *source:* Neutrik TRUE1 TOP; NAC3FXXA-W-S
+- **Fix:** unsourced standards history removed — *source:* —
+- **Fix:** wire by marks; mating order — *source:* Neutrik BDA 452 V4 p.1
+- **Fix:** mating order no longer reads as a live procedure (final audit) — *source:* Neutrik BDA 452 V4 p.1; NAC3FCA page
+
+### serial
+
+**#31 RJ45 to DE-9 — Cisco Console Cable (rollover + DB-9 adapter combined)** — disagree → agree — verified
+- [minor] HelixNet, StudioHub+ and PoE voltage statements in the notes have no source in this build's source list (they are only sourced in other builds), and the statement 'this cable's 4/5 jumper can bridge the two rails' is true under Clear-Com's …
+- [minor] The sports-controller sentence says Daktronics All Sport and OmniSport 'expose PC-style DE-9 RS-232'. Daktronics' KB says a straight-through 9-pin cable goes from the PC to the All Sport J5 port, i.e. the controller is wired as the opposite…
+- **Fix:** sports wording per Daktronics — *source:* Daktronics KB DD2557298; Hy-Tek
+- **Fix:** HelixNet bridge stated for both tables — *source:* Clear-Com HelixNet Tip; SF 158723949
+
+**#32 RJ45 (Cisco console pinning) to DB25 — 3-Wire Serial Adapter** — disagree → agree — verified
+- [minor] Unsupported claim: Swiss Timing / Omega / Tissot gear uses RS-485 on proprietary connectors. The cited/opened Hy-Tek page only lists ARES 21, OSM6 and Omega Power Time as needing 'special cables' and says nothing about RS-485.
+- [minor] 'this cable's 4/5 jumper can bridge the two rails' contradicts the Clear-Com page cited in this build's own source list (4, 5, 8 all -30 V). It is true only under Clear-Com Solution Finder 158723949, which is not cited.
+- [minor] No warning that the DB25 end (especially a male DCE-style plug) also fits Tascam/AES59 analog and AES DB25 audio sockets, which is the app's default DB25 pinout, so RS-232 levels (+/-3 to +/-15 V, Wikipedia RS-232) could be applied to audio…
+- **Fix:** unsupported RS-485 claim replaced — *source:* Hy-Tek
+- **Fix:** HelixNet bridge stated for both tables — *source:* SF 158723949
+- **Fix:** audio DB25 mis-plug — *source:* TASCAM DB-25; Wikipedia RS-232
+
+**#43 DE-9 Straight-Through (DCE to DTE)** — agree → agree — verified
+- **Fix:** agreeing reviewer's line — *source:* Wikipedia RS-232
+
+**#44 DE-9 Null Modem (Full Handshake)** — disagree → disagree → agree — verified
+- [minor] Notes name OES, Fairplay and DVSport as typical 3-wire users and state scoreboard controllers 'broadcast one-way, no flow control needed'; none of the opened sources mention OES, Fairplay or DVSport, and none of them state the one-way/no-fl…
+- [minor] The note names the StarTech part 'SCNM9FF'; the opened Bechtle listing is 'SCNM9FF2MBK' (a 2 m cable). Wiring 1-1 / 9-9 confirmed.
+- [minor] 'For most scoreboard/timing feeds the simpler 3-wire null modem is used (Hy-Tek: pins 2, 3 and 5)' overstates Hy-Tek. Hy-Tek lists most of its timers (CTS 4/5/6, OmniSport 1000/2000, Incomar Splash 1) as STRAIGHT-THROUGH and only CTS 6 earl…
+- **Fix:** unsourced product claims removed — *source:* Hy-Tek; Daktronics
+- **Fix:** StarTech part number — *source:* Bechtle listing
+- **Fix:** Hy-Tek list stated as published — *source:* Hy-Tek serial cables guide
+
+**#45 DE-9 Null Modem (3-Wire, Scoreboard/Timing)** — disagree → agree — verified
+- [minor] Source label for Daktronics KB DD2180294 says 'All Sport 5000 J6 25-pin serial output (pins 2, 3, 7)'. The article names only the All Sport 5000 and its 25-pin J-boxes (pins 2, 3, ground 7); J6 is not mentioned. The note's own text is corre…
+- [minor] Hy-Tek-based statements are slightly over-expanded: the Hy-Tek page says 'CTS 4/5/6' without naming Colorado Time Systems, and does not mention 'Swiss Timing' (it lists ARES 21, OSM6 and Omega Power Time).
+- [minor] 'OES, Fairplay, DVSport/graphics ingest' in the use line have no opened source, and 'J5 (9-pin COMPUTER port)' / 'All Sport 5100 J6 25-pin' wording is not literal in the KBs (J5 is just 'the J5 port'; the DD2557278 fetched text does not nam…
+- **Fix:** unsourced product names — *source:* —
+- **Fix:** Hy-Tek wording as published — *source:* Hy-Tek
+- **Fix:** J5 wording as the KB has it — *source:* Daktronics KB DD2557298
+- **Fix:** J6 wording as the KB has it — *source:* Daktronics KB DD2557278
+
+**#46 DE-9 to DB25 — Serial Adapter (EIA-574 to EIA-232)** — disagree → agree — verified
+- [minor] 'to a DTE DB25 device the DB25 end is female' reads as if this straight adapter can join a PC (DTE) DE-9 to a DTE DB25 device; with no crossover that joins TxD to TxD and RxD to RxD, no data. It only works DTE-DE-9 to DCE-DB25 or DCE-DE-9 t…
+- [minor] No warning that the DB25 shell is also the Tascam/AES59 audio connector (the app's default DB25 pinout); a male DB25 end could be plugged into an audio DB25 socket with RS-232 levels (+/-3 to +/-15 V). Damage not confirmed from opened sourc…
+- **Fix:** straight = DTE-to-DCE only; audio DB25 warning — *source:* TI SNLA039; TASCAM DB-25
+
+### keypanel-shells
+
+**#77 Adam KP Black — Keypanel to Breakout** — agree → agree — verified
+- **Fix:** agreeing reviewer's not-a-serial-cable line — *source:* KP-32 data sheet
+
+**#78 Adam KP Yellow — CAM / IFB** — agree → agree — verified
+- **Fix:** agreeing reviewer's not-a-serial-cable line — *source:* KP-32 data sheet
+
+**#79 Serial Data Grey — RS-422 (Sony 9-pin) over Cat5** — disagree → agree — verified
+- [minor] Diagnostic-port warning says the +/-12 V RS-232 outputs would land on 'the far RS-422 receiver's bus pins'. With a straight cable to a controlled device (Sony deck), Kalypso pins 2/7 reach that device's TX/driver pins 2/7, not its receiver …
+- [minor] Notes never state the shell's gender, yet the Kalypso ports are female D-9, so the shell must be a male plug (and a male plug also fits the Diagnostic port, which the notes already warn about).
+- **Fix:** Diagnostic mis-plug stated precisely — *source:* Kalypso p.67; TI SN75176B; Wikipedia RS-232
+- **Fix:** gender stated — *source:* Kalypso p.67–68
+
+**#83 Cronus RJ12 to RJ45 — RTS Keypanel Layout (KP-5032)** — disagree → agree — verified
+- [minor] Mis-plug sentence says ±30 V (HelixNet) would land on the matrix port's RS-485 transceiver. Per Clear-Com, HelixNet RJ45 1/2 are ground and ±30 V sits on 3-8, so only the audio pairs (3/4/5/6) see ±30 V; the RS-485 pins (RJ45 1/2) would be …
+- [minor] Title/use call the RJ-12 a 'Cronus' keypanel port, but the matrix-side RJ-12 pinout is documented for the ADAM XCP-40-RJ11 and XCP-955 breakout panels (AIO/Cronus backcards), and the cited sources are keypanel documents; the breakout guide …
+- **Fix:** mis-plug voltages per pin — *source:* Wikipedia PoE; Clear-Com HelixNet Tip
+- **Fix:** port described by the cited RJ-12 pinout — *source:* KP-32 data sheet; KP-5032 p.19
