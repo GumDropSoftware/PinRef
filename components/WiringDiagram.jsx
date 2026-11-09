@@ -192,12 +192,19 @@ export default function WiringDiagram({ build }) {
 
   const fromSide = side;
   const toSide = side;
-  const viewLabelFor = () => (side === "solder" ? "SOLDER SIDE" : "FACE VIEW");
-  const genderedConns = [fromConn, toConn].filter(c => c?.faceGender);
+  // Modular plugs (RJ45/RJ12) are never mirrored: their two views are the plug's wire-entry side and the jack face.
+  const isModular = (c) => c?.type === "rj45" || c?.type === "rj12";
+  const viewLabelFor = (c) => isModular(c)
+    ? (side === "solder" ? "WIRE-ENTRY SIDE (clip down)" : "JACK FACE (clip down)")
+    : (side === "solder" ? "SOLDER SIDE" : "FACE VIEW");
+  const genderedConns = [...new Set([fromConn, toConn])].filter(c => c?.faceGender);
+  const modularConn = [fromConn, toConn].find(isModular);
 
+  // Both ends of a same-type build are drawn from the same face data, so neither picture is a
+  // particular gender; the build's gender note says which view each end needs.
   const sameType = build.from === build.to;
-  const fromLabel = sameType ? "MALE end" : fromConn.short;
-  const toLabel = sameType ? "FEMALE end" : toConn.short;
+  const fromLabel = sameType ? `${fromConn.short} — end A` : fromConn.short;
+  const toLabel = sameType ? `${toConn.short} — end B` : toConn.short;
 
   return (
     <div>
@@ -319,6 +326,11 @@ export default function WiringDiagram({ build }) {
                 const g = c.faceGender, o = g === "female" ? "male" : "female";
                 return <div key={c.name}>{c.short}: {side === "solder" ? `solder side of a ${g.toUpperCase()} end = mating face of a ${o} end` : `${g.toUpperCase()} mating face = solder side of a ${o} end`} — check the build's gender note.</div>;
               })}
+            </div>
+          )}
+          {modularConn && (
+            <div style={{ fontSize: 10, color: T.textDim, fontFamily: "monospace", marginTop: genderedConns.length > 0 ? -8 : -6, marginBottom: 12, lineHeight: 1.4 }}>
+              {modularConn.short}: pin 1 is on the LEFT with the clip down, both looking into a jack and looking at the back of a plug where the wires go in. Feed the plug in the order drawn.
             </div>
           )}
 

@@ -6,8 +6,10 @@ export default function RJ45Connector({ conn, side = "face", highlightPins = [],
   const colors = conn.colors;
   const stripes = conn.stripes;
   const stripeColors = conn.stripeColors;
-  const pinOrder = side === "solder" ? [8, 7, 6, 5, 4, 3, 2, 1] : [1, 2, 3, 4, 5, 6, 7, 8];
-  const sideText = viewLabel || (side === "solder" ? "SOLDER SIDE" : "FACE VIEW (clip down)");
+  // Pin 1 is on the LEFT both ways with the clip down: looking into a jack, and looking at the
+  // back of a plug where the wires go in (Wikipedia, Modular connector). Never mirror it.
+  const pinOrder = [1, 2, 3, 4, 5, 6, 7, 8];
+  const sideText = viewLabel || (side === "solder" ? "WIRE-ENTRY SIDE (clip down)" : "JACK FACE (clip down)");
   const pinW = 12;
   const pinH = 32;
   const pinGap = 17;

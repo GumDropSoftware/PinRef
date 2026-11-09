@@ -30,7 +30,8 @@ export default function DSubConnector({ conn, side = "face", highlightPins = [],
       {label && <div style={{ fontSize: 11, color: T.textDim, marginBottom: 4, fontFamily: "monospace" }}>{label}</div>}
       <svg width={Math.min(w, size)} height={svgH} viewBox={`0 0 ${w} ${svgH}`}>
         <rect x={10} y={18} width={w - 20} height={48} rx={8} fill={T.surface2} stroke={T.border} strokeWidth={2} />
-        <path d={`M ${20} 20 L ${w - 20} 20 L ${w - 14} 64 L 14 64 Z`} fill="none" stroke={T.border} strokeWidth={1} opacity={0.3} />
+        {/* D outline: wide side on the top row (5 pins on a DE-9, 13 on a DB25), as on the real shell */}
+        <path d={`M 14 20 L ${w - 14} 20 L ${w - 20} 64 L 20 64 Z`} fill="none" stroke={T.border} strokeWidth={1} opacity={0.3} />
         {conn.pins.map((pin) => {
           const pos = pts[pin.id];
           if (!pos) return null;

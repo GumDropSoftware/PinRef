@@ -3,8 +3,9 @@ import { T } from "@/lib/theme";
 export default function RJ12Connector({ conn, side = "face", highlightPins = [], pinColors = {}, size = 140, label, viewLabel }) {
   const w = 130;
   const h = 70;
-  const pinOrder = side === "solder" ? [6, 5, 4, 3, 2, 1] : [1, 2, 3, 4, 5, 6];
-  const sideText = viewLabel || (side === "solder" ? "SOLDER SIDE" : "FACE VIEW (clip down)");
+  // Same rule as RJ45: pin 1 on the left with the clip down, for a jack face and a plug's wire entry.
+  const pinOrder = [1, 2, 3, 4, 5, 6];
+  const sideText = viewLabel || (side === "solder" ? "WIRE-ENTRY SIDE (clip down)" : "JACK FACE (clip down)");
 
   return (
     <div style={{ textAlign: "center" }}>
